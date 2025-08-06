@@ -99,22 +99,25 @@ export default function Dashboard() {
       {/* Navigation */}
       <nav className="bg-white shadow-sm border-b p-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <Link href="/">
-              <Button variant="ghost" size="sm">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to Website
-              </Button>
-            </Link>
+          <Link href="/">
+            <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-900">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Website
+            </Button>
+          </Link>
+          
+          <div className="flex items-center space-x-3">
             <img 
               src="/assets/au-logo.png" 
               alt="Alchemy United Logo"
               className="h-8 w-auto"
             />
+            <h1 className="text-2xl font-bold text-gray-900 font-display">
+              Alchemy United Dashboard
+            </h1>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 font-display">
-            Alchemy United Dashboard
-          </h1>
+          
+          <div className="w-32"></div> {/* Spacer for balance */}
         </div>
       </nav>
 

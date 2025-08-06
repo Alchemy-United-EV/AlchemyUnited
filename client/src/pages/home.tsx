@@ -1,6 +1,142 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
+
+// Problem Solution Slideshow Component
+function ProblemSolutionSlideshow() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  
+  const slides = [
+    {
+      type: 'problem',
+      title: 'Current Charging is Broken',
+      titleColor: 'text-red-600',
+      items: [
+        { icon: '⏱️', color: 'bg-red-100 text-red-600', title: 'Long Lines', desc: 'Wait hours for a single charging port with no reservation system' },
+        { icon: '🔧', color: 'bg-red-100 text-red-600', title: 'Outdated Hardware', desc: 'Broken screens, slow charging speeds, unreliable connections' },
+        { icon: '❌', color: 'bg-red-100 text-red-600', title: 'Zero Support', desc: 'No help when things go wrong, leaving you stranded' },
+        { icon: '👁️', color: 'bg-red-100 text-red-600', title: 'Ugly Designs', desc: 'Eyesore stations that ruin the aesthetic of any location' }
+      ]
+    },
+    {
+      type: 'solution',
+      title: 'Alchemy Changes Everything',
+      titleColor: 'text-gold',
+      showLogo: true,
+      items: [
+        { icon: '⚡', color: 'bg-gold/20 text-gold', title: 'Fast, Private Stations', desc: 'Reserved charging with ultra-fast speeds and premium locations' },
+        { icon: '🎨', color: 'bg-gold/20 text-gold', title: 'Beautiful Black & Gold Design', desc: 'Stunning matte black stations with gold accents that enhance any space' },
+        { icon: '📊', color: 'bg-gold/20 text-gold', title: 'Smart Energy Tracking', desc: 'Real-time usage analytics, cost optimization, and carbon tracking' },
+        { icon: '🤝', color: 'bg-gold/20 text-gold', title: 'Live Concierge Support', desc: '24/7 premium support team ready to help via app or phone' }
+      ]
+    }
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 5000); // Change slide every 5 seconds
+    
+    return () => clearInterval(timer);
+  }, [slides.length]);
+
+  return (
+    <div className="relative min-h-[80vh] flex items-center justify-center">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentSlide}
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -100 }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+          className="text-center max-w-4xl mx-auto"
+        >
+          {/* Logo for solution slide */}
+          {slides[currentSlide].showLogo && (
+            <motion.div 
+              className="flex items-center justify-center mb-6"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
+              <img 
+                src="/assets/au-logo.png" 
+                alt="Alchemy United Logo"
+                className="h-16 w-auto sm:h-20"
+              />
+            </motion.div>
+          )}
+          
+          {/* Title */}
+          <motion.h2 
+            className={`text-4xl sm:text-5xl lg:text-6xl font-black mb-16 font-display ${slides[currentSlide].titleColor}`}
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+          >
+            {slides[currentSlide].title.includes('Broken') ? (
+              <>Current Charging is <span className="text-red-600">Broken</span></>
+            ) : (
+              <><span className="text-gold">Alchemy</span> Changes Everything</>
+            )}
+          </motion.h2>
+          
+          {/* Items Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12">
+            {slides[currentSlide].items.map((item, index) => (
+              <motion.div
+                key={index}
+                className="text-left"
+                initial={{ y: 50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.4 + index * 0.1, duration: 0.6 }}
+              >
+                <div className="flex items-start gap-4">
+                  <div className={`w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0 ${item.color}`}>
+                    <span className="text-2xl">{item.icon}</span>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold mb-3 text-gray-800 font-display">{item.title}</h3>
+                    <p className="text-gray-600 text-lg leading-relaxed">{item.desc}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </AnimatePresence>
+      
+      {/* Slide Indicators */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-3">
+        {slides.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentSlide(index)}
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              currentSlide === index 
+                ? 'bg-gold scale-125' 
+                : 'bg-gray-300 hover:bg-gray-400'
+            }`}
+          />
+        ))}
+      </div>
+      
+      {/* Navigation Arrows */}
+      <button
+        onClick={() => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)}
+        className="absolute left-8 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white shadow-lg rounded-full flex items-center justify-center text-gray-600 hover:text-gold transition-colors duration-300 hover:shadow-xl"
+      >
+        <span className="text-2xl">‹</span>
+      </button>
+      <button
+        onClick={() => setCurrentSlide((prev) => (prev + 1) % slides.length)}
+        className="absolute right-8 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white shadow-lg rounded-full flex items-center justify-center text-gray-600 hover:text-gold transition-colors duration-300 hover:shadow-xl"
+      >
+        <span className="text-2xl">›</span>
+      </button>
+    </div>
+  );
+}
 
 export default function Home() {
   const { scrollY } = useScroll();
@@ -99,128 +235,10 @@ export default function Home() {
         </motion.div>
       </motion.section>
 
-      {/* Problem > Solution Split Section */}
-      <section className="relative min-h-screen bg-white py-20 px-6 sm:px-12 lg:px-20">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center min-h-[80vh]">
-            
-            {/* Problems */}
-            <motion.div 
-              className="text-center lg:text-left"
-              initial={{ x: -50, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-12 text-gray-800 font-display">
-                Current Charging is <span className="text-red-600">Broken</span>
-              </h2>
-              
-              <div className="space-y-8">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-red-600 text-xl">⏱️</span>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold mb-2 text-gray-800">Long Lines</h3>
-                    <p className="text-gray-600 text-lg leading-relaxed">Wait hours for a single charging port with no reservation system</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-red-600 text-xl">🔧</span>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold mb-2 text-gray-800">Outdated Hardware</h3>
-                    <p className="text-gray-600 text-lg leading-relaxed">Broken screens, slow charging speeds, unreliable connections</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-red-600 text-xl">❌</span>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold mb-2 text-gray-800">Zero Support</h3>
-                    <p className="text-gray-600 text-lg leading-relaxed">No help when things go wrong, leaving you stranded</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-red-600 text-xl">👁️</span>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold mb-2 text-gray-800">Ugly Designs</h3>
-                    <p className="text-gray-600 text-lg leading-relaxed">Eyesore stations that ruin the aesthetic of any location</p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Solutions */}
-            <motion.div 
-              className="text-center lg:text-left"
-              initial={{ x: 50, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
-              <div className="flex items-center justify-center lg:justify-start mb-6">
-                <img 
-                  src="/assets/au-logo.png" 
-                  alt="Alchemy United Logo"
-                  className="h-16 w-auto sm:h-20"
-                />
-              </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-12 text-gray-800 font-display">
-                <span className="text-gold">Alchemy</span> Changes Everything
-              </h2>
-              
-              <div className="space-y-8">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-gold/20 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-gold text-xl">⚡</span>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold mb-2 text-gray-800">Fast, Private Stations</h3>
-                    <p className="text-gray-600 text-lg leading-relaxed">Reserved charging with ultra-fast speeds and premium locations</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-gold/20 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-gold text-xl">🎨</span>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold mb-2 text-gray-800">Beautiful Black & Gold Design</h3>
-                    <p className="text-gray-600 text-lg leading-relaxed">Stunning matte black stations with gold accents that enhance any space</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-gold/20 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-gold text-xl">📊</span>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold mb-2 text-gray-800">Smart Energy Tracking</h3>
-                    <p className="text-gray-600 text-lg leading-relaxed">Real-time usage analytics, cost optimization, and carbon tracking</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-gold/20 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-gold text-xl">🤝</span>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold mb-2 text-gray-800">Live Concierge Support</h3>
-                    <p className="text-gray-600 text-lg leading-relaxed">24/7 premium support team ready to help via app or phone</p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
+      {/* Problem > Solution Slideshow Section */}
+      <section className="relative min-h-screen bg-white py-20 px-6 sm:px-12 lg:px-20 overflow-hidden">
+        <div className="max-w-6xl mx-auto">
+          <ProblemSolutionSlideshow />
         </div>
       </section>
 

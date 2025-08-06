@@ -10,7 +10,7 @@ export default function Home() {
       let current = '';
       
       sections.forEach(section => {
-        const sectionTop = section.offsetTop;
+        const sectionTop = (section as HTMLElement).offsetTop;
         if (window.pageYOffset >= sectionTop - 200) {
           current = section.getAttribute('id') || '';
         }

@@ -77,7 +77,7 @@ export default function Home() {
           className="text-center px-8"
         >
           <motion.img 
-            src="@assets/AE141A66-A440-499B-8889-41BABE3F729E_1754500827677.png" 
+            src="/attached_assets/AE141A66-A440-499B-8889-41BABE3F729E_1754500827677.png" 
             alt="Alchemy United Golden Wings Logo" 
             className="h-48 sm:h-64 lg:h-80 xl:h-96 mx-auto mb-12 drop-shadow-2xl"
             initial={{ y: 30, opacity: 0, scale: 0.9 }}

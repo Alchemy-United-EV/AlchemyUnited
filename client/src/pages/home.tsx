@@ -13,6 +13,10 @@ export default function Home() {
   const landingScale = useTransform(scrollY, [0, 300], [1, 1.5]); // Scale UP as it fades
   const landingY = useTransform(scrollY, [100, 300], [0, -50]);
   
+  // Background logo appears behind text as main logo fades
+  const bgLogoOpacity = useTransform(scrollY, [250, 400], [0, 0.15]);
+  const bgLogoScale = useTransform(scrollY, [250, 400], [0.8, 0.6]);
+  
   const heroY = useTransform(scrollY, [200, 500], [100, 0]);
   const heroOpacity = useTransform(scrollY, [200, 500], [0, 1]);
 
@@ -114,15 +118,39 @@ export default function Home() {
       {/* Spacer for scroll effect */}
       <div className="h-screen bg-black"></div>
 
+      {/* Background Logo (subtle behind ALCHEMY UNITED) */}
+      <motion.div 
+        className="fixed inset-0 flex items-center justify-center z-15 pointer-events-none"
+        style={{ 
+          opacity: bgLogoOpacity,
+          scale: bgLogoScale
+        }}
+      >
+        <img 
+          src={auWingsLogo} 
+          alt="Alchemy United Background Logo" 
+          className="h-40 sm:h-48 lg:h-56 xl:h-64"
+        />
+      </motion.div>
+
       {/* Hero Section */}
       <motion.section 
         id="hero" 
-        className="relative flex items-center justify-center min-h-screen bg-black overflow-hidden"
+        className="relative flex items-center justify-center min-h-screen bg-gradient-to-b from-black via-gray-900 to-white overflow-hidden"
         style={{ 
           y: heroY,
           opacity: heroOpacity
         }}
       >
+        <div className="absolute inset-0 bg-black/40 z-10"></div>
+        <div className="absolute inset-0 flex items-center justify-center opacity-15">
+          <img 
+            src="/assets/hero-ev-charger.png" 
+            alt="Alchemy EV Charging Station" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+
         <motion.div 
           className="relative z-20 text-center text-white px-6 sm:px-8 lg:px-12 max-w-8xl mx-auto py-32"
           initial={{ y: 80, opacity: 0 }}

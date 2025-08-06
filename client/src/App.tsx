@@ -7,6 +7,7 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import EarlyAccess from "@/pages/early-access";
 import HostApplication from "@/pages/host-application";
+import Dashboard from "@/pages/dashboard";
 
 function Router() {
   return (
@@ -14,6 +15,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/early-access" component={EarlyAccess} />
       <Route path="/host" component={HostApplication} />
+      <Route path="/dashboard" component={Dashboard} />
       <Route component={NotFound} />
     </Switch>
   );

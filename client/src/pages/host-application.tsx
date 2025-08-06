@@ -50,9 +50,17 @@ export default function HostApplication() {
 
   const onSubmit = async (data: HostApplicationForm) => {
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      console.log("Host application:", data);
+      const response = await fetch('/api/host-applications', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to submit application');
+      }
       
       setSubmitted(true);
       toast({
@@ -60,6 +68,7 @@ export default function HostApplication() {
         description: "We'll review your application and contact you within 48 hours.",
       });
     } catch (error) {
+      console.error('Error submitting application:', error);
       toast({
         title: "Error",
         description: "Something went wrong. Please try again.",

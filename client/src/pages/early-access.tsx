@@ -41,9 +41,17 @@ export default function EarlyAccess() {
 
   const onSubmit = async (data: EarlyAccessForm) => {
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      console.log("Early access application:", data);
+      const response = await fetch('/api/early-access-applications', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to submit application');
+      }
       
       setSubmitted(true);
       toast({
@@ -51,6 +59,7 @@ export default function EarlyAccess() {
         description: "We'll be in touch with your early access invitation soon.",
       });
     } catch (error) {
+      console.error('Error submitting application:', error);
       toast({
         title: "Error",
         description: "Something went wrong. Please try again.",

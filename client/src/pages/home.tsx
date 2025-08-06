@@ -347,15 +347,15 @@ export default function Home() {
       {/* Section 4: Product */}
       <section 
         id="burst" 
-        className="relative flex items-center justify-center min-h-screen bg-white py-16"
+        className="relative flex items-center justify-center min-h-screen bg-white py-8"
       >
 
-        <div className="relative z-10 text-center text-black px-4 sm:px-8 lg:px-12 max-w-6xl mx-auto py-12">
-          <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl font-black mb-6 leading-[0.9] tracking-tight">
+        <div className="relative z-10 text-center text-black px-4 sm:px-8 lg:px-12 max-w-6xl mx-auto py-8">
+          <h2 className="text-xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-7xl font-black mb-4 leading-[0.9] tracking-tight">
             <span className="font-display">Where Art Meets</span>
             <span className="text-gradient block font-display">Energy</span>
           </h2>
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-light max-w-4xl mx-auto leading-relaxed text-gray-700 tracking-wide mb-6">
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-light max-w-4xl mx-auto leading-relaxed text-gray-700 tracking-wide mb-4">
             Our signature matte black stations with gold-accented logos are more than chargers — they're statements. Whether installed at home, in public, or in commercial environments, Alchemy United brings elegance to utility.
           </p>
         </div>
@@ -387,7 +387,7 @@ export default function Home() {
       </section>
 
       {/* Section 6: CTA */}
-      <section id="cta" className="relative min-h-screen bg-white flex items-center justify-center px-8 sm:px-12 lg:px-16 py-16">
+      <section id="cta" className="relative min-h-screen bg-white flex items-center justify-center px-4 sm:px-8 lg:px-12 py-8">
         <div className="absolute inset-0 flex items-center justify-center opacity-10">
           <img 
             src="/images/section6.png" 
@@ -395,12 +395,12 @@ export default function Home() {
             className="w-full h-full object-cover"
           />
         </div>
-        <div className="relative z-10 text-center max-w-7xl mx-auto py-12">
-          <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl font-black text-black mb-6 leading-[0.9] tracking-tight">
+        <div className="relative z-10 text-center max-w-7xl mx-auto py-8">
+          <h2 className="text-lg sm:text-2xl md:text-3xl lg:text-5xl xl:text-6xl font-black text-black mb-4 leading-[0.9] tracking-tight">
             <span className="font-display">Reserve Your</span>
             <span className="text-gradient block font-display">Alchemy United Charger</span>
           </h2>
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-gray-700 font-light mb-8 max-w-5xl mx-auto leading-relaxed tracking-wide">
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-gray-700 font-light mb-6 max-w-5xl mx-auto leading-relaxed tracking-wide">
             Initial rollout is limited. Join the early access list and be part of the charge that changes everything.
           </p>
           

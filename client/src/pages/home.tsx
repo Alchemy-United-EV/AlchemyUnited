@@ -136,7 +136,7 @@ export default function Home() {
       {/* Hero Section */}
       <motion.section 
         id="hero" 
-        className="relative h-screen bg-black overflow-hidden -mt-20"
+        className="relative h-screen bg-black overflow-hidden"
         style={{ 
           y: heroY,
           opacity: heroOpacity
@@ -151,72 +151,74 @@ export default function Home() {
           />
         </div>
 
-        <motion.div 
-          className="absolute inset-0 flex items-center justify-center z-20 text-center text-white px-6 sm:px-8 lg:px-12 max-w-8xl mx-auto"
-          initial={{ y: 80, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <motion.div
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.3, duration: 1 }}
-            viewport={{ once: true }}
-          >
-            <h1 className="text-6xl sm:text-8xl lg:text-9xl xl:text-[10rem] font-black mb-8 leading-[0.8] tracking-tighter">
-              <motion.span 
-                className="block font-display text-gray-300 mb-4"
-                initial={{ x: -30, opacity: 0 }}
-                whileInView={{ x: 0, opacity: 1 }}
-                transition={{ delay: 0.5, duration: 0.8 }}
-                viewport={{ once: true }}
-              >
-                ALCHEMY
-              </motion.span>
-              <motion.span 
-                className="block text-gold font-display"
-                initial={{ x: 30, opacity: 0 }}
-                whileInView={{ x: 0, opacity: 1 }}
-                transition={{ delay: 0.7, duration: 0.8 }}
-                viewport={{ once: true }}
-              >
-                UNITED
-              </motion.span>
-            </h1>
-          </motion.div>
-          
-          <motion.p 
-            className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-light mb-20 max-w-6xl mx-auto leading-relaxed text-white/80 tracking-wide"
-            initial={{ y: 40, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.9, duration: 1 }}
-            viewport={{ once: true }}
-          >
-            The Future of Electric Excellence
-          </motion.p>
-          
+        <div className="absolute inset-0 flex items-center justify-center z-20">
           <motion.div 
-            className="flex flex-col sm:flex-row gap-8 sm:gap-12 justify-center items-center"
-            initial={{ y: 40, opacity: 0 }}
+            className="text-center text-white px-6 sm:px-8 lg:px-12 w-full max-w-7xl"
+            initial={{ y: 80, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
-            transition={{ delay: 1.1, duration: 1 }}
-            viewport={{ once: true }}
+            transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+            viewport={{ once: true, margin: "-100px" }}
           >
-            <Button 
-              size="lg" 
-              className="bg-gold hover:bg-yellow-600 text-black font-bold py-8 px-20 rounded-full text-2xl transition-all duration-500 transform hover:scale-105 hover:shadow-2xl font-display tracking-wide"
+            <motion.div
+              initial={{ y: 50, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.3, duration: 1 }}
+              viewport={{ once: true }}
             >
-              Experience Now
-            </Button>
-            <Button 
-              size="lg"
-              className="bg-black hover:bg-gray-900 border-2 border-white/20 text-white font-bold py-8 px-20 rounded-full text-2xl transition-all duration-500 font-display tracking-wide"
+              <h1 className="text-6xl sm:text-8xl lg:text-9xl xl:text-[10rem] font-black mb-8 leading-[0.8] tracking-tighter">
+                <motion.span 
+                  className="block font-display text-gray-300 mb-4"
+                  initial={{ x: -30, opacity: 0 }}
+                  whileInView={{ x: 0, opacity: 1 }}
+                  transition={{ delay: 0.5, duration: 0.8 }}
+                  viewport={{ once: true }}
+                >
+                  ALCHEMY
+                </motion.span>
+                <motion.span 
+                  className="block text-gold font-display"
+                  initial={{ x: 30, opacity: 0 }}
+                  whileInView={{ x: 0, opacity: 1 }}
+                  transition={{ delay: 0.7, duration: 0.8 }}
+                  viewport={{ once: true }}
+                >
+                  UNITED
+                </motion.span>
+              </h1>
+            </motion.div>
+            
+            <motion.p 
+              className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-light mb-20 max-w-6xl mx-auto leading-relaxed text-white/80 tracking-wide"
+              initial={{ y: 40, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.9, duration: 1 }}
+              viewport={{ once: true }}
             >
-              Discover More
-            </Button>
+              The Future of Electric Excellence
+            </motion.p>
+            
+            <motion.div 
+              className="flex flex-col sm:flex-row gap-8 sm:gap-12 justify-center items-center"
+              initial={{ y: 40, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ delay: 1.1, duration: 1 }}
+              viewport={{ once: true }}
+            >
+              <Button 
+                size="lg" 
+                className="bg-gold hover:bg-yellow-600 text-black font-bold py-8 px-20 rounded-full text-2xl transition-all duration-500 transform hover:scale-105 hover:shadow-2xl font-display tracking-wide"
+              >
+                Experience Now
+              </Button>
+              <Button 
+                size="lg"
+                className="bg-black hover:bg-gray-900 border-2 border-white/20 text-white font-bold py-8 px-20 rounded-full text-2xl transition-all duration-500 font-display tracking-wide"
+              >
+                Discover More
+              </Button>
+            </motion.div>
           </motion.div>
-        </motion.div>
+        </div>
       </motion.section>
 
       {/* Mission Section */}

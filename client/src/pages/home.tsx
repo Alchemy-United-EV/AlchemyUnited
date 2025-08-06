@@ -73,22 +73,22 @@ export default function Home() {
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+          transition={{ duration: 1.8, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="text-center px-8"
         >
           <motion.img 
-            src="/assets/au-logo.png" 
-            alt="Alchemy United Logo" 
-            className="h-48 sm:h-64 lg:h-80 xl:h-96 mx-auto mb-12"
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.4, duration: 1, ease: "easeOut" }}
+            src="@assets/AE141A66-A440-499B-8889-41BABE3F729E_1754500827677.png" 
+            alt="Alchemy United Golden Wings Logo" 
+            className="h-48 sm:h-64 lg:h-80 xl:h-96 mx-auto mb-12 drop-shadow-2xl"
+            initial={{ y: 30, opacity: 0, scale: 0.9 }}
+            animate={{ y: 0, opacity: 1, scale: 1 }}
+            transition={{ delay: 0.4, duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
           />
           <motion.div
-            className="mt-16 text-white/50 text-lg sm:text-xl tracking-[0.3em] uppercase font-light"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.5, duration: 1.2 }}
+            className="mt-20 text-gold/80 text-lg sm:text-xl tracking-[0.4em] uppercase font-light"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.8, duration: 1.4 }}
           >
             Scroll to Experience
           </motion.div>

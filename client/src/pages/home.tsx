@@ -72,8 +72,8 @@ export default function Home() {
 
         <div className="relative z-10 text-center text-black px-8 sm:px-12 lg:px-16 max-w-7xl mx-auto py-20">
           <div className="animate-float">
-            <h1 className="text-5xl sm:text-7xl lg:text-9xl font-black mb-8 leading-[0.9] tracking-tight">
-              <span className="block font-display">The Future of EV Charging</span>
+            <h1 className="text-5xl sm:text-7xl lg:text-9xl font-black mb-8 leading-[1.1] tracking-tight">
+              <span className="block font-display mb-2">The Future of EV Charging</span>
               <span className="block text-gradient font-display">Has Arrived</span>
             </h1>
           </div>

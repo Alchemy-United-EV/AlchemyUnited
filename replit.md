@@ -1,6 +1,6 @@
 # Overview
 
-This is a full-stack web application for Alchemy, an EV charging solutions company. The project is built with React and Express.js, featuring a modern landing page with smooth scrolling navigation and a comprehensive UI component library. The application is designed to showcase EV charging technology with a focus on premium user experience and responsive design.
+This is a full-stack web application for Alchemy United, a premium EV charging solutions company. The project is built with React and Express.js, featuring a luxury one-page website with sophisticated typography, premium layout, and smooth scrolling navigation. The application is designed to showcase high-end EV charging technology with a focus on luxury automotive brand positioning and premium user experience.
 
 # User Preferences
 

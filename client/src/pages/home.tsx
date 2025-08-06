@@ -78,7 +78,7 @@ export default function Home() {
             </h1>
           </div>
           <p className="text-2xl sm:text-3xl lg:text-4xl font-light mb-16 max-w-5xl mx-auto leading-relaxed text-gray-700 tracking-wide">
-            AU delivers more than just power — we deliver presence. Intelligent infrastructure meets iconic design.
+            Alchemy United delivers more than just power — we deliver presence. Intelligent infrastructure meets iconic design.
           </p>
           <div className="flex flex-col sm:flex-row gap-8 justify-center items-center">
             <Button 
@@ -124,7 +124,7 @@ export default function Home() {
             <span className="text-gradient block font-display">Elevated.</span>
           </h2>
           <p className="text-xl sm:text-2xl lg:text-3xl font-light max-w-4xl mx-auto leading-relaxed text-gray-700 tracking-wide">
-            At AU, our mission is to transform every charge into a moment of excellence. We blend cutting-edge engineering with luxury aesthetics to build a charging experience that fits seamlessly into modern lifestyles and forward-thinking communities. Because how you power up matters.
+            At Alchemy United, our mission is to transform every charge into a moment of excellence. We blend cutting-edge engineering with luxury aesthetics to build a charging experience that fits seamlessly into modern lifestyles and forward-thinking communities. Because how you power up matters.
           </p>
         </div>
       </section>
@@ -178,7 +178,7 @@ export default function Home() {
             <span className="text-gradient block font-display">Energy</span>
           </h2>
           <p className="text-xl sm:text-2xl lg:text-3xl font-light max-w-4xl mx-auto leading-relaxed text-gray-700 tracking-wide">
-            Our signature matte black stations with gold-accented logos are more than chargers — they're statements. Whether installed at home, in public, or in commercial environments, AU brings elegance to utility.
+            Our signature matte black stations with gold-accented logos are more than chargers — they're statements. Whether installed at home, in public, or in commercial environments, Alchemy United brings elegance to utility.
           </p>
         </div>
       </section>
@@ -196,11 +196,11 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
               <div className="bg-gray-50 p-12 rounded-2xl">
-                <p className="text-xl italic mb-6 text-gray-700 leading-relaxed">"My garage has never looked better. The AU charger is both sleek and lightning-fast."</p>
+                <p className="text-xl italic mb-6 text-gray-700 leading-relaxed">"My garage has never looked better. The Alchemy United charger is both sleek and lightning-fast."</p>
                 <p className="font-bold text-lg font-display">– Malik R.</p>
               </div>
               <div className="bg-gray-50 p-12 rounded-2xl">
-                <p className="text-xl italic mb-6 text-gray-700 leading-relaxed">"It's rare to see EV infrastructure that feels premium. AU nailed it."</p>
+                <p className="text-xl italic mb-6 text-gray-700 leading-relaxed">"It's rare to see EV infrastructure that feels premium. Alchemy United nailed it."</p>
                 <p className="font-bold text-lg font-display">– Sierra G.</p>
               </div>
             </div>
@@ -220,7 +220,7 @@ export default function Home() {
         <div className="relative z-10 text-center max-w-7xl mx-auto py-20">
           <h2 className="text-5xl sm:text-7xl lg:text-9xl font-black text-black mb-12 leading-[0.9] tracking-tight">
             <span className="font-display">Reserve Your</span>
-            <span className="text-gradient block font-display">AU Charger</span>
+            <span className="text-gradient block font-display">Alchemy United Charger</span>
           </h2>
           <p className="text-2xl sm:text-3xl lg:text-4xl text-gray-700 font-light mb-20 max-w-5xl mx-auto leading-relaxed tracking-wide">
             Initial rollout is limited. Join the early access list and be part of the charge that changes everything.
@@ -257,7 +257,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto text-center">
           <img 
             src="/images/alchemy_footerlogo.png" 
-            alt="AU Logo" 
+            alt="Alchemy United Logo" 
             className="h-20 sm:h-24 lg:h-28 mx-auto mb-12"
           />
           <p className="text-gold text-2xl font-bold mb-8 font-display tracking-wide">
@@ -267,10 +267,10 @@ export default function Home() {
             <a href="#" className="hover:text-gold transition-colors font-display">Privacy Policy</a>
             <a href="#" className="hover:text-gold transition-colors font-display">Terms of Use</a>
             <a href="#" className="hover:text-gold transition-colors font-display">Contact</a>
-            <a href="#" className="hover:text-gold transition-colors font-display">Instagram @au.energy</a>
+            <a href="#" className="hover:text-gold transition-colors font-display">Instagram @alchemyunited.energy</a>
           </div>
           <p className="text-gray-500 text-base font-display">
-            © 2025 AU (Alchemy Unleashed). All rights reserved.
+            © 2025 Alchemy United. All rights reserved.
           </p>
         </div>
       </footer>

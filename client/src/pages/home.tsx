@@ -563,8 +563,8 @@ export default function Home() {
               className="h-12 w-auto sm:h-16 filter brightness-125"
             />
           </div>
-          <p className="text-gold text-xl font-bold mb-8 font-display">
-            Alchemy United. Powering What's Next.
+          <p className="text-gold text-lg sm:text-xl font-bold mb-8 font-display leading-tight">
+            Alchemy United.<br className="sm:hidden" /> Powering What's Next.
           </p>
           <div className="flex flex-wrap justify-center gap-8 text-white/60 mb-8">
             <a href="#" className="hover:text-gold transition-colors">Privacy Policy</a>

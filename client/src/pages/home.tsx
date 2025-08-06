@@ -8,18 +8,18 @@ export default function Home() {
   const { scrollY } = useScroll();
 
   // Transform values for smooth animations
-  const landingOpacity = useTransform(scrollY, [0, 200], [1, 0]);
-  const landingScale = useTransform(scrollY, [0, 200], [1, 0.8]);
-  const heroY = useTransform(scrollY, [0, 400], [100, 0]);
-  const heroOpacity = useTransform(scrollY, [100, 400], [0, 1]);
+  const landingOpacity = useTransform(scrollY, [0, 300], [1, 0]);
+  const landingScale = useTransform(scrollY, [0, 300], [1, 0.95]);
+  const heroY = useTransform(scrollY, [200, 600], [150, 0]);
+  const heroOpacity = useTransform(scrollY, [200, 600], [0, 1]);
 
   useEffect(() => {
     const handleScroll = () => {
       const sections = document.querySelectorAll('section[id]');
       let current = '';
       
-      // Check if we're still on the landing (first 200px)
-      if (window.pageYOffset < 200) {
+      // Check if we're still on the landing (first 300px)
+      if (window.pageYOffset < 300) {
         current = 'landing';
         setShowLanding(true);
       } else {
@@ -60,7 +60,7 @@ export default function Home() {
   );
 
   return (
-    <div className="bg-black text-white font-display overflow-x-hidden relative">
+    <div className="bg-black text-white font-display overflow-hidden relative">
       {/* Landing Screen with AU Logo */}
       <motion.div 
         className="fixed inset-0 bg-black flex items-center justify-center z-40"
@@ -71,41 +71,33 @@ export default function Home() {
         }}
       >
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
+          initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
-          className="text-center"
+          transition={{ duration: 1.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="text-center px-8"
         >
           <motion.img 
-            src="/images/alchemy_footerlogo.png" 
+            src="/assets/au-logo.png" 
             alt="Alchemy United Logo" 
-            className="h-32 sm:h-40 lg:h-48 mx-auto mb-8 filter brightness-0 invert"
-            initial={{ y: 20, opacity: 0 }}
+            className="h-48 sm:h-64 lg:h-80 xl:h-96 mx-auto mb-12"
+            initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
+            transition={{ delay: 0.4, duration: 1, ease: "easeOut" }}
           />
-          <motion.p 
-            className="text-gold text-xl sm:text-2xl font-display tracking-wide"
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-          >
-            Alchemy United
-          </motion.p>
           <motion.div
-            className="mt-12 text-white/60 text-sm tracking-wider"
+            className="mt-16 text-white/50 text-lg sm:text-xl tracking-[0.3em] uppercase font-light"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1.2, duration: 0.8 }}
+            transition={{ delay: 1.5, duration: 1.2 }}
           >
-            Scroll to experience
+            Scroll to Experience
           </motion.div>
         </motion.div>
       </motion.div>
 
       {/* Sticky Navigation */}
-      <nav className="fixed right-8 top-1/2 transform -translate-y-1/2 z-50 hidden lg:block">
-        <div className="space-y-4">
+      <nav className="fixed right-6 sm:right-8 top-1/2 transform -translate-y-1/2 z-50 hidden lg:block">
+        <div className="space-y-6">
           <NavigationDot sectionId="hero" title="Home" />
           <NavigationDot sectionId="zoom" title="Mission" />
           <NavigationDot sectionId="flow" title="Features" />
@@ -116,18 +108,19 @@ export default function Home() {
       </nav>
 
       {/* Spacer for scroll effect */}
-      <div className="h-screen"></div>
+      <div className="h-screen bg-black"></div>
 
-      {/* Section 1: Hero */}
+      {/* Hero Section */}
       <motion.section 
         id="hero" 
-        className="relative flex items-center justify-center min-h-screen bg-white"
+        className="relative flex items-center justify-center min-h-screen bg-gradient-to-b from-black via-gray-900 to-white overflow-hidden"
         style={{ 
           y: heroY,
           opacity: heroOpacity
         }}
       >
-        <div className="absolute inset-0 flex items-center justify-center opacity-15">
+        <div className="absolute inset-0 bg-black/30 z-10"></div>
+        <div className="absolute inset-0 flex items-center justify-center opacity-20">
           <img 
             src="/assets/hero-ev-charger.png" 
             alt="Alchemy EV Charging Station" 
@@ -136,79 +129,84 @@ export default function Home() {
         </div>
 
         <motion.div 
-          className="relative z-10 text-center text-black px-8 sm:px-12 lg:px-16 max-w-7xl mx-auto py-20"
-          initial={{ y: 60, opacity: 0 }}
+          className="relative z-20 text-center text-white px-6 sm:px-8 lg:px-12 max-w-8xl mx-auto py-24"
+          initial={{ y: 80, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1, ease: "easeOut" }}
+          transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
           viewport={{ once: true, margin: "-100px" }}
         >
           <motion.div
-            initial={{ y: 40, opacity: 0 }}
+            initial={{ y: 50, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.8 }}
+            transition={{ delay: 0.3, duration: 1 }}
             viewport={{ once: true }}
           >
-            <h1 className="text-5xl sm:text-7xl lg:text-9xl font-black mb-8 leading-[1.1] tracking-tight">
-              <span className="block font-display mb-2">The Future of EV Charging</span>
-              <span className="block text-gradient font-display">Has Arrived</span>
+            <h1 className="text-6xl sm:text-8xl lg:text-9xl xl:text-[12rem] font-black mb-8 leading-[0.85] tracking-tighter">
+              <motion.span 
+                className="block font-display text-white mb-4"
+                initial={{ x: -30, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.5, duration: 0.8 }}
+                viewport={{ once: true }}
+              >
+                ALCHEMY
+              </motion.span>
+              <motion.span 
+                className="block text-gold font-display"
+                initial={{ x: 30, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.7, duration: 0.8 }}
+                viewport={{ once: true }}
+              >
+                UNITED
+              </motion.span>
             </h1>
           </motion.div>
+          
           <motion.p 
-            className="text-2xl sm:text-3xl lg:text-4xl font-light mb-16 max-w-5xl mx-auto leading-relaxed text-gray-700 tracking-wide"
+            className="text-xl sm:text-3xl lg:text-4xl xl:text-5xl font-light mb-20 max-w-6xl mx-auto leading-relaxed text-white/90 tracking-wide"
             initial={{ y: 40, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
+            transition={{ delay: 0.9, duration: 1 }}
             viewport={{ once: true }}
           >
-            Alchemy United delivers more than just power — we deliver presence. Intelligent infrastructure meets iconic design.
+            The Future of Electric Excellence
           </motion.p>
+          
           <motion.div 
-            className="flex flex-col sm:flex-row gap-8 justify-center items-center"
+            className="flex flex-col sm:flex-row gap-8 sm:gap-12 justify-center items-center"
             initial={{ y: 40, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
+            transition={{ delay: 1.1, duration: 1 }}
             viewport={{ once: true }}
           >
             <Button 
               size="lg" 
-              className="bg-gold hover:bg-yellow-700 text-black font-bold py-6 px-16 rounded-full text-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl font-display tracking-wide"
+              className="bg-gold hover:bg-yellow-600 text-black font-bold py-8 px-20 rounded-full text-2xl transition-all duration-500 transform hover:scale-105 hover:shadow-2xl font-display tracking-wide"
             >
-              Join the Movement
+              Experience Now
             </Button>
             <Button 
               variant="outline" 
               size="lg"
-              className="border-2 border-black text-black hover:bg-black hover:text-white font-bold py-6 px-16 rounded-full text-xl transition-all duration-300 font-display tracking-wide"
+              className="border-3 border-white/80 text-white hover:bg-white hover:text-black font-bold py-8 px-20 rounded-full text-2xl transition-all duration-500 font-display tracking-wide backdrop-blur-sm"
             >
-              Watch Demo
+              Discover More
             </Button>
           </motion.div>
         </motion.div>
-        
-        {/* Scroll indicator */}
-        <motion.div 
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-black animate-bounce"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 0.8 }}
-          viewport={{ once: true }}
-        >
-          <div className="w-6 h-10 border-2 border-black rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-black rounded-full mt-2 animate-pulse"></div>
-          </div>
-        </motion.div>
       </motion.section>
 
-      {/* Section 2: Mission */}
+      {/* Mission Section */}
       <motion.section 
         id="zoom" 
-        className="relative flex items-center justify-center min-h-screen bg-white py-20"
+        className="relative flex items-center justify-center min-h-screen bg-white overflow-hidden"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
-        transition={{ duration: 1 }}
+        transition={{ duration: 1.2 }}
         viewport={{ once: true, margin: "-100px" }}
       >
-        <div className="absolute inset-0 flex items-center justify-center opacity-15">
+        <div className="absolute inset-0 flex items-center justify-center opacity-10">
           <img 
             src="/assets/plug-closeup.png" 
             alt="EV Charging Plug Close-up" 
@@ -217,30 +215,30 @@ export default function Home() {
         </div>
 
         <motion.div 
-          className="relative z-10 text-center text-black px-8 sm:px-12 lg:px-16 max-w-6xl mx-auto py-20"
-          initial={{ y: 60, opacity: 0 }}
+          className="relative z-10 text-center text-black px-6 sm:px-8 lg:px-12 max-w-8xl mx-auto py-32"
+          initial={{ y: 80, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 1, ease: "easeOut" }}
           viewport={{ once: true }}
         >
           <motion.h2 
-            className="text-4xl sm:text-6xl lg:text-8xl font-black mb-12 leading-[0.9] tracking-tight"
-            initial={{ y: 40, opacity: 0 }}
+            className="text-5xl sm:text-7xl lg:text-9xl xl:text-[8rem] font-black mb-16 leading-[0.8] tracking-tighter"
+            initial={{ y: 50, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.8 }}
+            transition={{ delay: 0.2, duration: 1 }}
             viewport={{ once: true }}
           >
-            <span className="font-display">Charging,</span>
-            <span className="text-gradient block font-display">Elevated.</span>
+            <span className="font-display block text-black">CHARGING,</span>
+            <span className="text-gradient block font-display">ELEVATED.</span>
           </motion.h2>
           <motion.p 
-            className="text-xl sm:text-2xl lg:text-3xl font-light max-w-4xl mx-auto leading-relaxed text-gray-700 tracking-wide"
+            className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-light max-w-6xl mx-auto leading-relaxed text-gray-700 tracking-wide"
             initial={{ y: 40, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
+            transition={{ delay: 0.6, duration: 1 }}
             viewport={{ once: true }}
           >
-            At Alchemy United, our mission is to transform every charge into a moment of excellence. We blend cutting-edge engineering with luxury aesthetics to build a charging experience that fits seamlessly into modern lifestyles and forward-thinking communities. Because how you power up matters.
+            Transforming every charge into a moment of excellence through luxury engineering.
           </motion.p>
         </motion.div>
       </motion.section>

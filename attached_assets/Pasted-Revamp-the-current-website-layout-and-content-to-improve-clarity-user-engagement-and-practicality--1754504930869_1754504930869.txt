@@ -1,0 +1,71 @@
+Revamp the current website layout and content to improve clarity, user engagement, and practicality — while keeping the luxury electric vibe.
+
+Here’s what to implement, section-by-section:
+
+---
+
+✅ HERO SECTION  
+• Background: Reveal more of the hero background image by reducing the black overlay to 40% opacity.  
+• Headline: “Smart. Stylish. Built for EV Life.”  
+• Subheadline: “Alchemy United delivers high-performance EV chargers that double as modern art.”  
+• Add 3 small feature tags under subheadline: “⚡ Fast Charging · 🖤 Matte Black Finish · 🏡 Home & Business Ready”  
+• Keep central alignment and gold + white font styles.
+
+---
+
+✅ SECTION 1 — FEATURE GRID  
+• Replace “Where Art Meets Energy” with a 4-column feature grid.  
+• Title: “Features That Matter” (centered, gold + bold)  
+• 4 Columns (use icons above each label):
+  - ⚡ Speed → “90% charge in 30 minutes”  
+  - 🔒 Security → “Anti-tamper lock & weatherproof”  
+  - 🎨 Design → “Matte black with gold logo”  
+  - 📱 Smart App → “Remote start, tracking, and usage insights”  
+• Stack into 2x2 grid on mobile.
+
+---
+
+✅ SECTION 2 — RESERVE / CTA  
+• Headline: “Be the First to Charge Differently”  
+• Subheadline: “Join the early access list and unlock:”  
+• Add bullet list with checkmarks:
+  - ✅ 10% off launch units  
+  - ✅ First shipments guaranteed  
+  - ✅ Collector edition finish  
+• CTA button: “Get on the List” (keep gold background, larger size, more padding)  
+
+---
+
+✅ NEW SECTION — “HOW IT WORKS”  
+• Title: “How It Works”  
+• 4 vertical steps, each with icon + short label:
+  1. Join the List  
+  2. Choose Your Station  
+  3. We Ship to Your Door  
+  4. Plug In & Track with the App  
+• Use a timeline or stepper-style layout.
+
+---
+
+✅ NEW SECTION — “WHY ALCHEMY UNITED?”  
+• Side-by-side layout  
+• Left side: image of charger on clean background (can reuse assets folder image)  
+• Right side:
+  - Title: “Why Alchemy United?”  
+  - 3 checkmark bullet points:
+    - ✅ Built for Home & Business  
+    - ✅ Luxury Style, Durable Performance  
+    - ✅ Easy Setup, Expert Support
+
+---
+
+✅ GLOBAL STYLING FIXES  
+• Reduce vertical white space between all sections by 25%  
+• Increase all heading font sizes by 20% for desktop view  
+• Add top padding so first section doesn’t overlap on mobile  
+• Use `scroll-behavior: smooth;` to enhance section transitions  
+• Ensure consistent section width padding on all devices
+
+---
+
+This update should result in a high-converting, clean, and elegant landing page that matches the tone of brands like Mercedes-Benz, Tesla, and Apple — while offering real, useful information to visitors.

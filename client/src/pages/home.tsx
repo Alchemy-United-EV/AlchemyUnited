@@ -165,15 +165,15 @@ export default function Home() {
               transition={{ delay: 0.3, duration: 1 }}
               viewport={{ once: true }}
             >
-              <h1 className="text-3xl sm:text-5xl lg:text-7xl xl:text-8xl font-black mb-6 leading-snug tracking-tighter">
+              <h1 className="text-4xl sm:text-6xl lg:text-8xl xl:text-9xl font-black mb-6 leading-snug tracking-tighter">
                 <motion.span 
-                  className="block font-display text-gray-300 mb-2"
+                  className="block font-display text-white mb-2"
                   initial={{ x: -30, opacity: 0 }}
                   whileInView={{ x: 0, opacity: 1 }}
                   transition={{ delay: 0.5, duration: 0.8 }}
                   viewport={{ once: true }}
                 >
-                  ALCHEMY
+                  Smart. Stylish.
                 </motion.span>
                 <motion.span 
                   className="block text-gold font-display"
@@ -182,20 +182,41 @@ export default function Home() {
                   transition={{ delay: 0.7, duration: 0.8 }}
                   viewport={{ once: true }}
                 >
-                  UNITED
+                  Built for EV Life.
                 </motion.span>
               </h1>
             </motion.div>
             
             <motion.p 
-              className="text-base sm:text-lg lg:text-xl xl:text-2xl font-light mb-12 max-w-5xl mx-auto leading-normal text-white/80 tracking-wide"
+              className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-light mb-8 max-w-5xl mx-auto leading-normal text-white/90 tracking-wide"
               initial={{ y: 40, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.9, duration: 1 }}
               viewport={{ once: true }}
             >
-              The Future of Electric Excellence
+              Alchemy United delivers high-performance EV chargers that double as modern art.
             </motion.p>
+
+            <motion.div 
+              className="flex flex-wrap justify-center gap-6 mb-12 text-white/80 text-sm sm:text-base lg:text-lg"
+              initial={{ y: 40, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ delay: 1.0, duration: 1 }}
+              viewport={{ once: true }}
+            >
+              <div className="flex items-center gap-2">
+                <span>⚡</span>
+                <span>Fast Charging</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span>🖤</span>
+                <span>Matte Black Finish</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span>🏡</span>
+                <span>Home & Business Ready</span>
+              </div>
+            </motion.div>
             
             <motion.div 
               className="flex flex-col sm:flex-row gap-8 sm:gap-12 justify-center items-center"
@@ -350,41 +371,218 @@ export default function Home() {
         className="relative flex items-center justify-center min-h-screen bg-white py-8"
       >
 
-        <div className="relative z-10 text-center text-black px-6 sm:px-8 lg:px-12 max-w-6xl mx-auto py-16 space-y-12">
-          <h2 className="text-2xl sm:text-4xl lg:text-6xl xl:text-7xl font-black leading-snug tracking-tight">
-            <span className="font-display text-black font-black">Where Art Meets</span>
-            <span className="text-gold block font-display font-black">Energy</span>
-          </h2>
-          <p className="text-base sm:text-lg lg:text-xl xl:text-2xl font-light max-w-4xl mx-auto leading-normal text-gray-700 tracking-wide">
-            Our signature matte black stations with gold-accented logos are more than chargers — they're statements. Whether installed at home, in public, or in commercial environments, Alchemy United brings elegance to utility.
-          </p>
-        </div>
-      </section>
-
-      {/* Section 5: Testimonials */}
-      <section 
-        id="connection" 
-        className="relative flex items-center justify-center min-h-screen bg-white py-16 space-y-16"
-      >
-
-        <div className="relative z-10 text-center text-black px-6 sm:px-8 lg:px-12 max-w-6xl mx-auto py-16 space-y-12">
-          <div className="space-y-12">
-            <div className="text-center">
-              <h2 className="text-2xl sm:text-4xl lg:text-6xl xl:text-7xl font-black font-display tracking-tight leading-snug text-black">What Our Users Say</h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-              <div className="bg-gray-50 p-12 rounded-2xl">
-                <p className="text-base sm:text-lg italic mb-6 text-gray-700 leading-normal">"My garage has never looked better. The Alchemy United charger is both sleek and lightning-fast."</p>
-                <p className="font-bold text-base sm:text-lg font-display">– Malik R.</p>
-              </div>
-              <div className="bg-gray-50 p-12 rounded-2xl">
-                <p className="text-base sm:text-lg italic mb-6 text-gray-700 leading-normal">"It's rare to see EV infrastructure that feels premium. Alchemy United nailed it."</p>
-                <p className="font-bold text-base sm:text-lg font-display">– Sierra G.</p>
-              </div>
-            </div>
+        <div className="relative z-10 text-center text-black px-6 sm:px-8 lg:px-12 max-w-7xl mx-auto py-12">
+          <motion.h2 
+            className="text-3xl sm:text-5xl lg:text-7xl xl:text-8xl font-black mb-12 text-gold leading-snug tracking-tight font-display"
+            initial={{ y: 40, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            Features That Matter
+          </motion.h2>
+          
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 max-w-6xl mx-auto">
+            <motion.div 
+              className="text-center"
+              initial={{ y: 30, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <div className="text-5xl lg:text-6xl mb-4">⚡</div>
+              <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-3 font-display text-black">Speed</h3>
+              <p className="text-sm sm:text-base lg:text-lg text-gray-700 leading-normal">90% charge in 30 minutes</p>
+            </motion.div>
+            
+            <motion.div 
+              className="text-center"
+              initial={{ y: 30, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <div className="text-5xl lg:text-6xl mb-4">🔒</div>
+              <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-3 font-display text-black">Security</h3>
+              <p className="text-sm sm:text-base lg:text-lg text-gray-700 leading-normal">Anti-tamper lock & weatherproof</p>
+            </motion.div>
+            
+            <motion.div 
+              className="text-center"
+              initial={{ y: 30, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.5, duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <div className="text-5xl lg:text-6xl mb-4">🎨</div>
+              <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-3 font-display text-black">Design</h3>
+              <p className="text-sm sm:text-base lg:text-lg text-gray-700 leading-normal">Matte black with gold logo</p>
+            </motion.div>
+            
+            <motion.div 
+              className="text-center"
+              initial={{ y: 30, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <div className="text-5xl lg:text-6xl mb-4">📱</div>
+              <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-3 font-display text-black">Smart App</h3>
+              <p className="text-sm sm:text-base lg:text-lg text-gray-700 leading-normal">Remote start, tracking, and usage insights</p>
+            </motion.div>
           </div>
         </div>
       </section>
+
+      {/* How It Works Section */}
+      <motion.section 
+        id="how-it-works" 
+        className="relative flex items-center justify-center min-h-screen bg-gray-50 py-12"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+        viewport={{ once: true, margin: "-100px" }}
+      >
+        <motion.div 
+          className="relative z-10 text-center text-black px-6 sm:px-8 lg:px-12 max-w-6xl mx-auto py-12"
+          initial={{ y: 60, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          viewport={{ once: true }}
+        >
+          <motion.h2 
+            className="text-3xl sm:text-5xl lg:text-7xl xl:text-8xl font-black mb-16 text-black leading-snug tracking-tight font-display"
+            initial={{ y: 40, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            How It Works
+          </motion.h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-12">
+            <motion.div 
+              className="flex flex-col items-center text-center"
+              initial={{ y: 30, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <div className="w-16 h-16 bg-gold rounded-full flex items-center justify-center mb-6 text-2xl font-bold text-black">1</div>
+              <h3 className="text-xl sm:text-2xl font-bold mb-4 font-display text-black">Join the List</h3>
+              <p className="text-base sm:text-lg text-gray-700 leading-normal">Sign up for early access and secure your spot</p>
+            </motion.div>
+            
+            <motion.div 
+              className="flex flex-col items-center text-center"
+              initial={{ y: 30, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <div className="w-16 h-16 bg-gold rounded-full flex items-center justify-center mb-6 text-2xl font-bold text-black">2</div>
+              <h3 className="text-xl sm:text-2xl font-bold mb-4 font-display text-black">Choose Your Station</h3>
+              <p className="text-base sm:text-lg text-gray-700 leading-normal">Select the perfect charger for your needs</p>
+            </motion.div>
+            
+            <motion.div 
+              className="flex flex-col items-center text-center"
+              initial={{ y: 30, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.5, duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <div className="w-16 h-16 bg-gold rounded-full flex items-center justify-center mb-6 text-2xl font-bold text-black">3</div>
+              <h3 className="text-xl sm:text-2xl font-bold mb-4 font-display text-black">We Ship to Your Door</h3>
+              <p className="text-base sm:text-lg text-gray-700 leading-normal">Fast, secure delivery straight to you</p>
+            </motion.div>
+            
+            <motion.div 
+              className="flex flex-col items-center text-center"
+              initial={{ y: 30, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <div className="w-16 h-16 bg-gold rounded-full flex items-center justify-center mb-6 text-2xl font-bold text-black">4</div>
+              <h3 className="text-xl sm:text-2xl font-bold mb-4 font-display text-black">Plug In & Track</h3>
+              <p className="text-base sm:text-lg text-gray-700 leading-normal">Connect the app and start charging smarter</p>
+            </motion.div>
+          </div>
+        </motion.div>
+      </motion.section>
+
+      {/* Why Alchemy United Section */}
+      <motion.section 
+        id="why-alchemy" 
+        className="relative flex items-center justify-center min-h-screen bg-white py-12"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+        viewport={{ once: true, margin: "-100px" }}
+      >
+        <motion.div 
+          className="relative z-10 px-6 sm:px-8 lg:px-12 max-w-7xl mx-auto py-12"
+          initial={{ y: 60, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          viewport={{ once: true }}
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <motion.div
+              className="order-2 lg:order-1"
+              initial={{ x: -50, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <img 
+                src="/assets/hero-ev-charger.png" 
+                alt="Alchemy United EV Charger" 
+                className="w-full h-auto rounded-2xl shadow-xl"
+              />
+            </motion.div>
+            
+            <motion.div 
+              className="order-1 lg:order-2 text-center lg:text-left"
+              initial={{ x: 50, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-black mb-10 text-black leading-snug tracking-tight font-display">
+                Why <span className="text-gold">Alchemy United?</span>
+              </h2>
+              
+              <div className="space-y-6 max-w-lg mx-auto lg:mx-0">
+                <div className="flex items-start gap-4">
+                  <span className="text-green-500 text-2xl mt-1">✅</span>
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-bold mb-2 font-display text-black">Built for Home & Business</h3>
+                    <p className="text-base sm:text-lg text-gray-700 leading-normal">Versatile installation options for any environment</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-4">
+                  <span className="text-green-500 text-2xl mt-1">✅</span>
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-bold mb-2 font-display text-black">Luxury Style, Durable Performance</h3>
+                    <p className="text-base sm:text-lg text-gray-700 leading-normal">Premium design meets industrial-grade reliability</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-4">
+                  <span className="text-green-500 text-2xl mt-1">✅</span>
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-bold mb-2 font-display text-black">Easy Setup, Expert Support</h3>
+                    <p className="text-base sm:text-lg text-gray-700 leading-normal">Simple installation with professional guidance</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
+      </motion.section>
 
       {/* Section 6: CTA */}
       <section id="cta" className="relative min-h-screen bg-white flex items-center justify-center px-4 sm:px-8 lg:px-12 py-8">
@@ -395,38 +593,82 @@ export default function Home() {
             className="w-full h-full object-cover"
           />
         </div>
-        <div className="relative z-10 text-center max-w-7xl mx-auto py-16 space-y-12">
-          <h2 className="text-2xl sm:text-4xl lg:text-6xl xl:text-7xl font-black text-black leading-snug tracking-tight">
-            <span className="font-display text-black font-black">Reserve Your</span>
-            <span className="text-gold block font-display font-black">Alchemy United Charger</span>
-          </h2>
-          <p className="text-base sm:text-lg lg:text-xl xl:text-2xl text-gray-700 font-light max-w-5xl mx-auto leading-normal tracking-wide">
-            Initial rollout is limited. Join the early access list and be part of the charge that changes everything.
-          </p>
+        <div className="relative z-10 text-center max-w-6xl mx-auto py-12">
+          <motion.h2 
+            className="text-3xl sm:text-5xl lg:text-7xl xl:text-8xl font-black text-black mb-8 leading-snug tracking-tight font-display"
+            initial={{ y: 40, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            Be the First to <span className="text-gold">Charge Differently</span>
+          </motion.h2>
           
-          <div className="space-y-8">
+          <motion.p 
+            className="text-xl sm:text-2xl lg:text-3xl text-gray-700 font-light mb-8 leading-normal tracking-wide"
+            initial={{ y: 30, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            Join the early access list and unlock:
+          </motion.p>
+
+          <motion.div 
+            className="text-left max-w-lg mx-auto mb-12 space-y-4"
+            initial={{ y: 30, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <div className="flex items-center gap-4 text-lg sm:text-xl text-gray-700">
+              <span className="text-green-500 text-xl">✅</span>
+              <span>10% off launch units</span>
+            </div>
+            <div className="flex items-center gap-4 text-lg sm:text-xl text-gray-700">
+              <span className="text-green-500 text-xl">✅</span>
+              <span>First shipments guaranteed</span>
+            </div>
+            <div className="flex items-center gap-4 text-lg sm:text-xl text-gray-700">
+              <span className="text-green-500 text-xl">✅</span>
+              <span>Collector edition finish</span>
+            </div>
+          </motion.div>
+          
+          <motion.div
+            initial={{ y: 30, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+            viewport={{ once: true }}
+          >
             <Button 
               size="lg"
-              className="bg-gold hover:bg-yellow-700 text-black font-bold py-8 px-20 rounded-full text-lg sm:text-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl font-display tracking-wide"
+              className="bg-gold hover:bg-yellow-700 text-black font-bold py-10 px-24 rounded-full text-xl sm:text-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl font-display tracking-wide"
             >
               Get on the List
             </Button>
+          </motion.div>
             
-            <div className="flex flex-col sm:flex-row gap-12 justify-center items-center text-gray-600">
-              <div className="flex items-center space-x-3">
-                <div className="w-3 h-3 bg-gold rounded-full"></div>
-                <span className="text-lg font-medium font-display">No commitment required</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="w-3 h-3 bg-black rounded-full"></div>
-                <span className="text-lg font-medium font-display">Exclusive early access</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="w-3 h-3 bg-gold rounded-full"></div>
-                <span className="text-lg font-medium font-display">Premium updates</span>
-              </div>
+          <motion.div 
+            className="flex flex-col sm:flex-row gap-12 justify-center items-center text-gray-600 mt-12"
+            initial={{ y: 30, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <div className="flex items-center space-x-3">
+              <div className="w-3 h-3 bg-gold rounded-full"></div>
+              <span className="text-lg font-medium font-display">No commitment required</span>
             </div>
-          </div>
+            <div className="flex items-center space-x-3">
+              <div className="w-3 h-3 bg-black rounded-full"></div>
+              <span className="text-lg font-medium font-display">Exclusive early access</span>
+            </div>
+            <div className="flex items-center space-x-3">
+              <div className="w-3 h-3 bg-gold rounded-full"></div>
+              <span className="text-lg font-medium font-display">Premium updates</span>
+            </div>
+          </motion.div>
         </div>
       </section>
 

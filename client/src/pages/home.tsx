@@ -23,18 +23,18 @@ export default function Home() {
       
       {/* Navigation Logo */}
       <motion.nav 
-        className="fixed top-0 left-0 right-0 z-50 flex justify-center p-8"
+        className="fixed top-0 left-0 right-0 z-50 flex justify-center p-4 sm:p-8"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5 }}
       >
         <div className="flex items-center text-white drop-shadow-lg">
-          <svg width="60" height="40" viewBox="0 0 60 40" className="mr-2">
+          <svg width="50" height="32" viewBox="0 0 50 32" className="sm:w-[60px] sm:h-[40px]">
             {/* Wings */}
-            <path d="M5 20 Q15 10 25 20 Q15 30 5 20" fill="currentColor" opacity="0.8"/>
-            <path d="M35 20 Q45 10 55 20 Q45 30 35 20" fill="currentColor" opacity="0.8"/>
+            <path d="M3 16 Q12 8 21 16 Q12 24 3 16" fill="currentColor" opacity="0.9" className="text-gold"/>
+            <path d="M29 16 Q38 8 47 16 Q38 24 29 16" fill="currentColor" opacity="0.9" className="text-gold"/>
             {/* AU Letters */}
-            <text x="30" y="25" textAnchor="middle" className="text-gold font-black text-lg" fill="currentColor">AU</text>
+            <text x="25" y="20" textAnchor="middle" className="font-black text-sm sm:text-lg" fill="currentColor">AU</text>
           </svg>
         </div>
       </motion.nav>
@@ -54,66 +54,46 @@ export default function Home() {
         </div>
 
         <motion.div 
-          className="relative z-20 text-center text-white px-6 max-w-6xl"
+          className="relative z-20 text-center text-white px-4 sm:px-6 max-w-6xl"
           initial={{ y: 60, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 1, duration: 1.2 }}
         >
           <motion.h1 
-            className="text-5xl sm:text-7xl lg:text-9xl font-black mb-8 leading-tight tracking-tight font-display"
+            className="text-4xl sm:text-6xl lg:text-8xl xl:text-9xl font-black mb-6 leading-tight tracking-tight font-display"
             initial={{ y: 40, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 1.3, duration: 1 }}
           >
-            Smart. Stylish.{' '}
-            <span className="text-gold block">Built for EV Life.</span>
+            <span className="block text-white mb-1">The Future of</span>
+            <span className="text-gold block">Premium Charging</span>
           </motion.h1>
           
           <motion.p 
-            className="text-xl sm:text-2xl lg:text-3xl font-light mb-8 max-w-4xl mx-auto leading-relaxed text-white/90"
+            className="text-base sm:text-lg lg:text-xl xl:text-2xl font-light mb-12 max-w-3xl mx-auto leading-relaxed text-white/90 px-2"
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 1.6, duration: 1 }}
           >
-            Alchemy United delivers high-performance EV charging that doubles as modern art — a premium network for discerning drivers.
+            Join Alchemy United — an exclusive network of luxury EV charging stations built for elegance, speed, and next-gen infrastructure.
           </motion.p>
           
           <motion.div 
-            className="flex flex-wrap justify-center gap-8 mb-12 text-white/80 text-lg"
+            className="flex flex-col gap-4 justify-center items-center max-w-md mx-auto"
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 1.8, duration: 1 }}
           >
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">⚡</span>
-              <span className="font-medium">Fast Charging</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">🖤</span>
-              <span className="font-medium">Matte Black Finish</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">🏡</span>
-              <span className="font-medium">Network Access</span>
-            </div>
-          </motion.div>
-          
-          <motion.div 
-            className="flex flex-col sm:flex-row gap-6 justify-center items-center"
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 2.1, duration: 1 }}
-          >
             <Button 
               size="lg" 
-              className="bg-gold hover:bg-gold/90 text-black font-bold py-8 px-16 rounded-full text-xl sm:text-2xl transition-all duration-300 transform hover:scale-105 font-display"
+              className="bg-gold hover:bg-gold/90 text-black font-bold py-4 px-12 sm:py-6 sm:px-16 rounded-full text-lg sm:text-xl transition-all duration-300 transform hover:scale-105 font-display w-full sm:w-auto"
             >
-              Join the Network
+              Request Early Access
             </Button>
             <Button 
               size="lg"
               variant="outline"
-              className="border-2 border-white/30 hover:border-gold text-white hover:text-gold hover:bg-gold/10 font-bold py-8 px-16 rounded-full text-xl sm:text-2xl transition-all duration-300 bg-transparent font-display"
+              className="border-2 border-white/30 hover:border-gold text-white hover:text-gold hover:bg-gold/10 font-bold py-4 px-12 sm:py-6 sm:px-16 rounded-full text-lg sm:text-xl transition-all duration-300 bg-transparent font-display w-full sm:w-auto"
             >
               Become a Host
             </Button>

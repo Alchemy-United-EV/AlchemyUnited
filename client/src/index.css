@@ -26,11 +26,11 @@
   --destructive-foreground: hsl(60, 9.1%, 97.8%);
   --ring: hsl(20, 14.3%, 4.1%);
   --radius: 0.5rem;
-  --gradient-primary: linear-gradient(135deg, #C9A961 0%, #E6D080 100%);
-  --gold: #C9A961;
+  --gradient-primary: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%);
+  --gold: #D4AF37;
   
-  /* Gold gradient for luxury branding */
-  --gradient-gold: linear-gradient(135deg, #C9A961 0%, #E6D080 50%, #F4E6A1 100%);
+  /* Gold gradient for luxury branding - matches logo */
+  --gradient-gold: linear-gradient(135deg, #B8860B 0%, #D4AF37 50%, #FFD700 100%);
 }
 
 .dark {
@@ -113,7 +113,7 @@
   }
   
   .hover\:bg-gold\/90:hover {
-    background-color: rgba(201, 169, 97, 0.9);
+    background-color: rgba(212, 175, 55, 0.9);
   }
   
   .hover\:text-gold:hover {

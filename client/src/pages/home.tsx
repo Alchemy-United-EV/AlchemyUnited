@@ -9,18 +9,25 @@ export default function Home() {
   const { scrollY } = useScroll();
 
   // Transform values for smooth animations
-  const landingOpacity = useTransform(scrollY, [0, 300], [1, 0]);
-  const landingScale = useTransform(scrollY, [0, 300], [1, 0.95]);
-  const heroY = useTransform(scrollY, [200, 600], [150, 0]);
-  const heroOpacity = useTransform(scrollY, [200, 600], [0, 1]);
+  const landingOpacity = useTransform(scrollY, [0, 400], [1, 0]);
+  const landingScale = useTransform(scrollY, [0, 400], [1, 0.6]);
+  const landingY = useTransform(scrollY, [200, 500], [0, -200]);
+  
+  // Background logo transforms (appears above ALCHEMY UNITED)
+  const bgLogoOpacity = useTransform(scrollY, [300, 500], [0, 0.3]);
+  const bgLogoY = useTransform(scrollY, [300, 500], [100, -50]);
+  const bgLogoScale = useTransform(scrollY, [300, 500], [0.8, 0.4]);
+  
+  const heroY = useTransform(scrollY, [400, 700], [150, 0]);
+  const heroOpacity = useTransform(scrollY, [400, 700], [0, 1]);
 
   useEffect(() => {
     const handleScroll = () => {
       const sections = document.querySelectorAll('section[id]');
       let current = '';
       
-      // Check if we're still on the landing (first 300px)
-      if (window.pageYOffset < 300) {
+      // Check if we're still on the landing (first 400px)
+      if (window.pageYOffset < 400) {
         current = 'landing';
         setShowLanding(true);
       } else {
@@ -68,6 +75,7 @@ export default function Home() {
         style={{ 
           opacity: landingOpacity,
           scale: landingScale,
+          y: landingY,
           pointerEvents: showLanding ? 'auto' : 'none'
         }}
       >
@@ -110,27 +118,34 @@ export default function Home() {
 
       {/* Spacer for scroll effect */}
       <div className="h-screen bg-black"></div>
+      
+      {/* Background Logo (appears above ALCHEMY UNITED) */}
+      <motion.div 
+        className="fixed inset-0 flex items-center justify-center z-30 pointer-events-none"
+        style={{ 
+          opacity: bgLogoOpacity,
+          y: bgLogoY,
+          scale: bgLogoScale
+        }}
+      >
+        <img 
+          src={auWingsLogo} 
+          alt="Alchemy United Background Logo" 
+          className="h-32 sm:h-40 lg:h-48 xl:h-56 opacity-40"
+        />
+      </motion.div>
 
       {/* Hero Section */}
       <motion.section 
         id="hero" 
-        className="relative flex items-center justify-center min-h-screen bg-gradient-to-b from-black via-gray-900 to-white overflow-hidden"
+        className="relative flex items-center justify-center min-h-screen bg-black overflow-hidden"
         style={{ 
           y: heroY,
           opacity: heroOpacity
         }}
       >
-        <div className="absolute inset-0 bg-black/30 z-10"></div>
-        <div className="absolute inset-0 flex items-center justify-center opacity-20">
-          <img 
-            src="/assets/hero-ev-charger.png" 
-            alt="Alchemy EV Charging Station" 
-            className="w-full h-full object-cover"
-          />
-        </div>
-
         <motion.div 
-          className="relative z-20 text-center text-white px-6 sm:px-8 lg:px-12 max-w-8xl mx-auto py-24"
+          className="relative z-20 text-center text-white px-6 sm:px-8 lg:px-12 max-w-8xl mx-auto py-32"
           initial={{ y: 80, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -142,9 +157,9 @@ export default function Home() {
             transition={{ delay: 0.3, duration: 1 }}
             viewport={{ once: true }}
           >
-            <h1 className="text-6xl sm:text-8xl lg:text-9xl xl:text-[12rem] font-black mb-8 leading-[0.85] tracking-tighter">
+            <h1 className="text-6xl sm:text-8xl lg:text-9xl xl:text-[10rem] font-black mb-8 leading-[0.8] tracking-tighter">
               <motion.span 
-                className="block font-display text-white mb-4"
+                className="block font-display text-gray-300 mb-4"
                 initial={{ x: -30, opacity: 0 }}
                 whileInView={{ x: 0, opacity: 1 }}
                 transition={{ delay: 0.5, duration: 0.8 }}
@@ -165,7 +180,7 @@ export default function Home() {
           </motion.div>
           
           <motion.p 
-            className="text-xl sm:text-3xl lg:text-4xl xl:text-5xl font-light mb-20 max-w-6xl mx-auto leading-relaxed text-white/90 tracking-wide"
+            className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-light mb-20 max-w-6xl mx-auto leading-relaxed text-white/80 tracking-wide"
             initial={{ y: 40, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.9, duration: 1 }}
@@ -190,7 +205,7 @@ export default function Home() {
             <Button 
               variant="outline" 
               size="lg"
-              className="border-3 border-white/80 text-white hover:bg-white hover:text-black font-bold py-8 px-20 rounded-full text-2xl transition-all duration-500 font-display tracking-wide backdrop-blur-sm"
+              className="border-3 border-white/60 text-white hover:bg-white hover:text-black font-bold py-8 px-20 rounded-full text-2xl transition-all duration-500 font-display tracking-wide backdrop-blur-sm"
             >
               Discover More
             </Button>

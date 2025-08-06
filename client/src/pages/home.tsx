@@ -30,7 +30,7 @@ export default function Home() {
       >
         <div className="flex items-center drop-shadow-2xl">
           <img 
-            src="/attached_assets/AE141A66-A440-499B-8889-41BABE3F729E_1754506144500.png" 
+            src="/assets/au-logo.png" 
             alt="Alchemy United Logo"
             className="h-8 w-auto sm:h-12 filter brightness-125"
           />
@@ -169,7 +169,7 @@ export default function Home() {
             >
               <div className="flex items-center justify-center lg:justify-start mb-6">
                 <img 
-                  src="/attached_assets/AE141A66-A440-499B-8889-41BABE3F729E_1754506144500.png" 
+                  src="/assets/au-logo.png" 
                   alt="Alchemy United Logo"
                   className="h-16 w-auto sm:h-20"
                 />
@@ -243,7 +243,7 @@ export default function Home() {
         >
           <div className="flex items-center justify-center mb-8">
             <img 
-              src="/attached_assets/AE141A66-A440-499B-8889-41BABE3F729E_1754506144500.png" 
+              src="/assets/au-logo.png" 
               alt="Alchemy United Logo"
               className="h-20 w-auto sm:h-24 filter brightness-125"
             />
@@ -516,7 +516,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto text-center">
           <div className="flex items-center justify-center mb-8">
             <img 
-              src="/attached_assets/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.png" 
+              src="/assets/au-logo.png" 
               alt="Alchemy United Logo"
               className="h-12 w-auto sm:h-16 filter brightness-125"
             />

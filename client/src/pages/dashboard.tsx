@@ -61,6 +61,35 @@ export default function Dashboard() {
     },
   });
 
+  const sendVerification = async (applicationId: string) => {
+    try {
+      const response = await fetch(`/api/send-verification/${applicationId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        toast({ 
+          title: "Verification Sent", 
+          description: "Verification email has been sent to the applicant." 
+        });
+        
+        // For development - show the verification URL in console
+        console.log('Verification URL:', data.verificationUrl);
+      } else {
+        throw new Error('Failed to send verification');
+      }
+    } catch (error) {
+      console.error('Error sending verification:', error);
+      toast({ 
+        title: "Error", 
+        description: "Failed to send verification email.", 
+        variant: "destructive" 
+      });
+    }
+  };
+
   // Filter functions
   const filteredEarlyAccess = earlyAccessApps.filter(app => {
     const matchesSearch = `${app.firstName} ${app.lastName} ${app.email}`.toLowerCase().includes(searchTerm.toLowerCase());
@@ -256,21 +285,33 @@ export default function Dashboard() {
                           </div>
                           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
                             <StatusBadge status={app.status || 'pending'} />
-                            <Select
-                              value={app.status || 'pending'}
-                              onValueChange={(status) => 
-                                updateEarlyAccessStatus.mutate({ id: app.id, status })
-                              }
-                            >
-                              <SelectTrigger className="w-full sm:w-28 h-8 text-xs">
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="pending">Pending</SelectItem>
-                                <SelectItem value="approved">Approved</SelectItem>
-                                <SelectItem value="rejected">Rejected</SelectItem>
-                              </SelectContent>
-                            </Select>
+                            <div className="flex gap-2">
+                              <Select
+                                value={app.status || 'pending'}
+                                onValueChange={(status) => 
+                                  updateEarlyAccessStatus.mutate({ id: app.id, status })
+                                }
+                              >
+                                <SelectTrigger className="w-full sm:w-28 h-8 text-xs">
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="pending">Pending</SelectItem>
+                                  <SelectItem value="approved">Approved</SelectItem>
+                                  <SelectItem value="rejected">Rejected</SelectItem>
+                                </SelectContent>
+                              </Select>
+                              
+                              {app.status === 'approved' && (
+                                <Button
+                                  size="sm"
+                                  className="h-8 px-2 text-xs bg-gold hover:bg-gold/90 text-black"
+                                  onClick={() => sendVerification(app.id)}
+                                >
+                                  Send Invite
+                                </Button>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </CardHeader>

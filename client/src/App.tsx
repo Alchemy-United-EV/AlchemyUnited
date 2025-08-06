@@ -8,6 +8,7 @@ import Home from "@/pages/home";
 import EarlyAccess from "@/pages/early-access";
 import HostApplication from "@/pages/host-application";
 import Dashboard from "@/pages/dashboard";
+import Verify from "@/pages/verify";
 
 function Router() {
   return (
@@ -16,6 +17,7 @@ function Router() {
       <Route path="/early-access" component={EarlyAccess} />
       <Route path="/host" component={HostApplication} />
       <Route path="/dashboard" component={Dashboard} />
+      <Route path="/verify" component={Verify} />
       <Route component={NotFound} />
     </Switch>
   );

@@ -80,3 +80,40 @@ export const insertHostApplicationSchema = createInsertSchema(hostApplications).
 
 export type InsertEarlyAccessApplicationForm = z.infer<typeof insertEarlyAccessApplicationSchema>;
 export type InsertHostApplicationForm = z.infer<typeof insertHostApplicationSchema>;
+
+// Verification and Invitations Table
+export const verifications = pgTable("verifications", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  applicationId: varchar("application_id").notNull().references(() => earlyAccessApplications.id),
+  verificationToken: varchar("verification_token").notNull().unique(),
+  invitationCode: varchar("invitation_code").unique(),
+  status: varchar("status").default("pending"), // pending, verified, expired
+  emailVerified: timestamp("email_verified"),
+  expiresAt: timestamp("expires_at").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export type Verification = typeof verifications.$inferSelect;
+export type InsertVerification = typeof verifications.$inferInsert;
+
+// Member profiles for verified users
+export const members = pgTable("members", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  applicationId: varchar("application_id").notNull().references(() => earlyAccessApplications.id),
+  verificationId: varchar("verification_id").notNull().references(() => verifications.id),
+  membershipNumber: varchar("membership_number").notNull().unique(),
+  firstName: varchar("first_name").notNull(),
+  lastName: varchar("last_name").notNull(),
+  email: varchar("email").notNull().unique(),
+  phone: varchar("phone").notNull(),
+  vehicleType: varchar("vehicle_type").notNull(),
+  membershipStatus: varchar("membership_status").default("active"), // active, suspended, cancelled
+  joinedAt: timestamp("joined_at").defaultNow(),
+  lastActiveAt: timestamp("last_active_at").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export type Member = typeof members.$inferSelect;
+export type InsertMember = typeof members.$inferInsert;

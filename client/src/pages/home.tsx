@@ -2,138 +2,145 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 
-// Problem Solution Slideshow Component
+// Flip Card Component
+function FlipCard({ problem, solution, index }) {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsFlipped(true);
+    }, 1000 + index * 300); // Stagger the flips
+    
+    const flipInterval = setInterval(() => {
+      setIsFlipped(prev => !prev);
+    }, 4000); // Flip every 4 seconds
+    
+    return () => {
+      clearTimeout(timer);
+      clearInterval(flipInterval);
+    };
+  }, [index]);
+
+  return (
+    <motion.div 
+      className="relative w-full h-80 cursor-pointer perspective-1000"
+      onClick={() => setIsFlipped(!isFlipped)}
+      initial={{ y: 50, opacity: 0 }}
+      whileInView={{ y: 0, opacity: 1 }}
+      transition={{ delay: index * 0.1, duration: 0.6 }}
+      viewport={{ once: true }}
+    >
+      <motion.div
+        className="relative w-full h-full preserve-3d transition-transform duration-700 ease-in-out"
+        style={{
+          transformStyle: 'preserve-3d',
+          transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
+        }}
+      >
+        {/* Problem Side (Front) */}
+        <div className="absolute inset-0 w-full h-full backface-hidden bg-gradient-to-br from-red-50 to-red-100 rounded-2xl p-6 shadow-lg border border-red-200">
+          <div className="h-full flex flex-col">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 bg-red-200 rounded-full flex items-center justify-center">
+                <span className="text-red-600 text-xl">{problem.icon}</span>
+              </div>
+              <div className="w-8 h-1 bg-red-300 rounded"></div>
+            </div>
+            <h3 className="text-2xl font-bold text-red-800 mb-4 font-display leading-tight">
+              {problem.title}
+            </h3>
+            <p className="text-red-700 leading-relaxed text-lg flex-grow">
+              {problem.desc}
+            </p>
+            <div className="mt-4 text-sm text-red-500 font-medium">
+              Click to see the Alchemy way →
+            </div>
+          </div>
+        </div>
+
+        {/* Solution Side (Back) */}
+        <div 
+          className="absolute inset-0 w-full h-full backface-hidden bg-gradient-to-br from-gold/10 to-gold/20 rounded-2xl p-6 shadow-lg border border-gold/30"
+          style={{ transform: 'rotateY(180deg)' }}
+        >
+          <div className="h-full flex flex-col">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 bg-gold/30 rounded-full flex items-center justify-center">
+                <span className="text-gold text-xl">{solution.icon}</span>
+              </div>
+              <div className="w-8 h-1 bg-gold rounded"></div>
+            </div>
+            <h3 className="text-2xl font-bold text-gold mb-4 font-display leading-tight">
+              {solution.title}
+            </h3>
+            <p className="text-gray-700 leading-relaxed text-lg flex-grow">
+              {solution.desc}
+            </p>
+            <div className="mt-4 flex items-center gap-2">
+              <img 
+                src="/assets/au-logo.png" 
+                alt="AU"
+                className="h-6 w-auto"
+              />
+              <span className="text-sm text-gold font-medium">The Alchemy Way</span>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+// Problem Solution Flashcards Component
 function ProblemSolutionSlideshow() {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  
-  const slides = [
+  const cardPairs = [
     {
-      type: 'problem',
-      title: 'Current Charging is Broken',
-      titleColor: 'text-red-600',
-      items: [
-        { icon: '⏱️', color: 'bg-red-100 text-red-600', title: 'Long Lines', desc: 'Wait hours for a single charging port with no reservation system' },
-        { icon: '🔧', color: 'bg-red-100 text-red-600', title: 'Outdated Hardware', desc: 'Broken screens, slow charging speeds, unreliable connections' },
-        { icon: '❌', color: 'bg-red-100 text-red-600', title: 'Zero Support', desc: 'No help when things go wrong, leaving you stranded' },
-        { icon: '👁️', color: 'bg-red-100 text-red-600', title: 'Ugly Designs', desc: 'Eyesore stations that ruin the aesthetic of any location' }
-      ]
+      problem: { icon: '⏱️', title: 'Long Lines', desc: 'Wait hours for a single charging port with no reservation system' },
+      solution: { icon: '⚡', title: 'Fast, Private Stations', desc: 'Reserved charging with ultra-fast speeds and premium locations' }
     },
     {
-      type: 'solution',
-      title: 'Alchemy Changes Everything',
-      titleColor: 'text-gold',
-      showLogo: true,
-      items: [
-        { icon: '⚡', color: 'bg-gold/20 text-gold', title: 'Fast, Private Stations', desc: 'Reserved charging with ultra-fast speeds and premium locations' },
-        { icon: '🎨', color: 'bg-gold/20 text-gold', title: 'Beautiful Black & Gold Design', desc: 'Stunning matte black stations with gold accents that enhance any space' },
-        { icon: '📊', color: 'bg-gold/20 text-gold', title: 'Smart Energy Tracking', desc: 'Real-time usage analytics, cost optimization, and carbon tracking' },
-        { icon: '🤝', color: 'bg-gold/20 text-gold', title: 'Live Concierge Support', desc: '24/7 premium support team ready to help via app or phone' }
-      ]
+      problem: { icon: '🔧', title: 'Outdated Hardware', desc: 'Broken screens, slow charging speeds, unreliable connections' },
+      solution: { icon: '🎨', title: 'Beautiful Black & Gold Design', desc: 'Stunning matte black stations with gold accents that enhance any space' }
+    },
+    {
+      problem: { icon: '❌', title: 'Zero Support', desc: 'No help when things go wrong, leaving you stranded' },
+      solution: { icon: '🤝', title: 'Live Concierge Support', desc: '24/7 premium support team ready to help via app or phone' }
+    },
+    {
+      problem: { icon: '👁️', title: 'Ugly Designs', desc: 'Eyesore stations that ruin the aesthetic of any location' },
+      solution: { icon: '📊', title: 'Smart Energy Tracking', desc: 'Real-time usage analytics, cost optimization, and carbon tracking' }
     }
   ];
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 5000); // Change slide every 5 seconds
-    
-    return () => clearInterval(timer);
-  }, [slides.length]);
-
   return (
-    <div className="relative min-h-[80vh] flex items-center justify-center">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentSlide}
-          initial={{ opacity: 0, x: 100 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -100 }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-          className="text-center max-w-4xl mx-auto"
-        >
-          {/* Logo for solution slide */}
-          {slides[currentSlide].showLogo && (
-            <motion.div 
-              className="flex items-center justify-center mb-6"
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-            >
-              <img 
-                src="/assets/au-logo.png" 
-                alt="Alchemy United Logo"
-                className="h-16 w-auto sm:h-20"
-              />
-            </motion.div>
-          )}
-          
-          {/* Title */}
-          <motion.h2 
-            className={`text-4xl sm:text-5xl lg:text-6xl font-black mb-16 font-display ${slides[currentSlide].titleColor}`}
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-          >
-            {slides[currentSlide].title.includes('Broken') ? (
-              <>Current Charging is <span className="text-red-600">Broken</span></>
-            ) : (
-              <><span className="text-gold">Alchemy</span> Changes Everything</>
-            )}
-          </motion.h2>
-          
-          {/* Items Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12">
-            {slides[currentSlide].items.map((item, index) => (
-              <motion.div
-                key={index}
-                className="text-left"
-                initial={{ y: 50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.4 + index * 0.1, duration: 0.6 }}
-              >
-                <div className="flex items-start gap-4">
-                  <div className={`w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0 ${item.color}`}>
-                    <span className="text-2xl">{item.icon}</span>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold mb-3 text-gray-800 font-display">{item.title}</h3>
-                    <p className="text-gray-600 text-lg leading-relaxed">{item.desc}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </AnimatePresence>
+    <div className="min-h-[80vh] flex flex-col items-center justify-center">
+      {/* Header */}
+      <motion.div 
+        className="text-center mb-12"
+        initial={{ y: -30, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-4 text-gray-800 font-display">
+          Current Charging vs <span className="text-gold">Alchemy</span>
+        </h2>
+        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          See how we transform every pain point into a premium experience
+        </p>
+      </motion.div>
       
-      {/* Slide Indicators */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-3">
-        {slides.map((_, index) => (
-          <button
+      {/* Flashcards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        {cardPairs.map((pair, index) => (
+          <FlipCard
             key={index}
-            onClick={() => setCurrentSlide(index)}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              currentSlide === index 
-                ? 'bg-gold scale-125' 
-                : 'bg-gray-300 hover:bg-gray-400'
-            }`}
+            problem={pair.problem}
+            solution={pair.solution}
+            index={index}
           />
         ))}
       </div>
-      
-      {/* Navigation Arrows */}
-      <button
-        onClick={() => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)}
-        className="absolute left-8 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white shadow-lg rounded-full flex items-center justify-center text-gray-600 hover:text-gold transition-colors duration-300 hover:shadow-xl"
-      >
-        <span className="text-2xl">‹</span>
-      </button>
-      <button
-        onClick={() => setCurrentSlide((prev) => (prev + 1) % slides.length)}
-        className="absolute right-8 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white shadow-lg rounded-full flex items-center justify-center text-gray-600 hover:text-gold transition-colors duration-300 hover:shadow-xl"
-      >
-        <span className="text-2xl">›</span>
-      </button>
     </div>
   );
 }

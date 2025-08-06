@@ -71,7 +71,12 @@ export default function Home() {
         </div>
         <div className="relative z-10 text-center text-black px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
           <div className="mb-8">
-            <h2 className="text-gold text-2xl font-bold mb-8">ALCHEMY VOLTSTREAM</h2>
+            <img 
+              src="/images/logo.png" 
+              alt="Alchemy Logo" 
+              className="h-20 sm:h-24 lg:h-28 mx-auto mb-4"
+            />
+            <h2 className="text-gold text-xl font-bold">VOLTSTREAM</h2>
           </div>
           <div className="animate-float">
             <h1 className="text-4xl sm:text-6xl lg:text-8xl font-black mb-6 leading-tight">

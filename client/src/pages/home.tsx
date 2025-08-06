@@ -3,17 +3,17 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 
 // Flip Card Component
-function FlipCard({ problem, solution, index }) {
+function FlipCard({ problem, solution, index }: { problem: any, solution: any, index: number }) {
   const [isFlipped, setIsFlipped] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsFlipped(true);
-    }, 1000 + index * 300); // Stagger the flips
+    }, 2000 + index * 500); // Stagger the flips, slower
     
     const flipInterval = setInterval(() => {
       setIsFlipped(prev => !prev);
-    }, 4000); // Flip every 4 seconds
+    }, 8000); // Flip every 8 seconds (much slower)
     
     return () => {
       clearTimeout(timer);
@@ -23,66 +23,92 @@ function FlipCard({ problem, solution, index }) {
 
   return (
     <motion.div 
-      className="relative w-full h-80 cursor-pointer perspective-1000"
-      onClick={() => setIsFlipped(!isFlipped)}
+      className="relative w-full h-96 perspective-1000 group"
       initial={{ y: 50, opacity: 0 }}
       whileInView={{ y: 0, opacity: 1 }}
       transition={{ delay: index * 0.1, duration: 0.6 }}
       viewport={{ once: true }}
     >
+      {/* Flip Button */}
+      <button
+        onClick={() => setIsFlipped(!isFlipped)}
+        className="absolute top-4 right-4 z-10 w-12 h-12 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center text-gray-600 hover:text-gold hover:bg-white transition-all duration-300 shadow-lg animate-pulse-gold hover:animate-none group-hover:scale-110"
+        title="Click to flip card"
+      >
+        <span className="text-xl font-bold">↻</span>
+      </button>
+
       <motion.div
-        className="relative w-full h-full preserve-3d transition-transform duration-700 ease-in-out"
+        className="relative w-full h-full preserve-3d transition-transform duration-1000 ease-in-out"
         style={{
           transformStyle: 'preserve-3d',
           transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
         }}
       >
         {/* Problem Side (Front) */}
-        <div className="absolute inset-0 w-full h-full backface-hidden bg-gradient-to-br from-red-50 to-red-100 rounded-2xl p-6 shadow-lg border border-red-200">
-          <div className="h-full flex flex-col">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-red-200 rounded-full flex items-center justify-center">
-                <span className="text-red-600 text-xl">{problem.icon}</span>
+        <div className="absolute inset-0 w-full h-full backface-hidden bg-gradient-to-br from-red-50 to-red-100 rounded-2xl p-8 shadow-xl border border-red-200 hover:shadow-2xl transition-shadow duration-300">
+          <div className="h-full flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-16 h-16 bg-red-200 rounded-full flex items-center justify-center shadow-md">
+                  <span className="text-red-600 text-2xl">{problem.icon}</span>
+                </div>
+                <div className="flex-1">
+                  <div className="w-12 h-2 bg-red-300 rounded-full"></div>
+                </div>
               </div>
-              <div className="w-8 h-1 bg-red-300 rounded"></div>
+              <h3 className="text-2xl font-bold text-red-800 mb-6 font-display leading-tight">
+                {problem.title}
+              </h3>
+              <p className="text-red-700 leading-relaxed text-lg">
+                {problem.desc}
+              </p>
             </div>
-            <h3 className="text-2xl font-bold text-red-800 mb-4 font-display leading-tight">
-              {problem.title}
-            </h3>
-            <p className="text-red-700 leading-relaxed text-lg flex-grow">
-              {problem.desc}
-            </p>
-            <div className="mt-4 text-sm text-red-500 font-medium">
-              Click to see the Alchemy way →
+            <div className="flex items-center justify-between mt-6">
+              <div className="text-sm text-red-500 font-medium">
+                Current EV charging experience
+              </div>
+              <div className="text-xs text-red-400">
+                Tap ↻ to see our solution
+              </div>
             </div>
           </div>
         </div>
 
         {/* Solution Side (Back) */}
         <div 
-          className="absolute inset-0 w-full h-full backface-hidden bg-gradient-to-br from-gold/10 to-gold/20 rounded-2xl p-6 shadow-lg border border-gold/30"
+          className="absolute inset-0 w-full h-full backface-hidden bg-gradient-to-br from-gold/10 to-gold/20 rounded-2xl p-8 shadow-xl border border-gold/40 hover:shadow-2xl transition-shadow duration-300"
           style={{ transform: 'rotateY(180deg)' }}
         >
-          <div className="h-full flex flex-col">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-gold/30 rounded-full flex items-center justify-center">
-                <span className="text-gold text-xl">{solution.icon}</span>
+          <div className="h-full flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-16 h-16 bg-gold/30 rounded-full flex items-center justify-center shadow-md">
+                  <span className="text-gold text-2xl">{solution.icon}</span>
+                </div>
+                <div className="flex-1">
+                  <div className="w-12 h-2 bg-gold rounded-full"></div>
+                </div>
               </div>
-              <div className="w-8 h-1 bg-gold rounded"></div>
+              <h3 className="text-2xl font-bold text-gold mb-6 font-display leading-tight">
+                {solution.title}
+              </h3>
+              <p className="text-gray-700 leading-relaxed text-lg">
+                {solution.desc}
+              </p>
             </div>
-            <h3 className="text-2xl font-bold text-gold mb-4 font-display leading-tight">
-              {solution.title}
-            </h3>
-            <p className="text-gray-700 leading-relaxed text-lg flex-grow">
-              {solution.desc}
-            </p>
-            <div className="mt-4 flex items-center gap-2">
-              <img 
-                src="/assets/au-logo.png" 
-                alt="AU"
-                className="h-6 w-auto"
-              />
-              <span className="text-sm text-gold font-medium">The Alchemy Way</span>
+            <div className="flex items-center justify-between mt-6">
+              <div className="flex items-center gap-2">
+                <img 
+                  src="/assets/au-logo.png" 
+                  alt="AU"
+                  className="h-6 w-auto"
+                />
+                <span className="text-sm text-gold font-medium">The Alchemy Way</span>
+              </div>
+              <div className="text-xs text-gray-500">
+                Tap ↻ to see the problem
+              </div>
             </div>
           </div>
         </div>
@@ -131,7 +157,7 @@ function ProblemSolutionSlideshow() {
       </motion.div>
       
       {/* Flashcards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-7xl mx-auto">
         {cardPairs.map((pair, index) => (
           <FlipCard
             key={index}

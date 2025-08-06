@@ -124,7 +124,7 @@ export default function Dashboard() {
       <div className="max-w-7xl mx-auto p-6">
         {/* Stats Overview */}
         <motion.div 
-          className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -188,7 +188,7 @@ export default function Dashboard() {
 
         {/* Search and Filter Controls */}
         <motion.div 
-          className="flex flex-col sm:flex-row gap-4 mb-6"
+          className="flex flex-col sm:flex-row gap-3 mb-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
@@ -199,12 +199,12 @@ export default function Dashboard() {
               placeholder="Search applications..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
+              className="pl-10 h-10"
             />
           </div>
           
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-full sm:w-48">
+            <SelectTrigger className="w-full sm:w-40 h-10">
               <Filter className="w-4 h-4 mr-2" />
               <SelectValue placeholder="Filter by status" />
             </SelectTrigger>
@@ -225,12 +225,12 @@ export default function Dashboard() {
           transition={{ delay: 0.4, duration: 0.6 }}
         >
           <Tabs defaultValue="early-access" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="early-access">
-                Early Access Applications ({filteredEarlyAccess.length})
+            <TabsList className="grid w-full grid-cols-2 h-11">
+              <TabsTrigger value="early-access" className="text-sm px-2">
+                Early Access ({filteredEarlyAccess.length})
               </TabsTrigger>
-              <TabsTrigger value="host-applications">
-                Host Applications ({filteredHost.length})
+              <TabsTrigger value="host-applications" className="text-sm px-2">
+                Host Partners ({filteredHost.length})
               </TabsTrigger>
             </TabsList>
 
@@ -244,17 +244,17 @@ export default function Dashboard() {
                 <div className="grid gap-4">
                   {filteredEarlyAccess.map((app) => (
                     <Card key={app.id} className="hover:shadow-md transition-shadow">
-                      <CardHeader>
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <CardTitle className="text-lg">
+                      <CardHeader className="pb-3">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                          <div className="min-w-0 flex-1">
+                            <CardTitle className="text-lg truncate">
                               {app.firstName} {app.lastName}
                             </CardTitle>
-                            <CardDescription>
-                              {app.email} • {app.phone}
+                            <CardDescription className="text-sm">
+                              {app.email}
                             </CardDescription>
                           </div>
-                          <div className="flex items-center space-x-2">
+                          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
                             <StatusBadge status={app.status || 'pending'} />
                             <Select
                               value={app.status || 'pending'}
@@ -262,7 +262,7 @@ export default function Dashboard() {
                                 updateEarlyAccessStatus.mutate({ id: app.id, status })
                               }
                             >
-                              <SelectTrigger className="w-32">
+                              <SelectTrigger className="w-full sm:w-28 h-8 text-xs">
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent>
@@ -274,35 +274,36 @@ export default function Dashboard() {
                           </div>
                         </div>
                       </CardHeader>
-                      <CardContent>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                      <CardContent className="pt-0">
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 text-sm mb-3">
                           <div>
-                            <p className="font-medium text-gray-500">Vehicle</p>
-                            <p>{app.vehicleType}</p>
+                            <p className="font-medium text-gray-500 text-xs">Vehicle</p>
+                            <p className="truncate">{app.vehicleType}</p>
                           </div>
                           <div>
-                            <p className="font-medium text-gray-500">Charging Frequency</p>
-                            <p>{app.chargingFrequency}</p>
+                            <p className="font-medium text-gray-500 text-xs">Frequency</p>
+                            <p className="truncate">{app.chargingFrequency}</p>
                           </div>
                           <div>
-                            <p className="font-medium text-gray-500">Location</p>
-                            <p>{app.location}</p>
+                            <p className="font-medium text-gray-500 text-xs">Location</p>
+                            <p className="truncate">{app.location}</p>
                           </div>
                           <div>
-                            <p className="font-medium text-gray-500">Applied</p>
-                            <p>{app.createdAt ? new Date(app.createdAt).toLocaleDateString() : 'N/A'}</p>
+                            <p className="font-medium text-gray-500 text-xs">Applied</p>
+                            <p className="text-xs">{app.createdAt ? new Date(app.createdAt).toLocaleDateString() : 'N/A'}</p>
                           </div>
                         </div>
                         {app.interests && (
-                          <div className="mt-4">
-                            <p className="font-medium text-gray-500 text-sm">Interests</p>
-                            <p className="text-sm text-gray-700 mt-1">{app.interests}</p>
+                          <div className="border-t pt-3">
+                            <p className="font-medium text-gray-500 text-xs mb-1">Interests</p>
+                            <p className="text-xs text-gray-700 line-clamp-2">{app.interests}</p>
                           </div>
                         )}
                         {app.referralCode && (
                           <div className="mt-2">
-                            <p className="font-medium text-gray-500 text-sm">Referral Code</p>
-                            <p className="text-sm text-gray-700">{app.referralCode}</p>
+                            <span className="inline-block bg-gold/10 text-gold px-2 py-1 rounded text-xs font-medium">
+                              Referral: {app.referralCode}
+                            </span>
                           </div>
                         )}
                       </CardContent>
@@ -327,17 +328,17 @@ export default function Dashboard() {
                 <div className="grid gap-4">
                   {filteredHost.map((app) => (
                     <Card key={app.id} className="hover:shadow-md transition-shadow">
-                      <CardHeader>
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <CardTitle className="text-lg">
+                      <CardHeader className="pb-3">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                          <div className="min-w-0 flex-1">
+                            <CardTitle className="text-lg truncate">
                               {app.businessName}
                             </CardTitle>
-                            <CardDescription>
+                            <CardDescription className="text-sm">
                               {app.contactFirstName} {app.contactLastName} • {app.email}
                             </CardDescription>
                           </div>
-                          <div className="flex items-center space-x-2">
+                          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
                             <StatusBadge status={app.status || 'pending'} />
                             <Select
                               value={app.status || 'pending'}
@@ -345,7 +346,7 @@ export default function Dashboard() {
                                 updateHostStatus.mutate({ id: app.id, status })
                               }
                             >
-                              <SelectTrigger className="w-32">
+                              <SelectTrigger className="w-full sm:w-28 h-8 text-xs">
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent>
@@ -358,38 +359,39 @@ export default function Dashboard() {
                           </div>
                         </div>
                       </CardHeader>
-                      <CardContent>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-4">
+                      <CardContent className="pt-0">
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 text-sm mb-3">
                           <div>
-                            <p className="font-medium text-gray-500">Property Type</p>
-                            <p>{app.propertyType}</p>
+                            <p className="font-medium text-gray-500 text-xs">Property</p>
+                            <p className="truncate">{app.propertyType}</p>
                           </div>
                           <div>
-                            <p className="font-medium text-gray-500">Parking Spaces</p>
-                            <p>{app.parkingSpaces}</p>
+                            <p className="font-medium text-gray-500 text-xs">Parking</p>
+                            <p className="truncate">{app.parkingSpaces}</p>
                           </div>
                           <div>
-                            <p className="font-medium text-gray-500">Expected Traffic</p>
-                            <p>{app.expectedTraffic}</p>
+                            <p className="font-medium text-gray-500 text-xs">Traffic</p>
+                            <p className="truncate">{app.expectedTraffic}</p>
                           </div>
                           <div>
-                            <p className="font-medium text-gray-500">Timeline</p>
-                            <p>{app.timeline}</p>
+                            <p className="font-medium text-gray-500 text-xs">Timeline</p>
+                            <p className="truncate">{app.timeline}</p>
                           </div>
                         </div>
-                        <div className="border-t pt-4">
-                          <p className="font-medium text-gray-500 text-sm">Address</p>
-                          <p className="text-sm text-gray-700">{app.propertyAddress}</p>
+                        <div className="border-t pt-3 mb-3">
+                          <p className="font-medium text-gray-500 text-xs mb-1">Address</p>
+                          <p className="text-xs text-gray-700 line-clamp-1">{app.propertyAddress}</p>
                         </div>
                         {app.additionalInfo && (
-                          <div className="mt-4">
-                            <p className="font-medium text-gray-500 text-sm">Additional Information</p>
-                            <p className="text-sm text-gray-700 mt-1">{app.additionalInfo}</p>
+                          <div className="border-t pt-3 mb-3">
+                            <p className="font-medium text-gray-500 text-xs mb-1">Additional Information</p>
+                            <p className="text-xs text-gray-700 line-clamp-3">{app.additionalInfo}</p>
                           </div>
                         )}
-                        <div className="mt-4 text-xs text-gray-400">
-                          Applied: {app.createdAt ? new Date(app.createdAt).toLocaleDateString() : 'N/A'} • 
-                          Partnership: {app.partnershipInterest}
+                        <div className="flex flex-wrap items-center gap-2 text-xs text-gray-400">
+                          <span>Applied: {app.createdAt ? new Date(app.createdAt).toLocaleDateString() : 'N/A'}</span>
+                          <span>•</span>
+                          <span className="truncate">{app.partnershipInterest}</span>
                         </div>
                       </CardContent>
                     </Card>

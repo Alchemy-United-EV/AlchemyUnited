@@ -108,20 +108,20 @@ function FlipCard({ problem, solution, index }: { problem: any, solution: any, i
 function ProblemSolutionSlideshow() {
   const cardPairs = [
     {
-      problem: { icon: '⏱️', title: 'Long Lines', desc: 'Wait hours for a single charging port with no reservation system' },
-      solution: { icon: '⚡', title: 'Fast, Private Stations', desc: 'Reserved charging with ultra-fast speeds and premium locations' }
+      problem: { icon: '⏰', title: 'No Reservation System', desc: 'Drive to stations only to find them occupied or broken. 78% success rate means wasted trips and time.' },
+      solution: { icon: '📅', title: 'Guaranteed Reservations', desc: 'Book your charging slot in advance with guaranteed availability and premium locations' }
     },
     {
-      problem: { icon: '🔧', title: 'Outdated Hardware', desc: 'Broken screens, slow charging speeds, unreliable connections' },
-      solution: { icon: '🎨', title: 'Beautiful Black & Gold Design', desc: 'Stunning matte black stations with gold accents that enhance any space' }
+      problem: { icon: '⚡', title: 'Unreliable Stations', desc: '22% of charging attempts fail due to broken equipment, network issues, or payment system failures' },
+      solution: { icon: '🔧', title: '99.9% Uptime Guarantee', desc: 'AI-powered maintenance and 24/7 monitoring ensure stations work when you need them' }
     },
     {
-      problem: { icon: '❌', title: 'Zero Support', desc: 'No help when things go wrong, leaving you stranded' },
-      solution: { icon: '🤝', title: 'Live Concierge Support', desc: '24/7 premium support team ready to help via app or phone' }
+      problem: { icon: '💰', title: 'Wild West Pricing', desc: 'Unpredictable costs ranging $11-$50 for full charge with hidden fees and confusing billing' },
+      solution: { icon: '💎', title: 'Transparent Premium Pricing', desc: 'Clear, consistent rates with no hidden fees. Premium service at honest prices' }
     },
     {
-      problem: { icon: '👁️', title: 'Ugly Designs', desc: 'Eyesore stations that ruin the aesthetic of any location' },
-      solution: { icon: '📊', title: 'Smart Energy Tracking', desc: 'Real-time usage analytics, cost optimization, and carbon tracking' }
+      problem: { icon: '🏢', title: 'Property Host Headaches', desc: 'Vandalism, theft, maintenance costs, and liability concerns make hosting charging stations risky' },
+      solution: { icon: '🛡️', title: 'Full Host Protection', desc: 'We handle insurance, security, maintenance, and operations while you earn passive income' }
     }
   ];
 

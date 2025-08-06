@@ -1,0 +1,34 @@
+Replace all placeholder text on the website with real, brand-aligned content that matches the mission of a premium EV charging company named “AU” (short for Alchemy Unleashed). Keep the layout intact. Target only the content sections.
+
+1. **Hero Section**
+   - Headline: “The Future of EV Charging Has Arrived”
+   - Subtext: “AU delivers more than just power — we deliver presence. Intelligent infrastructure meets iconic design.”
+   - CTA: “Join the Movement”
+
+2. **Mission / About Section**
+   - Heading: “Charging, Elevated.”
+   - Paragraph: “At AU, our mission is to transform every charge into a moment of excellence. We blend cutting-edge engineering with luxury aesthetics to build a charging experience that fits seamlessly into modern lifestyles and forward-thinking communities. Because how you power up matters.”
+
+3. **How It Works Section**
+   - Heading: “Smart. Fast. Effortless.”
+   - Features:
+     - “⚡ Ultra-Fast Charging” – “Engineered for high-efficiency power with minimal downtime.”
+     - “📱 Connected Control” – “Manage, schedule, and monitor charging from your mobile device.”
+     - “🌍 Built for the Planet” – “Designed with sustainability at the core — because progress shouldn't come at the Earth’s expense.”
+
+4. **Product / Showcase Section**
+   - Heading: “Where Art Meets Energy”
+   - Paragraph: “Our signature matte black stations with gold-accented logos are more than chargers — they’re statements. Whether installed at home, in public, or in commercial environments, AU brings elegance to utility.”
+
+5. **Testimonials**
+   - Quote 1: “My garage has never looked better. The AU charger is both sleek and lightning-fast.” – Malik R.
+   - Quote 2: “It’s rare to see EV infrastructure that feels premium. AU nailed it.” – Sierra G.
+
+6. **Waitlist / CTA Section**
+   - Heading: “Reserve Your AU Charger”
+   - Subtext: “Initial rollout is limited. Join the early access list and be part of the charge that changes everything.”
+   - Button: “Get on the List”
+
+7. **Footer**
+   - Tagline: “Alchemy Unleashed. Powering What’s Next.”
+   - Links: Privacy Policy | Terms of Use | Contact | Instagram @au.energy

@@ -290,7 +290,7 @@ export default function Dashboard() {
                           </div>
                           <div>
                             <p className="font-medium text-gray-500">Applied</p>
-                            <p>{new Date(app.createdAt).toLocaleDateString()}</p>
+                            <p>{app.createdAt ? new Date(app.createdAt).toLocaleDateString() : 'N/A'}</p>
                           </div>
                         </div>
                         {app.interests && (
@@ -388,7 +388,7 @@ export default function Dashboard() {
                           </div>
                         )}
                         <div className="mt-4 text-xs text-gray-400">
-                          Applied: {new Date(app.createdAt).toLocaleDateString()} • 
+                          Applied: {app.createdAt ? new Date(app.createdAt).toLocaleDateString() : 'N/A'} • 
                           Partnership: {app.partnershipInterest}
                         </div>
                       </CardContent>

@@ -6,24 +6,11 @@ import { useState, useEffect } from "react";
 function FlipCard({ problem, solution, index }: { problem: any, solution: any, index: number }) {
   const [isFlipped, setIsFlipped] = useState(false);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsFlipped(true);
-    }, 2000 + index * 500); // Stagger the flips, slower
-    
-    const flipInterval = setInterval(() => {
-      setIsFlipped(prev => !prev);
-    }, 8000); // Flip every 8 seconds (much slower)
-    
-    return () => {
-      clearTimeout(timer);
-      clearInterval(flipInterval);
-    };
-  }, [index]);
+  // No automatic flipping - only manual interaction
 
   return (
     <motion.div 
-      className="relative w-full h-96 perspective-1000 group"
+      className="relative w-full h-[28rem] sm:h-96 perspective-1000 group"
       initial={{ y: 50, opacity: 0 }}
       whileInView={{ y: 0, opacity: 1 }}
       transition={{ delay: index * 0.1, duration: 0.6 }}
@@ -46,21 +33,21 @@ function FlipCard({ problem, solution, index }: { problem: any, solution: any, i
         }}
       >
         {/* Problem Side (Front) */}
-        <div className="absolute inset-0 w-full h-full backface-hidden bg-gradient-to-br from-red-50 to-red-100 rounded-2xl p-8 shadow-xl border border-red-200 hover:shadow-2xl transition-shadow duration-300">
+        <div className="absolute inset-0 w-full h-full backface-hidden bg-gradient-to-br from-red-50 to-red-100 rounded-2xl p-6 sm:p-8 shadow-xl border border-red-200 hover:shadow-2xl transition-shadow duration-300">
           <div className="h-full flex flex-col justify-between">
             <div>
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 bg-red-200 rounded-full flex items-center justify-center shadow-md">
-                  <span className="text-red-600 text-2xl">{problem.icon}</span>
+              <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-red-200 rounded-full flex items-center justify-center shadow-md">
+                  <span className="text-red-600 text-xl sm:text-2xl">{problem.icon}</span>
                 </div>
                 <div className="flex-1">
-                  <div className="w-12 h-2 bg-red-300 rounded-full"></div>
+                  <div className="w-8 sm:w-12 h-1.5 sm:h-2 bg-red-300 rounded-full"></div>
                 </div>
               </div>
-              <h3 className="text-2xl font-bold text-red-800 mb-6 font-display leading-tight">
+              <h3 className="text-xl sm:text-2xl font-bold text-red-800 mb-4 sm:mb-6 font-display leading-tight">
                 {problem.title}
               </h3>
-              <p className="text-red-700 leading-relaxed text-lg">
+              <p className="text-red-700 leading-relaxed text-base sm:text-lg">
                 {problem.desc}
               </p>
             </div>
@@ -77,23 +64,23 @@ function FlipCard({ problem, solution, index }: { problem: any, solution: any, i
 
         {/* Solution Side (Back) */}
         <div 
-          className="absolute inset-0 w-full h-full backface-hidden bg-gradient-to-br from-gold/10 to-gold/20 rounded-2xl p-8 shadow-xl border border-gold/40 hover:shadow-2xl transition-shadow duration-300"
+          className="absolute inset-0 w-full h-full backface-hidden bg-gradient-to-br from-gold/10 to-gold/20 rounded-2xl p-6 sm:p-8 shadow-xl border border-gold/40 hover:shadow-2xl transition-shadow duration-300"
           style={{ transform: 'rotateY(180deg)' }}
         >
           <div className="h-full flex flex-col justify-between">
             <div>
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 bg-gold/30 rounded-full flex items-center justify-center shadow-md">
-                  <span className="text-gold text-2xl">{solution.icon}</span>
+              <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gold/30 rounded-full flex items-center justify-center shadow-md">
+                  <span className="text-gold text-xl sm:text-2xl">{solution.icon}</span>
                 </div>
                 <div className="flex-1">
-                  <div className="w-12 h-2 bg-gold rounded-full"></div>
+                  <div className="w-8 sm:w-12 h-1.5 sm:h-2 bg-gold rounded-full"></div>
                 </div>
               </div>
-              <h3 className="text-2xl font-bold text-gold mb-6 font-display leading-tight">
+              <h3 className="text-xl sm:text-2xl font-bold text-gold mb-4 sm:mb-6 font-display leading-tight">
                 {solution.title}
               </h3>
-              <p className="text-gray-700 leading-relaxed text-lg">
+              <p className="text-gray-700 leading-relaxed text-base sm:text-lg">
                 {solution.desc}
               </p>
             </div>
@@ -157,7 +144,7 @@ function ProblemSolutionSlideshow() {
       </motion.div>
       
       {/* Flashcards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 w-full max-w-7xl mx-auto px-4">
         {cardPairs.map((pair, index) => (
           <FlipCard
             key={index}

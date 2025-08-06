@@ -166,13 +166,7 @@ export default function Home() {
         id="burst" 
         className="relative flex items-center justify-center min-h-screen bg-white"
       >
-        <div className="absolute inset-0 flex items-center justify-center opacity-15">
-          <img 
-            src="/images/section4.png" 
-            alt="Golden Energy Burst" 
-            className="w-full h-full object-cover"
-          />
-        </div>
+
         <div className="relative z-10 text-center text-black px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
           <h2 className="text-3xl sm:text-5xl lg:text-7xl font-black mb-8 leading-tight">
             High-Voltage
@@ -190,13 +184,7 @@ export default function Home() {
         id="connection" 
         className="relative flex items-center justify-center min-h-screen bg-white"
       >
-        <div className="absolute inset-0 flex items-center justify-center opacity-15">
-          <img 
-            src="/images/section5.png" 
-            alt="Charger Plugging into EV" 
-            className="w-full h-full object-cover"
-          />
-        </div>
+
         <div className="relative z-10 text-center text-black px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
           <h2 className="text-3xl sm:text-5xl lg:text-7xl font-black mb-8 leading-tight">
             Made for Your

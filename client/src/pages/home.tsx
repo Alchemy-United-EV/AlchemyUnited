@@ -136,18 +136,18 @@ export default function Home() {
       {/* Hero Section */}
       <motion.section 
         id="hero" 
-        className="relative flex items-center justify-center min-h-screen bg-black overflow-hidden"
+        className="relative flex items-center justify-center min-h-screen bg-black overflow-hidden -mt-20"
         style={{ 
           y: heroY,
           opacity: heroOpacity
         }}
       >
         <div className="absolute inset-0 bg-black/50 z-10"></div>
-        <div className="absolute inset-0 flex items-center justify-center opacity-20 translate-y-16">
+        <div className="absolute inset-0 flex items-center justify-center opacity-20">
           <img 
             src="/assets/hero-ev-charger.png" 
             alt="Alchemy EV Charging Station" 
-            className="w-full h-full object-cover scale-110"
+            className="w-full h-full object-cover"
           />
         </div>
 
@@ -222,7 +222,7 @@ export default function Home() {
       {/* Mission Section */}
       <motion.section 
         id="zoom" 
-        className="relative flex items-center justify-center min-h-screen bg-white overflow-hidden"
+        className="relative flex items-center justify-center min-h-screen bg-white overflow-hidden -mt-20"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 1.2 }}

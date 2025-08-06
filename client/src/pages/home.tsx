@@ -126,13 +126,6 @@ export default function Home() {
         </div>
 
         <div className="relative z-10 text-center text-black px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-          <div className="mb-12">
-            <img 
-              src="/images/alchemy_plugcloseup.png" 
-              alt="Alchemy 09" 
-              className="h-20 sm:h-24 lg:h-28 mx-auto mb-6"
-            />
-          </div>
           <h2 className="text-3xl sm:text-5xl lg:text-7xl font-black mb-8 leading-tight">
             Engineered for
             <span className="text-gradient block">Excellence</span>

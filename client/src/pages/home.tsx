@@ -136,14 +136,14 @@ export default function Home() {
       {/* Hero Section */}
       <motion.section 
         id="hero" 
-        className="relative flex items-center justify-center min-h-screen bg-black overflow-hidden -mt-20"
+        className="relative h-screen bg-black overflow-hidden -mt-20"
         style={{ 
           y: heroY,
           opacity: heroOpacity
         }}
       >
-        <div className="absolute inset-0 bg-black/50 z-10"></div>
-        <div className="absolute inset-0 flex items-center justify-center opacity-20">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent z-10"></div>
+        <div className="absolute inset-0 flex items-center justify-center opacity-60">
           <img 
             src="/assets/hero-ev-charger.png" 
             alt="Alchemy EV Charging Station" 
@@ -152,7 +152,7 @@ export default function Home() {
         </div>
 
         <motion.div 
-          className="relative z-20 text-center text-white px-6 sm:px-8 lg:px-12 max-w-8xl mx-auto py-32"
+          className="absolute inset-0 flex items-center justify-center z-20 text-center text-white px-6 sm:px-8 lg:px-12 max-w-8xl mx-auto"
           initial={{ y: 80, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -222,7 +222,7 @@ export default function Home() {
       {/* Mission Section */}
       <motion.section 
         id="zoom" 
-        className="relative flex items-center justify-center min-h-screen bg-white overflow-hidden -mt-20"
+        className="relative flex items-center justify-center min-h-screen bg-white overflow-hidden mt-0"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 1.2 }}

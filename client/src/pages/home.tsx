@@ -243,25 +243,18 @@ export default function Home() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 1.8, duration: 1 }}
           >
-            <Button 
-              asChild
-              size="lg" 
-              className="bg-gold hover:bg-gold/90 text-black font-bold py-4 px-12 sm:py-6 sm:px-16 rounded-full text-lg sm:text-xl transition-all duration-300 transform hover:scale-105 font-display w-full sm:w-auto cursor-pointer"
+            <button
+              onClick={() => window.location.href = '/early-access'}
+              className="inline-flex items-center justify-center bg-gold hover:bg-gold/90 text-black font-bold py-4 px-12 sm:py-6 sm:px-16 rounded-full text-lg sm:text-xl transition-all duration-300 transform hover:scale-105 font-display w-full sm:w-auto cursor-pointer"
             >
-              <Link href="/early-access">
-                Request Early Access
-              </Link>
-            </Button>
-            <Button 
-              asChild
-              size="lg"
-              variant="outline"
-              className="border-2 border-white/30 hover:border-gold text-white hover:text-gold hover:bg-gold/10 font-bold py-4 px-12 sm:py-6 sm:px-16 rounded-full text-lg sm:text-xl transition-all duration-300 bg-transparent font-display w-full sm:w-auto"
+              Request Early Access
+            </button>
+            <button
+              onClick={() => window.location.href = '/host'}
+              className="inline-flex items-center justify-center border-2 border-white/30 hover:border-gold text-white hover:text-gold hover:bg-gold/10 font-bold py-4 px-12 sm:py-6 sm:px-16 rounded-full text-lg sm:text-xl transition-all duration-300 bg-transparent font-display w-full sm:w-auto cursor-pointer"
             >
-              <Link href="/host">
-                Become a Host
-              </Link>
-            </Button>
+              Become a Host
+            </button>
           </motion.div>
         </motion.div>
       </motion.section>
@@ -362,15 +355,12 @@ export default function Home() {
             transition={{ delay: 0.5, duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <Button 
-              asChild
-              size="lg"
-              className="bg-gold hover:bg-gold/90 text-black font-bold py-8 px-16 rounded-full text-2xl transition-all duration-300 transform hover:scale-105 font-display"
+            <button
+              onClick={() => window.location.href = '/early-access'}
+              className="inline-flex items-center justify-center bg-gold hover:bg-gold/90 text-black font-bold py-8 px-16 rounded-full text-2xl transition-all duration-300 transform hover:scale-105 font-display cursor-pointer"
             >
-              <Link href="/early-access">
-                Get On The List
-              </Link>
-            </Button>
+              Get On The List
+            </button>
           </motion.div>
         </motion.div>
       </section>
@@ -406,15 +396,12 @@ export default function Home() {
             transition={{ delay: 0.3, duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <Button 
-              asChild
-              size="lg"
-              className="bg-gold hover:bg-gold/90 text-black font-bold py-8 px-16 rounded-full text-2xl transition-all duration-300 transform hover:scale-105 font-display"
+            <button
+              onClick={() => window.location.href = '/host'}
+              className="inline-flex items-center justify-center bg-gold hover:bg-gold/90 text-black font-bold py-8 px-16 rounded-full text-2xl transition-all duration-300 transform hover:scale-105 font-display cursor-pointer"
             >
-              <Link href="/host">
-                Apply to Host
-              </Link>
-            </Button>
+              Apply to Host
+            </button>
           </motion.div>
         </motion.div>
       </section>

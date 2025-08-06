@@ -62,13 +62,7 @@ export default function Home() {
         id="hero" 
         className="relative flex items-center justify-center min-h-screen bg-white"
       >
-        <div className="absolute inset-0 flex items-center justify-center opacity-15">
-          <img 
-            src="/images/section1.png" 
-            alt="Alchemy Voltstream Charger" 
-            className="w-full h-full object-cover"
-          />
-        </div>
+
         <div className="relative z-10 text-center text-black px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
           <div className="mb-8">
             <img 
@@ -116,13 +110,7 @@ export default function Home() {
         id="zoom" 
         className="relative flex items-center justify-center min-h-screen bg-white"
       >
-        <div className="absolute inset-0 flex items-center justify-center opacity-15">
-          <img 
-            src="/images/section2.png" 
-            alt="EV Plug Close-up" 
-            className="w-full h-full object-cover"
-          />
-        </div>
+
         <div className="relative z-10 text-center text-black px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
           <div className="mb-12">
             <img 

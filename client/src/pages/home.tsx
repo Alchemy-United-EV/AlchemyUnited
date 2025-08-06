@@ -165,6 +165,9 @@ export default function Home() {
   // Hero parallax effects - gentler fade for better interaction
   const heroOpacity = useTransform(scrollY, [0, 800], [1, 0]);
   const heroY = useTransform(scrollY, [0, 500], [0, -50]);
+  
+  // Logo fade effect - fades out when scrolling past hero section
+  const logoOpacity = useTransform(scrollY, [0, window.innerHeight * 0.8], [1, 0]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -182,6 +185,7 @@ export default function Home() {
         className="fixed top-0 left-0 right-0 z-50 flex justify-center p-4 sm:p-8"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
+        style={{ opacity: logoOpacity }}
         transition={{ delay: 0.5 }}
       >
         <div className="flex items-center drop-shadow-2xl">

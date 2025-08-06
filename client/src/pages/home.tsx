@@ -167,6 +167,13 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.2 }}
               viewport={{ once: true }}
             >
+              <div className="flex items-center justify-center lg:justify-start mb-6">
+                <img 
+                  src="/attached_assets/AE141A66-A440-499B-8889-41BABE3F729E_1754506144500.png" 
+                  alt="Alchemy United Logo"
+                  className="h-16 w-auto sm:h-20"
+                />
+              </div>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-12 text-gray-800 font-display">
                 <span className="text-gold">Alchemy</span> Changes Everything
               </h2>
@@ -234,6 +241,13 @@ export default function Home() {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
+          <div className="flex items-center justify-center mb-8">
+            <img 
+              src="/attached_assets/AE141A66-A440-499B-8889-41BABE3F729E_1754506144500.png" 
+              alt="Alchemy United Logo"
+              className="h-20 w-auto sm:h-24 filter brightness-125"
+            />
+          </div>
           <h2 className="text-4xl sm:text-5xl lg:text-7xl font-black mb-8 leading-tight font-display">
             Gain Early Access to the{' '}
             <span className="text-gold">Alchemy Network</span>

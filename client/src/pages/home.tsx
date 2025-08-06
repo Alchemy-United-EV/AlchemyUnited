@@ -72,9 +72,9 @@ export default function Home() {
         <div className="relative z-10 text-center text-black px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
           <div className="mb-8">
             <img 
-              src="/images/logo.png" 
+              src="/images/alchemy_hero.png" 
               alt="Alchemy Logo" 
-              className="h-20 sm:h-24 lg:h-28 mx-auto"
+              className="h-32 sm:h-40 lg:h-48 mx-auto"
             />
           </div>
           <div className="animate-float">
@@ -124,6 +124,13 @@ export default function Home() {
           />
         </div>
         <div className="relative z-10 text-center text-black px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+          <div className="mb-12">
+            <img 
+              src="/images/alchemy_plugcloseup.png" 
+              alt="Alchemy 09" 
+              className="h-20 sm:h-24 lg:h-28 mx-auto mb-6"
+            />
+          </div>
           <h2 className="text-3xl sm:text-5xl lg:text-7xl font-black mb-8 leading-tight">
             Engineered for
             <span className="text-gradient block">Excellence</span>
@@ -223,7 +230,7 @@ export default function Home() {
           </h2>
           <p className="text-xl sm:text-2xl lg:text-3xl text-gray-600 font-light mb-16 max-w-4xl mx-auto leading-relaxed">
             Be the first to experience the future of EV charging. 
-            Get exclusive early access to Alchemy Voltstream technology.
+            Get exclusive early access to Alchemy technology.
           </p>
           
           <div className="space-y-8">
@@ -251,6 +258,20 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Footer */}
+      <footer className="bg-white py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto text-center">
+          <img 
+            src="/images/alchemy_footerlogo.png" 
+            alt="Alchemy Logo" 
+            className="h-16 sm:h-20 lg:h-24 mx-auto mb-8"
+          />
+          <p className="text-gray-500 text-sm">
+            © 2025 Alchemy. Revolutionizing the future of electric vehicle charging.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }

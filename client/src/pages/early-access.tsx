@@ -82,7 +82,7 @@ export default function EarlyAccess() {
           </h1>
           
           <p className="text-xl text-white/90 mb-8 leading-relaxed">
-            Your early access application has been submitted successfully. We'll review your information and send you an invitation to join the exclusive Alchemy United network.
+            Your early access application has been submitted successfully. We'll review your information and send you login credentials to access the exclusive Alchemy United platform.
           </p>
           
           <p className="text-lg text-gold font-semibold mb-8">

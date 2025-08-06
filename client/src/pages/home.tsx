@@ -458,8 +458,8 @@ export default function Home() {
               <div className="w-20 h-20 bg-gold rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-black">
                 3
               </div>
-              <h3 className="text-xl font-bold mb-4 text-gray-800 font-display">Use the App</h3>
-              <p className="text-gray-600 leading-relaxed">Download the Alchemy app to locate stations, make reservations, or host your own charger.</p>
+              <h3 className="text-xl font-bold mb-4 text-gray-800 font-display">Use the Platform</h3>
+              <p className="text-gray-600 leading-relaxed">Access your dashboard to locate stations, make reservations, and manage your charging network.</p>
             </motion.div>
             
             <motion.div 

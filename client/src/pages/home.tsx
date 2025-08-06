@@ -71,13 +71,6 @@ export default function Home() {
         </div>
 
         <div className="relative z-10 text-center text-black px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
-          <div className="mb-8">
-            <img 
-              src="/images/alchemy_hero.png" 
-              alt="Alchemy Logo" 
-              className="h-32 sm:h-40 lg:h-48 mx-auto"
-            />
-          </div>
           <div className="animate-float">
             <h1 className="text-4xl sm:text-6xl lg:text-8xl font-black mb-6 leading-tight">
               <span className="block">Plug Into</span>

@@ -28,14 +28,12 @@ export default function Home() {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5 }}
       >
-        <div className="flex items-center text-white drop-shadow-lg">
-          <svg width="50" height="32" viewBox="0 0 50 32" className="sm:w-[60px] sm:h-[40px]">
-            {/* Wings */}
-            <path d="M3 16 Q12 8 21 16 Q12 24 3 16" fill="currentColor" opacity="0.9" className="text-gold"/>
-            <path d="M29 16 Q38 8 47 16 Q38 24 29 16" fill="currentColor" opacity="0.9" className="text-gold"/>
-            {/* AU Letters */}
-            <text x="25" y="20" textAnchor="middle" className="font-black text-sm sm:text-lg" fill="currentColor">AU</text>
-          </svg>
+        <div className="flex items-center drop-shadow-2xl">
+          <img 
+            src="/attached_assets/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.png" 
+            alt="Alchemy United Logo"
+            className="h-8 w-auto sm:h-12 filter brightness-125"
+          />
         </div>
       </motion.nav>
 
@@ -502,8 +500,12 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-gray-900 py-16 px-6 sm:px-12 lg:px-20">
         <div className="max-w-6xl mx-auto text-center">
-          <div className="text-4xl font-black text-gold mb-8">
-            <span className="text-gold">AU</span>
+          <div className="flex items-center justify-center mb-8">
+            <img 
+              src="/attached_assets/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.png" 
+              alt="Alchemy United Logo"
+              className="h-12 w-auto sm:h-16 filter brightness-125"
+            />
           </div>
           <p className="text-gold text-xl font-bold mb-8 font-display">
             Alchemy United. Powering What's Next.

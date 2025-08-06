@@ -8,26 +8,21 @@ export default function Home() {
   const [showLanding, setShowLanding] = useState(true);
   const { scrollY } = useScroll();
 
-  // Transform values for smooth animations
-  const landingOpacity = useTransform(scrollY, [0, 400], [1, 0]);
-  const landingScale = useTransform(scrollY, [0, 400], [1, 0.6]);
-  const landingY = useTransform(scrollY, [200, 500], [0, -200]);
+  // Transform values for smooth animations - logo fades larger then away
+  const landingOpacity = useTransform(scrollY, [0, 300], [1, 0]);
+  const landingScale = useTransform(scrollY, [0, 300], [1, 1.5]); // Scale UP as it fades
+  const landingY = useTransform(scrollY, [100, 300], [0, -50]);
   
-  // Background logo transforms (appears above ALCHEMY UNITED)
-  const bgLogoOpacity = useTransform(scrollY, [300, 500], [0, 0.3]);
-  const bgLogoY = useTransform(scrollY, [300, 500], [100, -50]);
-  const bgLogoScale = useTransform(scrollY, [300, 500], [0.8, 0.4]);
-  
-  const heroY = useTransform(scrollY, [400, 700], [150, 0]);
-  const heroOpacity = useTransform(scrollY, [400, 700], [0, 1]);
+  const heroY = useTransform(scrollY, [200, 500], [100, 0]);
+  const heroOpacity = useTransform(scrollY, [200, 500], [0, 1]);
 
   useEffect(() => {
     const handleScroll = () => {
       const sections = document.querySelectorAll('section[id]');
       let current = '';
       
-      // Check if we're still on the landing (first 400px)
-      if (window.pageYOffset < 400) {
+      // Check if we're still on the landing (first 300px)
+      if (window.pageYOffset < 300) {
         current = 'landing';
         setShowLanding(true);
       } else {
@@ -118,22 +113,6 @@ export default function Home() {
 
       {/* Spacer for scroll effect */}
       <div className="h-screen bg-black"></div>
-      
-      {/* Background Logo (appears above ALCHEMY UNITED) */}
-      <motion.div 
-        className="fixed inset-0 flex items-center justify-center z-30 pointer-events-none"
-        style={{ 
-          opacity: bgLogoOpacity,
-          y: bgLogoY,
-          scale: bgLogoScale
-        }}
-      >
-        <img 
-          src={auWingsLogo} 
-          alt="Alchemy United Background Logo" 
-          className="h-32 sm:h-40 lg:h-48 xl:h-56 opacity-40"
-        />
-      </motion.div>
 
       {/* Hero Section */}
       <motion.section 

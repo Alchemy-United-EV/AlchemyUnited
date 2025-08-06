@@ -136,14 +136,14 @@ export default function Home() {
       {/* Hero Section */}
       <motion.section 
         id="hero" 
-        className="relative min-h-screen bg-black overflow-hidden pb-16"
+        className="relative h-[85vh] bg-black overflow-hidden"
         style={{ 
           y: heroY,
           opacity: heroOpacity
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent z-10"></div>
-        <div className="absolute inset-0 flex items-center justify-center opacity-60">
+        <div className="absolute inset-0 bg-black/40 z-10"></div>
+        <div className="absolute inset-0 flex items-center justify-center">
           <img 
             src="/assets/hero-ev-charger.png" 
             alt="Alchemy EV Charging Station" 
@@ -165,7 +165,7 @@ export default function Home() {
               transition={{ delay: 0.3, duration: 1 }}
               viewport={{ once: true }}
             >
-              <h1 className="text-5xl sm:text-7xl lg:text-8xl xl:text-9xl font-black mb-6 leading-[0.85] tracking-tighter">
+              <h1 className="text-3xl sm:text-5xl lg:text-7xl xl:text-8xl font-black mb-6 leading-snug tracking-tighter">
                 <motion.span 
                   className="block font-display text-gray-300 mb-2"
                   initial={{ x: -30, opacity: 0 }}
@@ -188,7 +188,7 @@ export default function Home() {
             </motion.div>
             
             <motion.p 
-              className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-light mb-12 max-w-5xl mx-auto leading-relaxed text-white/80 tracking-wide"
+              className="text-base sm:text-lg lg:text-xl xl:text-2xl font-light mb-12 max-w-5xl mx-auto leading-normal text-white/80 tracking-wide"
               initial={{ y: 40, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.9, duration: 1 }}
@@ -224,13 +224,13 @@ export default function Home() {
       {/* Mission Section */}
       <motion.section 
         id="zoom" 
-        className="relative flex items-center justify-center min-h-screen bg-white overflow-hidden mt-0"
+        className="relative flex items-center justify-center min-h-screen bg-white overflow-hidden space-y-16"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 1.2 }}
         viewport={{ once: true, margin: "-100px" }}
       >
-        <div className="absolute inset-0 flex items-center justify-center opacity-10">
+        <div className="absolute inset-0 flex items-center justify-center opacity-20">
           <img 
             src="/assets/plug-closeup.png" 
             alt="EV Charging Plug Close-up" 
@@ -239,14 +239,14 @@ export default function Home() {
         </div>
 
         <motion.div 
-          className="relative z-10 text-center text-black px-6 sm:px-8 lg:px-12 max-w-8xl mx-auto py-32"
+          className="relative z-10 text-center text-black px-6 sm:px-8 lg:px-12 max-w-8xl mx-auto py-16 space-y-12"
           initial={{ y: 80, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 1, ease: "easeOut" }}
           viewport={{ once: true }}
         >
           <motion.h2 
-            className="text-5xl sm:text-7xl lg:text-9xl xl:text-[8rem] font-black mb-16 leading-[0.8] tracking-tighter"
+            className="text-2xl sm:text-4xl lg:text-6xl xl:text-7xl font-black leading-snug tracking-tighter"
             initial={{ y: 50, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 1 }}
@@ -256,7 +256,7 @@ export default function Home() {
             <span className="text-gradient block font-display">ELEVATED.</span>
           </motion.h2>
           <motion.p 
-            className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-light max-w-6xl mx-auto leading-relaxed text-gray-700 tracking-wide"
+            className="text-base sm:text-lg lg:text-xl xl:text-2xl font-light max-w-6xl mx-auto leading-normal text-gray-700 tracking-wide"
             initial={{ y: 40, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.6, duration: 1 }}
@@ -270,7 +270,7 @@ export default function Home() {
       {/* Section 3: Features */}
       <motion.section 
         id="flow" 
-        className="relative flex items-center justify-center min-h-screen bg-white py-20"
+        className="relative flex items-center justify-center min-h-screen bg-white py-16 space-y-16"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 1 }}
@@ -284,21 +284,21 @@ export default function Home() {
           />
         </div>
         <motion.div 
-          className="relative z-10 text-center text-black px-8 sm:px-12 lg:px-16 max-w-6xl mx-auto py-20"
+          className="relative z-10 text-center text-black px-6 sm:px-8 lg:px-12 max-w-6xl mx-auto py-16 space-y-12"
           initial={{ y: 60, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           viewport={{ once: true }}
         >
           <motion.h2 
-            className="text-4xl sm:text-6xl lg:text-8xl font-black mb-16 leading-[0.9] tracking-tight"
+            className="text-2xl sm:text-4xl lg:text-6xl xl:text-7xl font-black leading-snug tracking-tight"
             initial={{ y: 40, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <span className="font-display">Smart. Fast.</span>
-            <span className="text-gradient block font-display">Effortless.</span>
+            <span className="font-display text-black font-black">Smart. Fast.</span>
+            <span className="text-gold block font-display font-black">Effortless.</span>
           </motion.h2>
           <motion.div 
             className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-5xl mx-auto"
@@ -315,8 +315,8 @@ export default function Home() {
               viewport={{ once: true }}
             >
               <div className="text-6xl mb-6">⚡</div>
-              <h3 className="text-2xl font-bold mb-4 font-display tracking-wide">Ultra-Fast Charging</h3>
-              <p className="text-lg text-gray-700 leading-relaxed">Engineered for high-efficiency power with minimal downtime.</p>
+              <h3 className="text-xl sm:text-2xl font-bold mb-4 font-display tracking-wide">Ultra-Fast Charging</h3>
+              <p className="text-base sm:text-lg text-gray-700 leading-normal">Engineered for high-efficiency power with minimal downtime.</p>
             </motion.div>
             <motion.div 
               className="text-center"
@@ -326,8 +326,8 @@ export default function Home() {
               viewport={{ once: true }}
             >
               <div className="text-6xl mb-6">📱</div>
-              <h3 className="text-2xl font-bold mb-4 font-display tracking-wide">Connected Control</h3>
-              <p className="text-lg text-gray-700 leading-relaxed">Manage, schedule, and monitor charging from your mobile device.</p>
+              <h3 className="text-xl sm:text-2xl font-bold mb-4 font-display tracking-wide">Connected Control</h3>
+              <p className="text-base sm:text-lg text-gray-700 leading-normal">Manage, schedule, and monitor charging from your mobile device.</p>
             </motion.div>
             <motion.div 
               className="text-center"
@@ -337,8 +337,8 @@ export default function Home() {
               viewport={{ once: true }}
             >
               <div className="text-6xl mb-6">🌍</div>
-              <h3 className="text-2xl font-bold mb-4 font-display tracking-wide">Built for the Planet</h3>
-              <p className="text-lg text-gray-700 leading-relaxed">Designed with sustainability at the core — because progress shouldn't come at the Earth's expense.</p>
+              <h3 className="text-xl sm:text-2xl font-bold mb-4 font-display tracking-wide">Built for the Planet</h3>
+              <p className="text-base sm:text-lg text-gray-700 leading-normal">Designed with sustainability at the core — because progress shouldn't come at the Earth's expense.</p>
             </motion.div>
           </motion.div>
         </motion.div>
@@ -350,12 +350,12 @@ export default function Home() {
         className="relative flex items-center justify-center min-h-screen bg-white py-8"
       >
 
-        <div className="relative z-10 text-center text-black px-4 sm:px-8 lg:px-12 max-w-6xl mx-auto py-6">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-7xl font-black mb-3 leading-[0.95] tracking-tight">
-            <span className="font-display">Where Art Meets</span>
-            <span className="text-gradient block font-display">Energy</span>
+        <div className="relative z-10 text-center text-black px-6 sm:px-8 lg:px-12 max-w-6xl mx-auto py-16 space-y-12">
+          <h2 className="text-2xl sm:text-4xl lg:text-6xl xl:text-7xl font-black leading-snug tracking-tight">
+            <span className="font-display text-black font-black">Where Art Meets</span>
+            <span className="text-gold block font-display font-black">Energy</span>
           </h2>
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-light max-w-4xl mx-auto leading-snug text-gray-700 tracking-wide mb-3">
+          <p className="text-base sm:text-lg lg:text-xl xl:text-2xl font-light max-w-4xl mx-auto leading-normal text-gray-700 tracking-wide">
             Our signature matte black stations with gold-accented logos are more than chargers — they're statements. Whether installed at home, in public, or in commercial environments, Alchemy United brings elegance to utility.
           </p>
         </div>
@@ -364,22 +364,22 @@ export default function Home() {
       {/* Section 5: Testimonials */}
       <section 
         id="connection" 
-        className="relative flex items-center justify-center min-h-screen bg-white py-20"
+        className="relative flex items-center justify-center min-h-screen bg-white py-16 space-y-16"
       >
 
-        <div className="relative z-10 text-center text-black px-8 sm:px-12 lg:px-16 max-w-6xl mx-auto py-20">
-          <div className="space-y-16">
+        <div className="relative z-10 text-center text-black px-6 sm:px-8 lg:px-12 max-w-6xl mx-auto py-16 space-y-12">
+          <div className="space-y-12">
             <div className="text-center">
-              <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black mb-6 font-display tracking-tight leading-[0.9]">What Our Users Say</h2>
+              <h2 className="text-2xl sm:text-4xl lg:text-6xl xl:text-7xl font-black font-display tracking-tight leading-snug text-black">What Our Users Say</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
               <div className="bg-gray-50 p-12 rounded-2xl">
-                <p className="text-xl italic mb-6 text-gray-700 leading-relaxed">"My garage has never looked better. The Alchemy United charger is both sleek and lightning-fast."</p>
-                <p className="font-bold text-lg font-display">– Malik R.</p>
+                <p className="text-base sm:text-lg italic mb-6 text-gray-700 leading-normal">"My garage has never looked better. The Alchemy United charger is both sleek and lightning-fast."</p>
+                <p className="font-bold text-base sm:text-lg font-display">– Malik R.</p>
               </div>
               <div className="bg-gray-50 p-12 rounded-2xl">
-                <p className="text-xl italic mb-6 text-gray-700 leading-relaxed">"It's rare to see EV infrastructure that feels premium. Alchemy United nailed it."</p>
-                <p className="font-bold text-lg font-display">– Sierra G.</p>
+                <p className="text-base sm:text-lg italic mb-6 text-gray-700 leading-normal">"It's rare to see EV infrastructure that feels premium. Alchemy United nailed it."</p>
+                <p className="font-bold text-base sm:text-lg font-display">– Sierra G.</p>
               </div>
             </div>
           </div>
@@ -395,19 +395,19 @@ export default function Home() {
             className="w-full h-full object-cover"
           />
         </div>
-        <div className="relative z-10 text-center max-w-7xl mx-auto py-6">
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-5xl xl:text-6xl font-black text-black mb-3 leading-[0.95] tracking-tight">
-            <span className="font-display">Reserve Your</span>
-            <span className="text-gradient block font-display">Alchemy United Charger</span>
+        <div className="relative z-10 text-center max-w-7xl mx-auto py-16 space-y-12">
+          <h2 className="text-2xl sm:text-4xl lg:text-6xl xl:text-7xl font-black text-black leading-snug tracking-tight">
+            <span className="font-display text-black font-black">Reserve Your</span>
+            <span className="text-gold block font-display font-black">Alchemy United Charger</span>
           </h2>
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-gray-700 font-light mb-4 max-w-5xl mx-auto leading-snug tracking-wide">
+          <p className="text-base sm:text-lg lg:text-xl xl:text-2xl text-gray-700 font-light max-w-5xl mx-auto leading-normal tracking-wide">
             Initial rollout is limited. Join the early access list and be part of the charge that changes everything.
           </p>
           
-          <div className="space-y-12">
+          <div className="space-y-8">
             <Button 
               size="lg"
-              className="bg-gold hover:bg-yellow-700 text-black font-bold py-8 px-20 rounded-full text-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl font-display tracking-wide"
+              className="bg-gold hover:bg-yellow-700 text-black font-bold py-8 px-20 rounded-full text-lg sm:text-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl font-display tracking-wide"
             >
               Get on the List
             </Button>

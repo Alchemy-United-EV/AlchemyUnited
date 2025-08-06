@@ -136,18 +136,18 @@ export default function Home() {
       {/* Hero Section */}
       <motion.section 
         id="hero" 
-        className="relative flex items-center justify-center min-h-screen bg-gradient-to-b from-black via-gray-900 to-white overflow-hidden"
+        className="relative flex items-center justify-center min-h-screen bg-black overflow-hidden"
         style={{ 
           y: heroY,
           opacity: heroOpacity
         }}
       >
-        <div className="absolute inset-0 bg-black/40 z-10"></div>
-        <div className="absolute inset-0 flex items-center justify-center opacity-15">
+        <div className="absolute inset-0 bg-black/50 z-10"></div>
+        <div className="absolute inset-0 flex items-center justify-center opacity-20 translate-y-16">
           <img 
             src="/assets/hero-ev-charger.png" 
             alt="Alchemy EV Charging Station" 
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover scale-110"
           />
         </div>
 
@@ -210,9 +210,8 @@ export default function Home() {
               Experience Now
             </Button>
             <Button 
-              variant="outline" 
               size="lg"
-              className="border-3 border-white/60 text-white hover:bg-white hover:text-black font-bold py-8 px-20 rounded-full text-2xl transition-all duration-500 font-display tracking-wide backdrop-blur-sm"
+              className="bg-black hover:bg-gray-900 border-2 border-white/20 text-white font-bold py-8 px-20 rounded-full text-2xl transition-all duration-500 font-display tracking-wide"
             >
               Discover More
             </Button>

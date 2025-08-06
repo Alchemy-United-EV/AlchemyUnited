@@ -36,7 +36,7 @@ export default function Home() {
     <button
       onClick={() => scrollToSection(sectionId)}
       className={`block w-3 h-3 rounded-full transition-colors duration-300 ${
-        activeSection === sectionId ? 'bg-blue-500' : 'bg-gray-300 hover:bg-blue-500'
+        activeSection === sectionId ? 'bg-gold' : 'bg-gray-300 hover:bg-gold'
       }`}
       title={title}
       aria-label={`Go to ${title} section`}
@@ -74,9 +74,8 @@ export default function Home() {
             <img 
               src="/images/logo.png" 
               alt="Alchemy Logo" 
-              className="h-20 sm:h-24 lg:h-28 mx-auto mb-4"
+              className="h-20 sm:h-24 lg:h-28 mx-auto"
             />
-            <h2 className="text-gold text-xl font-bold">VOLTSTREAM</h2>
           </div>
           <div className="animate-float">
             <h1 className="text-4xl sm:text-6xl lg:text-8xl font-black mb-6 leading-tight">
@@ -90,14 +89,14 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <Button 
               size="lg" 
-              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-12 rounded-full text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
+              className="bg-gold hover:bg-yellow-700 text-black font-bold py-4 px-12 rounded-full text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
             >
               Discover Alchemy
             </Button>
             <Button 
               variant="outline" 
               size="lg"
-              className="border-2 border-white text-white hover:bg-white hover:text-gray-900 font-bold py-4 px-12 rounded-full text-lg transition-all duration-300"
+              className="border-2 border-black text-black hover:bg-black hover:text-white font-bold py-4 px-12 rounded-full text-lg transition-all duration-300"
             >
               Watch Demo
             </Button>
@@ -219,8 +218,8 @@ export default function Home() {
         </div>
         <div className="relative z-10 text-center max-w-6xl mx-auto">
           <h2 className="text-4xl sm:text-6xl lg:text-8xl font-black text-black mb-8 leading-tight">
-            Ready to
-            <span className="text-gradient block">Voltstream?</span>
+            Join the
+            <span className="text-gradient block">Movement</span>
           </h2>
           <p className="text-xl sm:text-2xl lg:text-3xl text-gray-600 font-light mb-16 max-w-4xl mx-auto leading-relaxed">
             Be the first to experience the future of EV charging. 
@@ -230,7 +229,7 @@ export default function Home() {
           <div className="space-y-8">
             <Button 
               size="lg"
-              className="bg-gold hover:bg-yellow-600 text-black font-bold py-6 px-16 rounded-full text-xl transition-all duration-300 transform hover:scale-105"
+              className="bg-gold hover:bg-yellow-700 text-black font-bold py-6 px-16 rounded-full text-xl transition-all duration-300 transform hover:scale-105"
             >
               Get Notified
             </Button>

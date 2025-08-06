@@ -136,7 +136,7 @@ export default function Home() {
       {/* Hero Section */}
       <motion.section 
         id="hero" 
-        className="relative h-screen bg-black overflow-hidden"
+        className="relative min-h-screen bg-black overflow-hidden pb-16"
         style={{ 
           y: heroY,
           opacity: heroOpacity
@@ -165,9 +165,9 @@ export default function Home() {
               transition={{ delay: 0.3, duration: 1 }}
               viewport={{ once: true }}
             >
-              <h1 className="text-6xl sm:text-8xl lg:text-9xl xl:text-[10rem] font-black mb-8 leading-[0.8] tracking-tighter">
+              <h1 className="text-5xl sm:text-7xl lg:text-8xl xl:text-9xl font-black mb-6 leading-[0.85] tracking-tighter">
                 <motion.span 
-                  className="block font-display text-gray-300 mb-4"
+                  className="block font-display text-gray-300 mb-2"
                   initial={{ x: -30, opacity: 0 }}
                   whileInView={{ x: 0, opacity: 1 }}
                   transition={{ delay: 0.5, duration: 0.8 }}
@@ -188,7 +188,7 @@ export default function Home() {
             </motion.div>
             
             <motion.p 
-              className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-light mb-20 max-w-6xl mx-auto leading-relaxed text-white/80 tracking-wide"
+              className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-light mb-12 max-w-5xl mx-auto leading-relaxed text-white/80 tracking-wide"
               initial={{ y: 40, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.9, duration: 1 }}

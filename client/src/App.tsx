@@ -5,11 +5,15 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
+import EarlyAccess from "@/pages/early-access";
+import HostApplication from "@/pages/host-application";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/early-access" component={EarlyAccess} />
+      <Route path="/host" component={HostApplication} />
       <Route component={NotFound} />
     </Switch>
   );

@@ -44,7 +44,7 @@ export default function Home() {
   );
 
   return (
-    <div className="bg-white text-gray-900 font-sans overflow-x-hidden">
+    <div className="bg-white text-black font-sans overflow-x-hidden">
       {/* Sticky Navigation */}
       <nav className="fixed right-8 top-1/2 transform -translate-y-1/2 z-50 hidden lg:block">
         <div className="space-y-4">
@@ -60,19 +60,26 @@ export default function Home() {
       {/* Section 1: Hero */}
       <section 
         id="hero" 
-        className="section-bg relative flex items-center justify-center min-h-screen"
-        style={{
-          backgroundImage: "linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('/images/section1.png')"
-        }}
+        className="relative flex items-center justify-center min-h-screen bg-white"
       >
-        <div className="text-center text-white z-10 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+        <div className="absolute inset-0 flex items-center justify-center opacity-15">
+          <img 
+            src="/images/section1.png" 
+            alt="Alchemy Voltstream Charger" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="relative z-10 text-center text-black px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+          <div className="mb-8">
+            <h2 className="text-gold text-2xl font-bold mb-8">ALCHEMY VOLTSTREAM</h2>
+          </div>
           <div className="animate-float">
             <h1 className="text-4xl sm:text-6xl lg:text-8xl font-black mb-6 leading-tight">
               <span className="block">Plug Into</span>
               <span className="block text-gradient">the Future</span>
             </h1>
           </div>
-          <p className="text-xl sm:text-2xl lg:text-3xl font-light mb-12 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-xl sm:text-2xl lg:text-3xl font-light mb-12 max-w-4xl mx-auto leading-relaxed text-gray-600">
             Revolutionary EV charging technology that transforms how we power tomorrow's transportation
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
@@ -93,9 +100,9 @@ export default function Home() {
         </div>
         
         {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
-          <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-white rounded-full mt-2 animate-pulse"></div>
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-black animate-bounce">
+          <div className="w-6 h-10 border-2 border-black rounded-full flex justify-center">
+            <div className="w-1 h-3 bg-black rounded-full mt-2 animate-pulse"></div>
           </div>
         </div>
       </section>
@@ -103,19 +110,23 @@ export default function Home() {
       {/* Section 2: Zoom/Precision */}
       <section 
         id="zoom" 
-        className="section-bg relative flex items-center justify-center min-h-screen"
-        style={{
-          backgroundImage: "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/images/section2.png')"
-        }}
+        className="relative flex items-center justify-center min-h-screen bg-white"
       >
-        <div className="text-center text-white z-10 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+        <div className="absolute inset-0 flex items-center justify-center opacity-15">
+          <img 
+            src="/images/section2.png" 
+            alt="EV Plug Close-up" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="relative z-10 text-center text-black px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
           <h2 className="text-3xl sm:text-5xl lg:text-7xl font-black mb-8 leading-tight">
-            Precision at the
-            <span className="text-gradient block">Point of Contact</span>
+            Engineered for
+            <span className="text-gradient block">Excellence</span>
           </h2>
-          <p className="text-lg sm:text-xl lg:text-2xl font-light max-w-3xl mx-auto leading-relaxed">
-            Every component engineered to perfection. Every connection designed for reliability. 
-            Experience charging technology that sets new standards for the industry.
+          <p className="text-lg sm:text-xl lg:text-2xl font-light max-w-3xl mx-auto leading-relaxed text-gray-600">
+            Designed to connect. Every component crafted with precision engineering 
+            for reliability that exceeds industry standards.
           </p>
         </div>
       </section>
@@ -123,19 +134,23 @@ export default function Home() {
       {/* Section 3: Flow */}
       <section 
         id="flow" 
-        className="section-bg relative flex items-center justify-center min-h-screen"
-        style={{
-          backgroundImage: "linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('/images/section3.png')"
-        }}
+        className="relative flex items-center justify-center min-h-screen bg-white"
       >
-        <div className="text-center text-white z-10 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+        <div className="absolute inset-0 flex items-center justify-center opacity-15">
+          <img 
+            src="/images/section3.png" 
+            alt="Cable Flow Scene" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="relative z-10 text-center text-black px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
           <h2 className="text-3xl sm:text-5xl lg:text-7xl font-black mb-8 leading-tight">
-            Engineered
-            <span className="text-gradient block">Energy Flow</span>
+            Energy in
+            <span className="text-gradient block">Motion</span>
           </h2>
-          <p className="text-lg sm:text-xl lg:text-2xl font-light max-w-3xl mx-auto leading-relaxed">
-            Seamless power delivery through cables designed for maximum efficiency. 
-            Our advanced technology ensures optimal energy transfer with zero compromise.
+          <p className="text-lg sm:text-xl lg:text-2xl font-light max-w-3xl mx-auto leading-relaxed text-gray-600">
+            Power with purpose. Seamless energy flow through cables designed 
+            for maximum efficiency and optimal power delivery.
           </p>
         </div>
       </section>
@@ -143,19 +158,23 @@ export default function Home() {
       {/* Section 4: Burst/Energy */}
       <section 
         id="burst" 
-        className="section-bg relative flex items-center justify-center min-h-screen"
-        style={{
-          backgroundImage: "linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/images/section4.png')"
-        }}
+        className="relative flex items-center justify-center min-h-screen bg-white"
       >
-        <div className="text-center text-white z-10 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+        <div className="absolute inset-0 flex items-center justify-center opacity-15">
+          <img 
+            src="/images/section4.png" 
+            alt="Golden Energy Burst" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="relative z-10 text-center text-black px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
           <h2 className="text-3xl sm:text-5xl lg:text-7xl font-black mb-8 leading-tight">
-            Every Spark
-            <span className="text-gradient block">Has Purpose</span>
+            High-Voltage
+            <span className="text-gradient block">Impact</span>
           </h2>
-          <p className="text-lg sm:text-xl lg:text-2xl font-light max-w-3xl mx-auto leading-relaxed">
-            Harnessing the raw power of electricity with intelligent control systems. 
-            Watch as golden energy flows through our revolutionary charging architecture.
+          <p className="text-lg sm:text-xl lg:text-2xl font-light max-w-3xl mx-auto leading-relaxed text-gray-600">
+            Alchemy-grade power. Harnessing raw electrical energy with intelligent 
+            control systems for unprecedented charging performance.
           </p>
         </div>
       </section>
@@ -163,55 +182,66 @@ export default function Home() {
       {/* Section 5: Connection */}
       <section 
         id="connection" 
-        className="section-bg relative flex items-center justify-center min-h-screen"
-        style={{
-          backgroundImage: "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/images/section5.png')"
-        }}
+        className="relative flex items-center justify-center min-h-screen bg-white"
       >
-        <div className="text-center text-white z-10 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+        <div className="absolute inset-0 flex items-center justify-center opacity-15">
+          <img 
+            src="/images/section5.png" 
+            alt="Charger Plugging into EV" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="relative z-10 text-center text-black px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
           <h2 className="text-3xl sm:text-5xl lg:text-7xl font-black mb-8 leading-tight">
-            Built to Power
-            <span className="text-gradient block">Tomorrow</span>
+            Made for Your
+            <span className="text-gradient block">World</span>
           </h2>
-          <p className="text-lg sm:text-xl lg:text-2xl font-light max-w-3xl mx-auto leading-relaxed">
-            The moment of connection. Where innovation meets reality and the future of transportation 
-            becomes present. This is more than charging—this is transformation.
+          <p className="text-lg sm:text-xl lg:text-2xl font-light max-w-3xl mx-auto leading-relaxed text-gray-600">
+            The moment of connection. Where innovation meets reality and the future 
+            of transportation becomes present. This is transformation.
           </p>
         </div>
       </section>
 
       {/* Section 6: CTA */}
-      <section id="cta" className="min-h-screen bg-white flex items-center justify-center px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-6xl mx-auto">
-          <h2 className="text-4xl sm:text-6xl lg:text-8xl font-black text-gray-900 mb-8 leading-tight">
-            Join the
-            <span className="text-gradient block">Movement</span>
+      <section id="cta" className="relative min-h-screen bg-white flex items-center justify-center px-4 sm:px-6 lg:px-8">
+        <div className="absolute inset-0 flex items-center justify-center opacity-10">
+          <img 
+            src="/images/section6.png" 
+            alt="Calm Visual Fade-out" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="relative z-10 text-center max-w-6xl mx-auto">
+          <h2 className="text-4xl sm:text-6xl lg:text-8xl font-black text-black mb-8 leading-tight">
+            Ready to
+            <span className="text-gradient block">Voltstream?</span>
           </h2>
           <p className="text-xl sm:text-2xl lg:text-3xl text-gray-600 font-light mb-16 max-w-4xl mx-auto leading-relaxed">
-            Be part of the electric revolution. Experience the future of charging technology 
-            and help us build a cleaner, more efficient tomorrow.
+            Be the first to experience the future of EV charging. 
+            Get exclusive early access to Alchemy Voltstream technology.
           </p>
           
           <div className="space-y-8">
             <Button 
               size="lg"
-              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-6 px-16 rounded-full text-xl transition-all duration-300 transform hover:scale-105 animate-glow"
+              className="bg-gold hover:bg-yellow-600 text-black font-bold py-6 px-16 rounded-full text-xl transition-all duration-300 transform hover:scale-105"
             >
-              Get Early Access
+              Get Notified
             </Button>
             
             <div className="flex flex-col sm:flex-row gap-8 justify-center items-center text-gray-500">
               <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <div className="w-2 h-2 bg-gold rounded-full"></div>
                 <span className="text-sm font-medium">No commitment required</span>
               </div>
               <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span className="text-sm font-medium">Beta testing available</span>
+                <div className="w-2 h-2 bg-black rounded-full"></div>
+                <span className="text-sm font-medium">Exclusive early access</span>
               </div>
               <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                <span className="text-sm font-medium">Exclusive updates</span>
+                <div className="w-2 h-2 bg-gold rounded-full"></div>
+                <span className="text-sm font-medium">Premium updates</span>
               </div>
             </div>
           </div>

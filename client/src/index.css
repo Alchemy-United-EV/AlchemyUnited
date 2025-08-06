@@ -28,6 +28,9 @@
   --radius: 0.5rem;
   --gradient-primary: linear-gradient(135deg, #C9A961 0%, #E6D080 100%);
   --gold: #C9A961;
+  
+  /* Gold gradient for luxury branding */
+  --gradient-gold: linear-gradient(135deg, #C9A961 0%, #E6D080 50%, #F4E6A1 100%);
 }
 
 .dark {
@@ -90,6 +93,35 @@
   
   .animate-glow {
     animation: glow 2s ease-in-out infinite alternate;
+  }
+  
+  .text-gold {
+    color: var(--gold);
+  }
+  
+  .font-display {
+    font-family: 'Montserrat', 'Inter', system-ui, sans-serif;
+    font-weight: 700;
+  }
+  
+  .bg-gold {
+    background-color: var(--gold);
+  }
+  
+  .border-gold {
+    border-color: var(--gold);
+  }
+  
+  .hover\:bg-gold\/90:hover {
+    background-color: rgba(201, 169, 97, 0.9);
+  }
+  
+  .hover\:text-gold:hover {
+    color: var(--gold);
+  }
+  
+  .hover\:border-gold:hover {
+    border-color: var(--gold);
   }
   
   @keyframes float {

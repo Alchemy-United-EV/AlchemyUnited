@@ -1,0 +1,88 @@
+Create a responsive, premium one-page website for a luxury EV charging network called **Alchemy United**. The site is not selling chargers — it's offering early access to a high-end charging **network**. Use a black + gold color scheme, large modern sans-serif fonts, and smooth transitions. Each section should feel elegant and intentional like https://mercedesbenzhpc.com.
+
+**Brand Assets**:
+- Hero image: `/assets/hero-ev-charger.png`
+- Additional image assets in `/assets` folder
+- Logo: Golden AU with wings
+- Use gold gradient CSS that matches luxury branding
+
+**Site Sections** (in order):
+
+---
+
+### 1. Hero Section (Scroll Reveal)
+- Fullscreen background hero image of charger
+- Top center: Logo only
+- On scroll: Reveal headline + CTA
+- Headline: “The Future of Charging, Elevated.”
+- Subheadline: “Join Alchemy United — a premium network of EV charging stations built for elegance, speed, and next-gen infrastructure.”
+- Button: “Request Early Access” (primary)
+- Button: “Become a Host” (secondary, outline style)
+
+---
+
+### 2. Problem > Solution Split Section
+- Left: Frustrations with current charging
+    - Long lines
+    - Outdated hardware
+    - Zero support
+    - Ugly designs
+- Right: Alchemy advantages
+    - Fast, private stations
+    - Beautiful black & gold design
+    - Smart energy tracking
+    - Live concierge support
+- Background: clean white with subtle texture or accent
+
+---
+
+### 3. Offer Section
+- Image of the EV plug or cable flowing
+- Headline: “Gain Early Access to the Alchemy Network”
+- Description: “Whether you’re a driver, property owner, or commercial partner — Alchemy offers high-speed EV fueling with unmatched aesthetics and intelligence.”
+- Benefits:
+    - ⚡ Premium fast charging
+    - 🏙 Prime station locations
+    - 💼 Co-branded opportunities
+    - 🧠 Intelligent energy tracking
+- CTA: “Get On The List”
+
+---
+
+### 4. Become a Host Section
+- Background image: Charger plugged into car
+- Headline: “Want to Host a Station?”
+- Subheadline: “Own a business, hotel, gym, or property? Host an Alchemy charger and turn traffic into revenue.”
+- CTA: “Apply to Host”
+
+---
+
+### 5. How It Works Section (Steps)
+- Step 1: Apply for access
+- Step 2: Get verified + invited
+- Step 3: Use the app to locate or host stations
+- Step 4: Earn rewards, track usage, or charge instantly
+- Include a clean numbered grid layout
+- Subtle line animation or scroll-reveal if possible
+
+---
+
+### 6. Testimonials or Partner Logos (Optional)
+- Placeholder grid of 3–5 dummy logos or quotes
+- Title: “Trusted by Drivers and Developers Alike”
+
+---
+
+### 7. Final CTA Footer
+- Centered image of charger + white car + “Join the Movement” overlay
+- CTA: “Be the First to Charge with Alchemy”
+- Button: “Request Invite”
+
+---
+
+### Additional Notes:
+- Use TailwindCSS for layout + spacing
+- Use dark sections with white/gold text, and light sections with black text for contrast
+- Images in `/assets` folder should be referenced by name
+- Prioritize mobile responsiveness and scroll polish
+- Typography must feel confident and luxury-grade (suggest `Inter`, `Space Grotesk`, or `Poppins`)

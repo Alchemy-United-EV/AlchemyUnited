@@ -543,12 +543,12 @@ export default function Home() {
             transition={{ delay: 0.3, duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <Button 
-              size="lg"
-              className="bg-gold hover:bg-gold/90 text-black font-bold py-10 px-20 rounded-full text-2xl transition-all duration-300 transform hover:scale-105 font-display"
+            <button
+              onClick={() => window.location.href = '/early-access'}
+              className="inline-flex items-center justify-center bg-gold hover:bg-gold/90 text-black font-bold py-10 px-20 rounded-full text-2xl transition-all duration-300 transform hover:scale-105 font-display cursor-pointer"
             >
               Request Invite
-            </Button>
+            </button>
           </motion.div>
         </motion.div>
       </section>

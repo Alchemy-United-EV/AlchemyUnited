@@ -1,0 +1,326 @@
+Add a minimal Python FastAPI backend to the existing static site without changing the current design. Keep files lean and well‑commented.
+
+Create/Update these files
+requirements.txt
+
+ini
+Copy
+fastapi==0.115.0
+uvicorn==0.30.5
+pydantic==2.8.2
+python-dotenv==1.0.1
+sqlite-utils==3.37
+sendgrid==6.11.0
+main.py (FastAPI + SQLite + optional SendGrid)
+
+python
+Copy
+import os, base64
+from fastapi import FastAPI, Depends, HTTPException, status, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
+from pydantic import BaseModel, EmailStr, Field
+import sqlite3
+from contextlib import contextmanager
+
+# ===== Config =====
+DB_PATH = "electroflow.db"
+ADMIN_USER = os.getenv("ADMIN_USER", "admin")
+ADMIN_PASS = os.getenv("ADMIN_PASS", "changeme")
+SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")  # optional
+SENDGRID_TO = os.getenv("SENDGRID_TO")            # optional (where notifications go)
+APP_NAME = "ElectroFlow"
+
+# ===== App =====
+app = FastAPI(title=f"{APP_NAME} Backend")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], allow_credentials=True,
+    allow_methods=["*"], allow_headers=["*"]
+)
+
+# ===== DB Helpers =====
+@contextmanager
+def db():
+    con = sqlite3.connect(DB_PATH)
+    con.execute("PRAGMA journal_mode=WAL;")
+    try:
+        yield con
+        con.commit()
+    finally:
+        con.close()
+
+def init_db():
+    with db() as con:
+        con.execute("""
+        CREATE TABLE IF NOT EXISTS leads (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          type TEXT NOT NULL, -- contact | partner | waitlist
+          name TEXT,
+          email TEXT,
+          phone TEXT,
+          company TEXT,
+          message TEXT,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+        """)
+init_db()
+
+# ===== Models =====
+class ContactIn(BaseModel):
+    name: str = Field(..., min_length=2)
+    email: EmailStr
+    phone: str | None = None
+    message: str = Field(..., min_length=3)
+
+class PartnerIn(BaseModel):
+    name: str
+    email: EmailStr
+    phone: str | None = None
+    company: str | None = None
+    message: str | None = None
+
+class WaitlistIn(BaseModel):
+    email: EmailStr
+
+# ===== Email (optional) =====
+def send_email(subject: str, body: str):
+    if not SENDGRID_API_KEY or not SENDGRID_TO:
+        return
+    try:
+        from sendgrid import SendGridAPIClient
+        from sendgrid.helpers.mail import Mail
+        msg = Mail(
+            from_email=f"no-reply@{APP_NAME.lower()}.io",
+            to_emails=SENDGRID_TO,
+            subject=subject,
+            plain_text_content=body
+        )
+        SendGridAPIClient(SENDGRID_API_KEY).send(msg)
+    except Exception as e:
+        # Silent fail to avoid breaking submissions
+        print("Email error:", e)
+
+# ===== Basic Auth for admin =====
+def require_admin(request: Request):
+    auth = request.headers.get("Authorization")
+    if not auth or not auth.startswith("Basic "):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, headers={"WWW-Authenticate": "Basic"}, detail="Auth required")
+    try:
+        userpass = base64.b64decode(auth.split(" ",1)[1]).decode()
+        user, pwd = userpass.split(":",1)
+    except Exception:
+        raise HTTPException(status_code=401, detail="Bad auth header")
+    if user != ADMIN_USER or pwd != ADMIN_PASS:
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+    return True
+
+# ===== Routes =====
+@app.get("/api/health")
+def health():
+    return {"ok": True}
+
+@app.post("/api/contact")
+def contact(payload: ContactIn):
+    with db() as con:
+        con.execute(
+            "INSERT INTO leads(type,name,email,phone,message) VALUES (?,?,?,?,?)",
+            ("contact", payload.name, payload.email, payload.phone, payload.message)
+        )
+    send_email(
+        subject=f"[{APP_NAME}] New Contact Lead",
+        body=f"Name: {payload.name}\nEmail: {payload.email}\nPhone: {payload.phone}\n\nMessage:\n{payload.message}"
+    )
+    return {"ok": True, "message": "Thanks — we’ll be in touch shortly."}
+
+@app.post("/api/partner")
+def partner(payload: PartnerIn):
+    with db() as con:
+        con.execute(
+            "INSERT INTO leads(type,name,email,phone,company,message) VALUES (?,?,?,?,?,?)",
+            ("partner", payload.name, payload.email, payload.phone, payload.company, payload.message)
+        )
+    send_email(
+        subject=f"[{APP_NAME}] New Partner/Advertiser Inquiry",
+        body=f"Name: {payload.name}\nEmail: {payload.email}\nPhone: {payload.phone}\nCompany: {payload.company}\n\nNotes:\n{payload.message or ''}"
+    )
+    return {"ok": True, "message": "Thanks — our team will reach out about partnership options."}
+
+@app.post("/api/waitlist")
+def waitlist(payload: WaitlistIn):
+    with db() as con:
+        con.execute(
+            "INSERT INTO leads(type,email) VALUES (?,?)",
+            ("waitlist", payload.email)
+        )
+    send_email(
+        subject=f"[{APP_NAME}] New Waitlist Signup",
+        body=f"Email: {payload.email}"
+    )
+    return {"ok": True, "message": "You’re on the list — we’ll notify you soon."}
+
+# Minimal read-only admin table (basic auth)
+@app.get("/admin", response_class=HTMLResponse)
+def admin_page(ok: bool = Depends(require_admin)):
+    rows = []
+    with db() as con:
+        cur = con.execute("SELECT id, type, name, email, phone, company, message, created_at FROM leads ORDER BY created_at DESC LIMIT 500")
+        rows = cur.fetchall()
+
+    def td(v): return f"<td style='padding:8px;border-bottom:1px solid #333'>{(v or '')}</td>"
+    table_rows = "".join(
+        f"<tr>{td(r[0])}{td(r[1])}{td(r[2])}{td(r[3])}{td(r[4])}{td(r[5])}{td(r[6])}{td(r[7])}</tr>"
+        for r in rows
+    )
+    html = f"""
+    <html><body style="background:#0b0b0c;color:#eaeaea;font-family:Inter,system-ui">
+      <h2>{APP_NAME} — Leads</h2>
+      <table style="border-collapse:collapse;width:100%">
+        <thead><tr>
+          <th>ID</th><th>Type</th><th>Name</th><th>Email</th><th>Phone</th><th>Company</th><th>Message</th><th>Created</th>
+        </tr></thead>
+        <tbody>{table_rows or "<tr><td colspan='8' style='padding:12px'>No leads yet.</td></tr>"}</tbody>
+      </table>
+    </body></html>
+    """
+    return HTMLResponse(html)
+Run command
+Set the Replit run command to:
+
+nginx
+Copy
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+Add secrets (Replit → Tools → Secrets):
+
+ADMIN_USER = your admin username
+
+ADMIN_PASS = your admin password
+
+(Optional) SENDGRID_API_KEY and SENDGRID_TO for email notifications
+
+Frontend wiring (light-touch updates to your existing files)
+Add forms where it makes sense (Contact, Partner/Advertiser, Waitlist). Example minimal blocks you can drop into your current sections:
+
+Waitlist (CTA section)
+
+html
+Copy
+<form id="waitlistForm" class="flex flex-wrap gap-3 justify-center max-w-xl mx-auto">
+  <input type="email" required placeholder="Your email"
+    class="w-full md:flex-1 px-4 py-3 rounded-lg bg-white/5 border border-white/10 outline-none" />
+  <button class="btn-primary">Join Waitlist</button>
+  <p id="waitlistMsg" class="w-full text-sm text-white/70 mt-1"></p>
+</form>
+Contact (Footer or a new section)
+
+html
+Copy
+<form id="contactForm" class="grid gap-3 max-w-2xl">
+  <input name="name" required placeholder="Full name" class="input" />
+  <input name="email" type="email" required placeholder="Email" class="input" />
+  <input name="phone" placeholder="Phone (optional)" class="input" />
+  <textarea name="message" required placeholder="How can we help?" class="input" rows="4"></textarea>
+  <button class="btn-primary">Send</button>
+  <p id="contactMsg" class="text-sm text-white/70"></p>
+</form>
+Partner / Advertiser Inquiry (in App & Advertising section)
+
+html
+Copy
+<form id="partnerForm" class="grid gap-3 max-w-2xl">
+  <input name="name" required placeholder="Your name" class="input" />
+  <input name="email" type="email" required placeholder="Work email" class="input" />
+  <input name="phone" placeholder="Phone (optional)" class="input" />
+  <input name="company" placeholder="Company (optional)" class="input" />
+  <textarea name="message" placeholder="Tell us about your location or campaign" class="input" rows="4"></textarea>
+  <button class="btn-primary">Request Info</button>
+  <p id="partnerMsg" class="text-sm text-white/70"></p>
+</form>
+Tiny CSS helpers (append to your existing styles.css)
+
+css
+Copy
+.input {
+  padding: .8rem 1rem; border-radius: .6rem;
+  background: rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.14);
+  color:#fff; outline: none;
+}
+.input:focus { border-color: rgba(99,102,241,.6); }
+Fetch handlers (append to your main.js)
+
+javascript
+Copy
+async function postJSON(url, data) {
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify(data)
+  });
+  return res.json();
+}
+
+// Waitlist
+const waitlistForm = document.getElementById('waitlistForm');
+if (waitlistForm) {
+  const emailInput = waitlistForm.querySelector('input[type="email"]');
+  const msg = document.getElementById('waitlistMsg');
+  waitlistForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    msg.textContent = "Submitting...";
+    try {
+      const out = await postJSON('/api/waitlist', { email: emailInput.value });
+      msg.textContent = out.message || "Thanks!";
+      waitlistForm.reset();
+    } catch {
+      msg.textContent = "Something went wrong. Please try again.";
+    }
+  });
+}
+
+// Contact
+const contactForm = document.getElementById('contactForm');
+if (contactForm) {
+  const msg = document.getElementById('contactMsg');
+  contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    msg.textContent = "Sending...";
+    const form = new FormData(contactForm);
+    try {
+      const out = await postJSON('/api/contact', {
+        name: form.get('name'),
+        email: form.get('email'),
+        phone: form.get('phone'),
+        message: form.get('message')
+      });
+      msg.textContent = out.message || "Sent!";
+      contactForm.reset();
+    } catch {
+      msg.textContent = "Couldn’t send. Please try again.";
+    }
+  });
+}
+
+// Partner
+const partnerForm = document.getElementById('partnerForm');
+if (partnerForm) {
+  const msg = document.getElementById('partnerMsg');
+  partnerForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    msg.textContent = "Submitting...";
+    const form = new FormData(partnerForm);
+    try {
+      const out = await postJSON('/api/partner', {
+        name: form.get('name'),
+        email: form.get('email'),
+        phone: form.get('phone'),
+        company: form.get('company'),
+        message: form.get('message')
+      });
+      msg.textContent = out.message || "Thanks!";
+      partnerForm.reset();
+    } catch {
+      msg.textContent = "Error. Please try again.";
+    }
+  });
+}

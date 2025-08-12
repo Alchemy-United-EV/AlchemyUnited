@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertEarlyAccessApplicationSchema, insertHostApplicationSchema } from "@shared/schema";
+import { sendVerificationEmail } from "./email";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Early Access Applications API
@@ -119,13 +120,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
         verification = await storage.createVerification(applicationId);
       }
 
-      // In a real app, you'd send an email here with the verification link
-      // For now, we'll return the verification info for testing
+      // Send professional verification email
+      const verificationUrl = `${req.protocol}://${req.get('host')}/verify?token=${verification.verificationToken}`;
+      
+      const emailSent = await sendVerificationEmail({
+        firstName: application.firstName,
+        lastName: application.lastName,
+        email: application.email,
+        verificationUrl,
+        invitationCode: verification.invitationCode || ''
+      });
+
       res.json({
-        message: 'Verification email sent successfully',
+        message: emailSent ? 'Verification email sent successfully' : 'Verification created (email not configured)',
         verificationToken: verification.verificationToken,
         invitationCode: verification.invitationCode,
-        verificationUrl: `${req.protocol}://${req.get('host')}/verify?token=${verification.verificationToken}`
+        verificationUrl,
+        emailSent
       });
     } catch (error) {
       console.error('Error sending verification:', error);

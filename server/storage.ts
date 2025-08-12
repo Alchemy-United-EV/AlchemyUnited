@@ -4,6 +4,7 @@ import {
   hostApplications,
   verifications,
   members,
+  leads,
   type User,
   type InsertUser,
   type EarlyAccessApplication,
@@ -14,6 +15,8 @@ import {
   type InsertVerification,
   type Member,
   type InsertMember,
+  type Lead,
+  type InsertLead,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and } from "drizzle-orm";
@@ -47,6 +50,10 @@ export interface IStorage {
   createMember(memberData: InsertMember): Promise<Member>;
   getMemberByEmail(email: string): Promise<Member | undefined>;
   getMemberByMembershipNumber(membershipNumber: string): Promise<Member | undefined>;
+  
+  // Leads operations
+  createLead(data: InsertLead): Promise<Lead>;
+  getRecentLeads(limit?: number): Promise<Lead[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -237,6 +244,24 @@ export class DatabaseStorage implements IStorage {
       .from(members)
       .where(eq(members.membershipNumber, membershipNumber));
     return member || undefined;
+  }
+
+  // Leads operations
+  async createLead(data: InsertLead): Promise<Lead> {
+    const [lead] = await db
+      .insert(leads)
+      .values(data)
+      .returning();
+    return lead;
+  }
+
+  async getRecentLeads(limit = 200): Promise<Lead[]> {
+    const recentLeads = await db
+      .select()
+      .from(leads)
+      .orderBy(desc(leads.createdAt))
+      .limit(limit);
+    return recentLeads;
   }
 }
 

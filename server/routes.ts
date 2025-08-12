@@ -1,8 +1,9 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertEarlyAccessApplicationSchema, insertHostApplicationSchema } from "@shared/schema";
-import { sendVerificationEmail } from "./email";
+import { insertEarlyAccessApplicationSchema, insertHostApplicationSchema, insertLeadSchema } from "@shared/schema";
+import { sendVerificationEmail, sendLeadNotification } from "./email";
+import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Early Access Applications API
@@ -181,6 +182,82 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Error fetching member:', error);
       res.status(500).json({ error: 'Failed to fetch member' });
+    }
+  });
+
+  // Health check endpoint
+  app.get('/api/health', (_req, res) => res.json({ ok: true }));
+
+  // Leads: Contact / Partner / Waitlist
+  const contactSchema = insertLeadSchema.extend({
+    type: z.literal("contact"),
+    name: z.string().min(2),
+    message: z.string().min(3)
+  });
+
+  const partnerSchema = insertLeadSchema.extend({
+    type: z.literal("partner"),
+    name: z.string().min(2),
+  });
+
+  const waitlistSchema = insertLeadSchema.extend({
+    type: z.literal("waitlist"),
+  }).pick({ type: true, email: true });
+
+  app.post('/api/contact', async (req, res) => {
+    try {
+      const data = contactSchema.parse({ ...req.body, type: "contact" });
+      const lead = await storage.createLead(data);
+      await sendLeadNotification(
+        "[Alchemy United] New Contact Lead",
+        `Name: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone || ""}\n\nMessage:\n${data.message || ""}`
+      );
+      res.status(201).json({ ok: true, message: "Thanks — we'll be in touch shortly.", leadId: lead.id });
+    } catch (err) {
+      console.error("contact error:", err);
+      res.status(400).json({ error: "Invalid contact data" });
+    }
+  });
+
+  app.post('/api/partner', async (req, res) => {
+    try {
+      const data = partnerSchema.parse({ ...req.body, type: "partner" });
+      const lead = await storage.createLead(data);
+      await sendLeadNotification(
+        "[Alchemy United] New Partner/Advertiser Inquiry",
+        `Name: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone || ""}\nCompany: ${data.company || ""}\n\nNotes:\n${data.message || ""}`
+      );
+      res.status(201).json({ ok: true, message: "Thanks — our team will reach out about partnership options.", leadId: lead.id });
+    } catch (err) {
+      console.error("partner error:", err);
+      res.status(400).json({ error: "Invalid partner data" });
+    }
+  });
+
+  app.post('/api/waitlist', async (req, res) => {
+    try {
+      const data = waitlistSchema.parse({ ...req.body, type: "waitlist" });
+      const lead = await storage.createLead(data);
+      await sendLeadNotification(
+        "[Alchemy United] New Waitlist Signup",
+        `Email: ${data.email}`
+      );
+      res.status(201).json({ ok: true, message: "You're on the list — we'll notify you soon.", leadId: lead.id });
+    } catch (err) {
+      console.error("waitlist error:", err);
+      res.status(400).json({ error: "Invalid waitlist data" });
+    }
+  });
+
+  // Admin fetch of recent leads
+  app.get('/api/leads', async (req, res) => {
+    try {
+      const limit = Math.min(Number(req.query.limit) || 200, 1000);
+      const rows = await storage.getRecentLeads(limit);
+      res.json(rows);
+    } catch (err) {
+      console.error("get leads error:", err);
+      res.status(500).json({ error: "Failed to fetch leads" });
     }
   });
 

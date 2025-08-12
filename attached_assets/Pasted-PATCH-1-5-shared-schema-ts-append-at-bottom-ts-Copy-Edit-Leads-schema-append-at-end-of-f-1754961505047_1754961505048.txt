@@ -1,0 +1,253 @@
+PATCH 1/5 — shared/schema.ts (append at bottom)
+ts
+Copy
+Edit
+// --- Leads schema (append at end of file) ---
+import { pgTable, serial, text, timestamp, pgEnum } from "drizzle-orm/pg-core";
+import { z } from "zod";
+
+export const leadTypeEnum = pgEnum("lead_type", ["contact", "partner", "waitlist"]);
+
+export const leads = pgTable("leads", {
+  id: serial("id").primaryKey(),
+  type: leadTypeEnum("type").notNull(),
+  name: text("name"),
+  email: text("email").notNull(),
+  phone: text("phone"),
+  company: text("company"),
+  message: text("message"),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull()
+});
+
+export const insertLeadSchema = z.object({
+  type: z.enum(["contact", "partner", "waitlist"]),
+  name: z.string().min(2).optional(),
+  email: z.string().email(),
+  phone: z.string().optional(),
+  company: z.string().optional(),
+  message: z.string().min(1).optional()
+});
+Then run: npm run db:push (this will create the leads table via Drizzle).
+
+PATCH 2/5 — server/storage.ts (append helpers)
+ts
+Copy
+Edit
+// --- Leads storage helpers (append at end) ---
+import { db } from "./db";
+import { leads, type insertLeadSchema } from "@shared/schema";
+import { eq, desc } from "drizzle-orm";
+
+type InsertLead = typeof insertLeadSchema._type;
+
+export const storage = {
+  // ... keep existing exports
+
+  async createLead(data: InsertLead) {
+    const [row] = await db.insert(leads).values(data).returning();
+    return row;
+  },
+
+  async getRecentLeads(limit = 200) {
+    const rows = await db.select().from(leads).orderBy(desc(leads.createdAt)).limit(limit);
+    return rows;
+  }
+  // (if storage was a default export, merge into it; if named, export alongside)
+};
+(If storage is already exported and not an object literal, adapt by exporting these two functions separately and import them in routes.)
+
+PATCH 3/5 — server/email.ts (add a simple helper that uses your existing SendGrid client)
+ts
+Copy
+Edit
+// --- Simple lead notification helper (append near other exports) ---
+export async function sendLeadNotification(subject: string, bodyText: string): Promise<boolean> {
+  // Reuse your existing SendGrid client/config in this file.
+  // If you already have a generic send function, call it here and just export a wrapper.
+  try {
+    const to = process.env.EMAIL_TO || process.env.SENDGRID_TO;
+    const from = process.env.EMAIL_FROM || "no-reply@electroflow.io";
+    if (!process.env.SENDGRID_API_KEY || !to) {
+      console.warn("Email not configured (SENDGRID_API_KEY/EMAIL_TO missing). Skipping send.");
+      return false;
+    }
+    const sgMail = (await import("@sendgrid/mail")).default;
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY!);
+    await sgMail.send({ to, from, subject, text: bodyText });
+    return true;
+  } catch (err) {
+    console.error("sendLeadNotification error:", err);
+    return false;
+  }
+}
+PATCH 4/5 — server/routes.ts (import + add endpoints)
+ts
+Copy
+Edit
+// ADD imports
+import { z } from "zod";
+import { sendLeadNotification } from "./email";
+import { insertLeadSchema } from "@shared/schema";
+
+// ...inside registerRoutes(app):
+
+// Health
+app.get('/api/health', (_req, res) => res.json({ ok: true }));
+
+// Leads: Contact / Partner / Waitlist
+const contactSchema = insertLeadSchema.extend({
+  type: z.literal("contact"),
+  name: z.string().min(2),
+  message: z.string().min(3)
+});
+const partnerSchema = insertLeadSchema.extend({
+  type: z.literal("partner"),
+  name: z.string().min(2),
+});
+const waitlistSchema = insertLeadSchema.extend({
+  type: z.literal("waitlist"),
+  // only email required
+}).pick({ type: true, email: true });
+
+app.post('/api/contact', async (req, res) => {
+  try {
+    const data = contactSchema.parse({ ...req.body, type: "contact" });
+    const lead = await storage.createLead(data);
+    await sendLeadNotification(
+      "[ElectroFlow] New Contact Lead",
+      `Name: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone || ""}\n\nMessage:\n${data.message || ""}`
+    );
+    res.status(201).json({ ok: true, message: "Thanks — we’ll be in touch shortly.", leadId: lead.id });
+  } catch (err) {
+    console.error("contact error:", err);
+    res.status(400).json({ error: "Invalid contact data" });
+  }
+});
+
+app.post('/api/partner', async (req, res) => {
+  try {
+    const data = partnerSchema.parse({ ...req.body, type: "partner" });
+    const lead = await storage.createLead(data);
+    await sendLeadNotification(
+      "[ElectroFlow] New Partner/Advertiser Inquiry",
+      `Name: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone || ""}\nCompany: ${data.company || ""}\n\nNotes:\n${data.message || ""}`
+    );
+    res.status(201).json({ ok: true, message: "Thanks — our team will reach out about partnership options.", leadId: lead.id });
+  } catch (err) {
+    console.error("partner error:", err);
+    res.status(400).json({ error: "Invalid partner data" });
+  }
+});
+
+app.post('/api/waitlist', async (req, res) => {
+  try {
+    const data = waitlistSchema.parse({ ...req.body, type: "waitlist" });
+    const lead = await storage.createLead(data);
+    await sendLeadNotification(
+      "[ElectroFlow] New Waitlist Signup",
+      `Email: ${data.email}`
+    );
+    res.status(201).json({ ok: true, message: "You’re on the list — we’ll notify you soon.", leadId: lead.id });
+  } catch (err) {
+    console.error("waitlist error:", err);
+    res.status(400).json({ error: "Invalid waitlist data" });
+  }
+});
+
+// (optional) Admin fetch of recent leads
+app.get('/api/leads', async (req, res) => {
+  try {
+    const limit = Math.min(Number(req.query.limit) || 200, 1000);
+    const rows = await storage.getRecentLeads(limit);
+    res.json(rows);
+  } catch (err) {
+    console.error("get leads error:", err);
+    res.status(500).json({ error: "Failed to fetch leads" });
+  }
+});
+Note: This doesn’t touch your existing application/verification/member routes at all.
+
+PATCH 5/5 — Add .env.example (new file)
+env
+Copy
+Edit
+# Server
+PORT=5000
+NODE_ENV=development
+
+# Database (Replit will usually set DATABASE_URL automatically for Postgres)
+DATABASE_URL=postgres://user:pass@host:5432/dbname
+
+# Email / SendGrid
+SENDGRID_API_KEY=SG.xxxxxx
+EMAIL_FROM=no-reply@electroflow.io
+EMAIL_TO=owner@yourdomain.com
+
+# App base URL (for any links in emails)
+APP_BASE_URL=http://localhost:5000
+Run / Migrate / Test
+Migrate (create table):
+
+arduino
+Copy
+Edit
+npm run db:push
+Dev server:
+
+arduino
+Copy
+Edit
+npm run dev
+Smoke tests (new endpoints):
+
+rust
+Copy
+Edit
+curl -s http://localhost:5000/api/health
+
+curl -s -X POST http://localhost:5000/api/waitlist \
+  -H "content-type: application/json" \
+  -d '{"email":"test@example.com"}'
+
+curl -s -X POST http://localhost:5000/api/contact \
+  -H "content-type: application/json" \
+  -d '{"name":"Jay","email":"jay@ex.com","message":"Hello"}'
+
+curl -s -X POST http://localhost:5000/api/partner \
+  -H "content-type: application/json" \
+  -d '{"name":"Jay","email":"jay@ex.com","company":"Zeal","message":"Ads on screens?"}'
+Verify DB rows:
+
+If you have psql access:
+psql "$DATABASE_URL" -c "SELECT id,type,email,name,created_at FROM leads ORDER BY id DESC LIMIT 5;"
+
+Or call:
+curl -s http://localhost:5000/api/leads?limit=5
+
+Email check:
+
+Set SENDGRID_API_KEY, EMAIL_FROM, EMAIL_TO in Replit Secrets → submit a form → confirm receipt in inbox.
+
+If email not configured, endpoints still store to DB and return success.
+
+Frontend wiring (keep your UI)
+If your React pages already have forms, just point them to the new endpoints:
+
+ts
+Copy
+Edit
+async function postJSON(url: string, data: any) {
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+// examples
+await postJSON("/api/waitlist", { email });           // CTA
+await postJSON("/api/contact", { name, email, message, phone }); // Contact
+await postJSON("/api/partner", { name, email, company, message, phone }); // Advertisers/Hosts
+(If the client & server run on different origins in dev, add a proxy or use absolute http://localhost:5000.)

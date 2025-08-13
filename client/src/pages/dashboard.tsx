@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowLeft, Users, Building, CheckCircle, XCircle, Clock, Search, Filter, LogOut, Shield } from "lucide-react";
+import { ArrowLeft, Users, Building, CheckCircle, XCircle, Clock, Search, Filter, LogOut, Shield, Mail, MessageSquare, UserPlus } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,11 +11,15 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import type { EarlyAccessApplication, HostApplication } from "@shared/schema";
+import type { EarlyAccessApplication, HostApplication, Lead } from "@shared/schema";
 
 export default function Dashboard() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [leadsSearchTerm, setLeadsSearchTerm] = useState("");
+  const [leadsTypeFilter, setLeadsTypeFilter] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [leadsPerPage] = useState(20);
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const { user, logout } = useAuth();
@@ -36,6 +40,11 @@ export default function Dashboard() {
   // Host Applications
   const { data: hostApps = [], isLoading: loadingHost } = useQuery<HostApplication[]>({
     queryKey: ['/api/host-applications'],
+  });
+
+  // Leads
+  const { data: leads = [], isLoading: loadingLeads } = useQuery<Lead[]>({
+    queryKey: ['/api/leads'],
   });
 
   // Status update mutations
@@ -121,6 +130,25 @@ export default function Dashboard() {
     return matchesSearch && matchesStatus;
   });
 
+  // Filter leads based on search and type
+  const filteredLeads = leads.filter(lead => {
+    const matchesSearch = 
+      (lead.name?.toLowerCase() || "").includes(leadsSearchTerm.toLowerCase()) ||
+      (lead.email?.toLowerCase() || "").includes(leadsSearchTerm.toLowerCase()) ||
+      (lead.company?.toLowerCase() || "").includes(leadsSearchTerm.toLowerCase());
+    const matchesType = leadsTypeFilter === 'all' || lead.type === leadsTypeFilter;
+    return matchesSearch && matchesType;
+  });
+
+  // Pagination for leads
+  const totalLeads = filteredLeads.length;
+  const totalPages = Math.ceil(totalLeads / leadsPerPage);
+  const startIndex = (currentPage - 1) * leadsPerPage;
+  const paginatedLeads = filteredLeads.slice(startIndex, startIndex + leadsPerPage);
+
+  // Reset page when filters change
+  const resetPage = () => setCurrentPage(1);
+
   // Status badge component
   const StatusBadge = ({ status }: { status: string }) => {
     const variants = {
@@ -185,7 +213,7 @@ export default function Dashboard() {
       <div className="max-w-7xl mx-auto p-6">
         {/* Stats Overview */}
         <motion.div 
-          className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6"
+          className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -212,6 +240,19 @@ export default function Dashboard() {
               <div className="text-2xl font-bold text-gold">{hostApps.length}</div>
               <p className="text-xs text-muted-foreground">
                 {hostApps.filter(app => app.status === 'pending').length} pending review
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Leads</CardTitle>
+              <Mail className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-gold">{leads.length}</div>
+              <p className="text-xs text-muted-foreground">
+                {leads.filter(lead => lead.type === 'contact').length} contact, {leads.filter(lead => lead.type === 'partner').length} partner, {leads.filter(lead => lead.type === 'waitlist').length} waitlist
               </p>
             </CardContent>
           </Card>
@@ -286,12 +327,15 @@ export default function Dashboard() {
           transition={{ delay: 0.4, duration: 0.6 }}
         >
           <Tabs defaultValue="early-access" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 h-11">
+            <TabsList className="grid w-full grid-cols-3 h-11">
               <TabsTrigger value="early-access" className="text-sm px-2">
                 Early Access ({filteredEarlyAccess.length})
               </TabsTrigger>
               <TabsTrigger value="host-applications" className="text-sm px-2">
                 Host Partners ({filteredHost.length})
+              </TabsTrigger>
+              <TabsTrigger value="leads" className="text-sm px-2">
+                Leads ({filteredLeads.length})
               </TabsTrigger>
             </TabsList>
 
@@ -475,6 +519,171 @@ export default function Dashboard() {
                     </div>
                   )}
                 </div>
+              )}
+            </TabsContent>
+
+            {/* Leads Tab */}
+            <TabsContent value="leads" className="space-y-4">
+              {/* Leads Search and Filter Controls */}
+              <div className="flex flex-col sm:flex-row gap-3 mb-4">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                  <Input
+                    placeholder="Search leads by name, email, or company..."
+                    value={leadsSearchTerm}
+                    onChange={(e) => {
+                      setLeadsSearchTerm(e.target.value);
+                      resetPage();
+                    }}
+                    className="pl-10 h-10"
+                  />
+                </div>
+                
+                <Select value={leadsTypeFilter} onValueChange={(value) => {
+                  setLeadsTypeFilter(value);
+                  resetPage();
+                }}>
+                  <SelectTrigger className="w-full sm:w-40 h-10">
+                    <Filter className="w-4 h-4 mr-2" />
+                    <SelectValue placeholder="Filter by type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Types</SelectItem>
+                    <SelectItem value="contact">Contact</SelectItem>
+                    <SelectItem value="partner">Partner</SelectItem>
+                    <SelectItem value="waitlist">Waitlist</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {loadingLeads ? (
+                <div className="flex items-center justify-center py-12">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gold"></div>
+                </div>
+              ) : (
+                <>
+                  {/* Leads Table */}
+                  <div className="bg-white rounded-lg border overflow-hidden">
+                    <div className="overflow-x-auto">
+                      <table className="w-full">
+                        <thead className="bg-gray-50 border-b">
+                          <tr>
+                            <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">Type</th>
+                            <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">Name/Email</th>
+                            <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">Company</th>
+                            <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">Phone</th>
+                            <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">Message</th>
+                            <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">Date</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                          {paginatedLeads.map((lead) => (
+                            <tr key={lead.id} className="hover:bg-gray-50">
+                              <td className="py-3 px-4">
+                                <div className="flex items-center space-x-2">
+                                  {lead.type === 'contact' && <MessageSquare className="h-4 w-4 text-blue-500" />}
+                                  {lead.type === 'partner' && <Building className="h-4 w-4 text-purple-500" />}
+                                  {lead.type === 'waitlist' && <UserPlus className="h-4 w-4 text-green-500" />}
+                                  <Badge 
+                                    variant={lead.type === 'contact' ? 'default' : lead.type === 'partner' ? 'secondary' : 'outline'}
+                                    className="text-xs"
+                                  >
+                                    {lead.type}
+                                  </Badge>
+                                </div>
+                              </td>
+                              <td className="py-3 px-4">
+                                <div className="space-y-1">
+                                  {lead.name && <div className="font-medium text-sm text-gray-900">{lead.name}</div>}
+                                  <div className="text-sm text-gray-600">{lead.email}</div>
+                                </div>
+                              </td>
+                              <td className="py-3 px-4 text-sm text-gray-700">
+                                {lead.company || '-'}
+                              </td>
+                              <td className="py-3 px-4 text-sm text-gray-700">
+                                {lead.phone || '-'}
+                              </td>
+                              <td className="py-3 px-4">
+                                {lead.message ? (
+                                  <div className="text-sm text-gray-700 max-w-xs truncate" title={lead.message}>
+                                    {lead.message}
+                                  </div>
+                                ) : (
+                                  <span className="text-gray-400">-</span>
+                                )}
+                              </td>
+                              <td className="py-3 px-4 text-sm text-gray-600">
+                                {lead.createdAt ? new Date(lead.createdAt).toLocaleDateString() : 'N/A'}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    
+                    {filteredLeads.length === 0 && (
+                      <div className="text-center py-12 text-gray-500">
+                        {leadsSearchTerm || leadsTypeFilter !== 'all' 
+                          ? 'No leads found matching your filters.' 
+                          : 'No leads submitted yet.'
+                        }
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Pagination */}
+                  {totalPages > 1 && (
+                    <div className="flex items-center justify-between mt-4">
+                      <div className="text-sm text-gray-600">
+                        Showing {startIndex + 1} to {Math.min(startIndex + leadsPerPage, totalLeads)} of {totalLeads} leads
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                          disabled={currentPage === 1}
+                        >
+                          Previous
+                        </Button>
+                        <div className="flex items-center space-x-1">
+                          {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                            const pageNum = i + 1;
+                            if (totalPages <= 5) {
+                              return pageNum;
+                            }
+                            if (currentPage <= 3) {
+                              return pageNum;
+                            }
+                            if (currentPage >= totalPages - 2) {
+                              return totalPages - 4 + i;
+                            }
+                            return currentPage - 2 + i;
+                          }).map((pageNum) => (
+                            <Button
+                              key={pageNum}
+                              variant={currentPage === pageNum ? "default" : "outline"}
+                              size="sm"
+                              onClick={() => setCurrentPage(pageNum)}
+                              className="w-8 h-8 p-0"
+                            >
+                              {pageNum}
+                            </Button>
+                          ))}
+                        </div>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                          disabled={currentPage === totalPages}
+                        >
+                          Next
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </>
               )}
             </TabsContent>
           </Tabs>

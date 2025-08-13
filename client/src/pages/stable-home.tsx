@@ -155,15 +155,8 @@ export default function StableHome() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative h-screen bg-black flex items-center justify-center">
-        <div className="absolute inset-0 bg-black/50 z-10"></div>
-        <div className="absolute inset-0">
-          <img 
-            src="/attached_assets/IMG_6393_1754496294852.jpeg" 
-            alt="Luxury EV Charging Station" 
-            className="w-full h-full object-cover"
-          />
-        </div>
+      <section className="relative h-screen bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center">
+        <div className="absolute inset-0 bg-black/30 z-10"></div>
         
         <div className="relative z-20 text-center text-white px-6 max-w-5xl">
           <header>

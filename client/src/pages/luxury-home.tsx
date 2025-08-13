@@ -127,7 +127,7 @@ function ProblemSolutionSlideshow() {
       {/* Header */}
       <div className="text-center mb-12 animate-fadeInUp">
         <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-4 text-gray-800">
-          Current Charging vs <span className="text-yellow-600">Alchemy</span>
+          Current Charging vs <span className="text-gold">Alchemy</span>
         </h2>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
           See how we transform every pain point into a premium experience
@@ -188,11 +188,18 @@ export default function LuxuryHome() {
       {/* Hero Section */}
       <section className="relative h-screen bg-black overflow-hidden flex items-center justify-center">
         <div className="absolute inset-0 bg-black/40 z-10"></div>
+        <div className="absolute inset-0">
+          <img 
+            src="/attached_assets/IMG_6393_1754496294852.jpeg" 
+            alt="Luxury EV Charging Station" 
+            className="w-full h-full object-cover"
+          />
+        </div>
         
-        <div className="relative z-20 text-center text-white px-4 sm:px-6 max-w-6xl animate-fadeInUp">
+        <div className="relative z-20 text-center text-white px-4 sm:px-6 max-w-6xl opacity-0 animate-fade-in-up">
           <h1 className="text-4xl sm:text-6xl lg:text-8xl xl:text-9xl font-black mb-6 leading-tight tracking-tight">
             <span className="block text-white mb-1">The Future of</span>
-            <span className="text-yellow-400 block">Premium Charging</span>
+            <span className="text-gold block">Premium Charging</span>
           </h1>
           
           <p className="text-base sm:text-lg lg:text-xl xl:text-2xl font-light mb-12 max-w-3xl mx-auto leading-relaxed text-white/90 px-2">
@@ -202,13 +209,13 @@ export default function LuxuryHome() {
           <div className="flex flex-col gap-4 justify-center items-center max-w-md mx-auto">
             <button
               onClick={() => window.location.href = '/early-access'}
-              className="inline-flex items-center justify-center bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-4 px-12 sm:py-6 sm:px-16 rounded-full text-lg sm:text-xl transition-all duration-300 transform hover:scale-105 w-full sm:w-auto cursor-pointer"
+              className="inline-flex items-center justify-center bg-gold hover:bg-gold/90 text-black font-bold py-4 px-12 sm:py-6 sm:px-16 rounded-full text-lg sm:text-xl transition-all duration-300 transform hover:scale-105 w-full sm:w-auto cursor-pointer"
             >
               Request Early Access
             </button>
             <button
               onClick={() => window.location.href = '/host'}
-              className="inline-flex items-center justify-center border-2 border-white/30 hover:border-yellow-400 text-white hover:text-yellow-400 hover:bg-yellow-400/10 font-bold py-4 px-12 sm:py-6 sm:px-16 rounded-full text-lg sm:text-xl transition-all duration-300 bg-transparent w-full sm:w-auto cursor-pointer"
+              className="inline-flex items-center justify-center border-2 border-white/30 hover:border-gold text-white hover:text-gold hover:bg-gold/10 font-bold py-4 px-12 sm:py-6 sm:px-16 rounded-full text-lg sm:text-xl transition-all duration-300 bg-transparent w-full sm:w-auto cursor-pointer"
             >
               Become a Host
             </button>
@@ -394,34 +401,7 @@ export default function LuxuryHome() {
         </div>
       </section>
 
-      <style jsx>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        .animate-fadeInUp {
-          animation: fadeInUp 0.8s ease-out forwards;
-        }
-        
-        .perspective-1000 {
-          perspective: 1000px;
-        }
-        
-        .preserve-3d {
-          transform-style: preserve-3d;
-        }
-        
-        .backface-hidden {
-          backface-visibility: hidden;
-        }
-      `}</style>
+
     </div>
   );
 }

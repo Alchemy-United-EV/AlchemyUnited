@@ -81,7 +81,7 @@ export function SmartFormDemo() {
           label="Last Name"
           value={form.watch('lastName')}
           onChange={(value) => form.setValue('lastName', value)}
-          error={errors.lastName?.message}
+          error={errors.lastName?.message || ''}
           required
           enableSmartSuggestions={false}
         />
@@ -92,7 +92,7 @@ export function SmartFormDemo() {
         type="email"
         value={form.watch('email')}
         onChange={(value) => form.setValue('email', value)}
-        error={errors.email?.message}
+        error={errors.email?.message || ''}
         required
         enableSmartSuggestions={true}
         placeholder="your.email@example.com"
@@ -103,7 +103,7 @@ export function SmartFormDemo() {
         type="tel"
         value={form.watch('phone')}
         onChange={(value) => form.setValue('phone', value)}
-        error={errors.phone?.message}
+        error={errors.phone?.message || ''}
         required
         enableSmartSuggestions={true}
         placeholder="(555) 123-4567"
@@ -118,7 +118,7 @@ export function SmartFormDemo() {
         label="Business Name"
         value={form.watch('businessName')}
         onChange={(value) => form.setValue('businessName', value)}
-        error={errors.businessName?.message}
+        error={errors.businessName?.message || ''}
         required
         enableSmartSuggestions={false}
         placeholder="Your Business Name"
@@ -128,7 +128,7 @@ export function SmartFormDemo() {
         label="Business Type"
         value={form.watch('businessType')}
         onChange={(value) => form.setValue('businessType', value)}
-        error={errors.businessType?.message}
+        error={errors.businessType?.message || ''}
         required
         enableSmartSuggestions={true}
         placeholder="e.g., Hotel, Shopping Mall, Office Building"
@@ -138,7 +138,7 @@ export function SmartFormDemo() {
         label="Business Location"
         value={form.watch('location')}
         onChange={(value) => form.setValue('location', value)}
-        error={errors.location?.message}
+        error={errors.location?.message || ''}
         required
         enableSmartSuggestions={true}
         placeholder="City, State or Full Address"
@@ -153,7 +153,7 @@ export function SmartFormDemo() {
         label="Project Requirements"
         value={form.watch('requirements')}
         onChange={(value) => form.setValue('requirements', value)}
-        error={errors.requirements?.message}
+        error={errors.requirements?.message || ''}
         required
         multiline
         rows={4}
@@ -167,7 +167,7 @@ export function SmartFormDemo() {
           label="Project Timeline"
           value={form.watch('timeline')}
           onChange={(value) => form.setValue('timeline', value)}
-          error={errors.timeline?.message}
+          error={errors.timeline?.message || ''}
           required
           enableSmartSuggestions={false}
           placeholder="e.g., 3-6 months, ASAP, By Q2 2024"
@@ -177,7 +177,7 @@ export function SmartFormDemo() {
           label="Estimated Budget (Optional)"
           value={form.watch('budget')}
           onChange={(value) => form.setValue('budget', value)}
-          error={errors.budget?.message}
+          error={errors.budget?.message || ''}
           enableSmartSuggestions={false}
           placeholder="e.g., $50K-$100K, Contact for quote"
         />

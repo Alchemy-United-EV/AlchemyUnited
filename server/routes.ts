@@ -341,6 +341,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Register Google Workspace routes
+  try {
+    const { registerGoogleWorkspaceRoutes } = await import('./google-workspace-routes');
+    registerGoogleWorkspaceRoutes(app);
+  } catch (error) {
+    console.warn('Google Workspace integration disabled:', error);
+  }
+
   const httpServer = createServer(app);
   return httpServer;
 }

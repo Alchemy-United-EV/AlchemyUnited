@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { trackDashboardAction, trackStatusChange } from "@/lib/analytics";
+import { GoogleWorkspacePanel } from "@/components/GoogleWorkspacePanel";
 import type { EarlyAccessApplication, HostApplication, Lead } from "@shared/schema";
 
 export default function Dashboard() {
@@ -380,12 +381,15 @@ export default function Dashboard() {
           transition={{ delay: 0.4, duration: 0.6 }}
         >
           <Tabs defaultValue="early-access" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 h-11">
+            <TabsList className="grid w-full grid-cols-4 h-11">
               <TabsTrigger value="early-access" className="text-sm px-2">
                 Early Access ({filteredEarlyAccess.length})
               </TabsTrigger>
               <TabsTrigger value="host-applications" className="text-sm px-2">
                 Host Partners ({filteredHost.length})
+              </TabsTrigger>
+              <TabsTrigger value="google-workspace" className="text-sm px-2">
+                Google Workspace
               </TabsTrigger>
               <TabsTrigger value="leads" className="text-sm px-2">
                 Leads ({filteredLeads.length})
@@ -573,6 +577,11 @@ export default function Dashboard() {
                   )}
                 </div>
               )}
+            </TabsContent>
+
+            {/* Google Workspace Tab */}
+            <TabsContent value="google-workspace" className="space-y-4">
+              <GoogleWorkspacePanel />
             </TabsContent>
 
             {/* Leads Tab */}

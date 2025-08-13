@@ -88,7 +88,7 @@ function FlipCard({ problem, solution, index }: { problem: any, solution: any, i
             <div className="flex items-center justify-between mt-6">
               <div className="flex items-center gap-2">
                 <img 
-                  src="/assets/au-logo.png" 
+                  src="/attached_assets/AE141A66-A440-499B-8889-41BABE3F729E_1754506144500.png" 
                   alt="AU"
                   className="h-6 w-auto"
                 />
@@ -191,7 +191,7 @@ export default function Home() {
       >
         <div className="flex items-center drop-shadow-2xl">
           <img 
-            src="/assets/au-logo.png" 
+            src="/attached_assets/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.png" 
             alt="Alchemy United Logo"
             className="h-8 w-auto sm:h-12 filter brightness-125"
           />

@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
+import { trackPageInteraction } from "@/lib/analytics";
 import ContactForm from "@/components/forms/ContactForm";
 import WaitlistForm from "@/components/forms/WaitlistForm";
 import PartnerForm from "@/components/forms/PartnerForm";
@@ -22,7 +23,10 @@ function FlipCard({ problem, solution, index }: { problem: any, solution: any, i
     >
       {/* Flip Button */}
       <button
-        onClick={() => setIsFlipped(!isFlipped)}
+        onClick={() => {
+          setIsFlipped(!isFlipped);
+          trackPageInteraction('flip_card', isFlipped ? 'show_problem' : 'show_solution');
+        }}
         className="absolute top-4 right-4 z-10 w-12 h-12 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center text-gray-600 hover:text-gold hover:bg-white transition-all duration-300 shadow-lg animate-pulse-gold hover:animate-none group-hover:scale-110"
         title="Click to flip card"
       >

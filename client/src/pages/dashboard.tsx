@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
+import { trackDashboardAction, trackStatusChange } from "@/lib/analytics";
 import type { EarlyAccessApplication, HostApplication, Lead } from "@shared/schema";
 
 export default function Dashboard() {
@@ -63,7 +64,8 @@ export default function Dashboard() {
       if (!response.ok) throw new Error('Failed to update status');
       return response.json();
     },
-    onSuccess: () => {
+    onSuccess: (_, { id, status }) => {
+      trackDashboardAction('status_change', `early_access_${status}`);
       queryClient.invalidateQueries({ queryKey: ['/api/early-access-applications'] });
       toast({ title: "Status Updated", description: "Application status has been updated successfully." });
     },
@@ -83,9 +85,10 @@ export default function Dashboard() {
       if (!response.ok) throw new Error('Failed to update status');
       return response.json();
     },
-    onSuccess: () => {
+    onSuccess: (_, { id, status }) => {
+      trackDashboardAction('status_change', `host_application_${status}`);
       queryClient.invalidateQueries({ queryKey: ['/api/host-applications'] });
-      toast({ title: "Status Updated", description: "Application status has been updated successfully." });
+      toast({ title: "Status Updated", description: "Host application status has been updated successfully." });
     },
   });
 
@@ -104,7 +107,8 @@ export default function Dashboard() {
       if (!response.ok) throw new Error('Failed to update lead status');
       return response.json();
     },
-    onSuccess: () => {
+    onSuccess: (_, { id, status }) => {
+      trackDashboardAction('lead_status_change', status);
       queryClient.invalidateQueries({ queryKey: ['/api/leads'] });
       toast({ title: "Lead Status Updated", description: "Lead status has been updated successfully." });
     },

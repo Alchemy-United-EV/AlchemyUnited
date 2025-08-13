@@ -8,6 +8,7 @@ import { FormField } from "@/components/ui/form-field";
 import { useToast } from "@/hooks/use-toast";
 import { submitPartner } from "@/lib/api";
 import { partnerFormSchema, type PartnerFormData } from "@/lib/validationSchemas";
+import { trackFormSubmission } from "@/lib/analytics";
 import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 
@@ -33,6 +34,7 @@ export default function PartnerForm() {
   const mutation = useMutation({
     mutationFn: submitPartner,
     onSuccess: (data) => {
+      trackFormSubmission('partner', true);
       toast({
         title: "Partnership inquiry sent!",
         description: data.message || "Thanks for your interest. Our team will contact you soon.",
@@ -40,6 +42,7 @@ export default function PartnerForm() {
       reset();
     },
     onError: (error: Error) => {
+      trackFormSubmission('partner', false);
       console.error('Partner form submission error:', error);
       
       if (error.message.includes('Too many')) {

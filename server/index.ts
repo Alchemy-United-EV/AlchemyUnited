@@ -4,11 +4,24 @@ import cors from "cors";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { generalRateLimit, corsOptions, sanitizeInputs } from "./security";
+import { initSentry, sentryRequestHandler, sentryErrorHandler } from "./sentry";
+import { logger, requestLogger, errorLogger } from "./logger";
+
+// Initialize Sentry before creating Express app
+initSentry();
 
 const app = express();
 
+// Sentry request handler must be first middleware (only if Sentry is configured)
+if (process.env.SENTRY_DSN) {
+  app.use(sentryRequestHandler());
+}
+
 // Trust proxy for accurate IP detection (required for rate limiting)
 app.set('trust proxy', 1);
+
+// Request logging
+app.use(requestLogger);
 
 // Security middleware - relaxed for development
 if (process.env.NODE_ENV === 'production') {
@@ -77,6 +90,14 @@ app.use(express.static("public"));
 
 (async () => {
   const server = await registerRoutes(app);
+
+  // Sentry error handler must be before other error handlers (only if Sentry is configured)
+  if (process.env.SENTRY_DSN) {
+    app.use(sentryErrorHandler());
+  }
+  
+  // Error logging middleware
+  app.use(errorLogger);
 
   app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
     // Handle CORS errors

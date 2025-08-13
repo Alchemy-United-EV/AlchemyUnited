@@ -8,6 +8,7 @@ import { FormField, FormError } from "@/components/ui/form-field";
 import { useToast } from "@/hooks/use-toast";
 import { submitContact } from "@/lib/api";
 import { contactFormSchema, type ContactFormData } from "@/lib/validationSchemas";
+import { trackFormSubmission } from "@/lib/analytics";
 import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 
@@ -33,6 +34,7 @@ export default function ContactForm() {
   const mutation = useMutation({
     mutationFn: submitContact,
     onSuccess: (data) => {
+      trackFormSubmission('contact', true);
       toast({
         title: "Message Sent!",
         description: data.message || "Thanks for reaching out. We'll be in touch shortly.",
@@ -40,6 +42,7 @@ export default function ContactForm() {
       reset();
     },
     onError: (error: Error) => {
+      trackFormSubmission('contact', false);
       console.error('Contact form submission error:', error);
       
       // Handle rate limiting

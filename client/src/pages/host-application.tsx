@@ -13,6 +13,7 @@ import { Link } from "wouter";
 import { ArrowLeft, CheckCircle, Building, DollarSign, Shield, Zap, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { hostApplicationFormSchema, type HostApplicationFormData } from "@/lib/validationSchemas";
+import { trackFormSubmission } from "@/lib/analytics";
 
 export default function HostApplication() {
   const [submitted, setSubmitted] = useState(false);
@@ -67,12 +68,14 @@ export default function HostApplication() {
         throw new Error('Failed to submit application');
       }
       
+      trackFormSubmission('host_application', true);
       setSubmitted(true);
       toast({
         title: "Application Submitted!",
         description: "We'll review your application and contact you within 48 hours.",
       });
     } catch (error: any) {
+      trackFormSubmission('host_application', false);
       console.error('Error submitting host application:', error);
       
       if (error.message.includes('Rate limit')) {

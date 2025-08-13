@@ -7,6 +7,7 @@ import { FormError } from "@/components/ui/form-field";
 import { useToast } from "@/hooks/use-toast";
 import { submitWaitlist } from "@/lib/api";
 import { waitlistFormSchema, type WaitlistFormData } from "@/lib/validationSchemas";
+import { trackFormSubmission } from "@/lib/analytics";
 import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 
@@ -26,6 +27,7 @@ export default function WaitlistForm() {
   const mutation = useMutation({
     mutationFn: submitWaitlist,
     onSuccess: (data) => {
+      trackFormSubmission('waitlist', true);
       toast({
         title: "You're on the list!",
         description: data.message || "We'll notify you when early access opens.",
@@ -33,6 +35,7 @@ export default function WaitlistForm() {
       reset();
     },
     onError: (error: Error) => {
+      trackFormSubmission('waitlist', false);
       console.error('Waitlist form submission error:', error);
       
       if (error.message.includes('Too many')) {

@@ -12,6 +12,7 @@ import { Link } from "wouter";
 import { ArrowLeft, CheckCircle, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { earlyAccessFormSchema, type EarlyAccessFormData } from "@/lib/validationSchemas";
+import { trackFormSubmission } from "@/lib/analytics";
 
 export default function EarlyAccess() {
   const [submitted, setSubmitted] = useState(false);
@@ -60,12 +61,14 @@ export default function EarlyAccess() {
         throw new Error('Failed to submit application');
       }
       
+      trackFormSubmission('early_access', true);
       setSubmitted(true);
       toast({
         title: "Application Submitted!",
         description: "We'll be in touch with your early access invitation soon.",
       });
     } catch (error: any) {
+      trackFormSubmission('early_access', false);
       console.error('Error submitting early access application:', error);
       
       if (error.message.includes('Rate limit')) {

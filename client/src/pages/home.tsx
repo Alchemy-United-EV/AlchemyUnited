@@ -4,9 +4,6 @@ import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { trackPageInteraction } from "@/lib/analytics";
 import { useCTATracking } from "@/hooks/use-cta-tracking";
-import { LazyImage } from "@/components/LazyImage";
-import { SEOHead } from "@/components/SEOHead";
-import { useLazyLoading } from "@/hooks/useLazyLoading";
 import ContactForm from "@/components/forms/ContactForm";
 import WaitlistForm from "@/components/forms/WaitlistForm";
 import PartnerForm from "@/components/forms/PartnerForm";
@@ -98,9 +95,9 @@ function FlipCard({ problem, solution, index }: { problem: any, solution: any, i
             </div>
             <div className="flex items-center justify-between mt-6">
               <div className="flex items-center gap-2">
-                <LazyImage 
+                <img 
                   src="/assets/au-logo.png" 
-                  alt="Alchemy United logo - premium EV charging network"
+                  alt="AU"
                   className="h-6 w-auto"
                 />
                 <span className="text-sm text-gold font-medium">The Alchemy Way</span>
@@ -192,12 +189,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
-      <SEOHead
-        title="Alchemy United - Premium EV Charging Network"
-        description="Experience the future of electric vehicle charging with guaranteed reservations, 99.9% uptime, and transparent premium pricing. Join our exclusive luxury EV charging network."
-        keywords="luxury EV charging, premium electric vehicle charging, EV charging network, Tesla charging, guaranteed reservations, electric car charging station"
-        image="/assets/hero-ev-charger.png"
-      />
       
       {/* Navigation Logo */}
       <motion.nav 
@@ -208,12 +199,10 @@ export default function Home() {
         transition={{ delay: 0.5 }}
       >
         <div className="flex items-center drop-shadow-2xl">
-          <LazyImage 
+          <img 
             src="/assets/au-logo.png" 
-            alt="Alchemy United premium EV charging network logo"
+            alt="Alchemy United Logo"
             className="h-8 w-auto sm:h-12 filter brightness-125"
-            loading="eager"
-            fetchpriority="high"
           />
         </div>
       </motion.nav>
@@ -226,12 +215,10 @@ export default function Home() {
       >
         <div className="absolute inset-0 bg-black/40 z-10"></div>
         <div className="absolute inset-0">
-          <LazyImage 
+          <img 
             src="/assets/hero-ev-charger.png" 
-            alt="Alchemy United EV Charging Station - Premium luxury charging network infrastructure" 
+            alt="Alchemy United EV Charging Station" 
             className="w-full h-full object-cover"
-            loading="eager"
-            fetchpriority="high"
           />
         </div>
 
@@ -298,9 +285,9 @@ export default function Home() {
       {/* Offer Section */}
       <section data-section="early_access_offer" className="relative min-h-screen bg-gray-900 py-20 px-6 sm:px-12 lg:px-20 flex items-center">
         <div className="absolute inset-0 opacity-20">
-          <LazyImage 
+          <img 
             src="/assets/cable-flow.png" 
-            alt="Electric vehicle charging cable connection flow - premium charging experience" 
+            alt="EV Cable Flow" 
             className="w-full h-full object-cover"
           />
         </div>
@@ -313,9 +300,9 @@ export default function Home() {
           viewport={{ once: true }}
         >
           <div className="flex items-center justify-center mb-8">
-            <LazyImage 
+            <img 
               src="/assets/au-logo.png" 
-              alt="Alchemy United premium luxury EV charging network logo"
+              alt="Alchemy United Logo"
               className="h-20 w-auto sm:h-24 filter brightness-125"
             />
           </div>
@@ -400,9 +387,9 @@ export default function Home() {
       {/* Become a Host Section */}
       <section data-section="become_host" className="relative min-h-screen bg-black py-20 px-6 sm:px-12 lg:px-20 flex items-center">
         <div className="absolute inset-0 opacity-40">
-          <LazyImage 
+          <img 
             src="/assets/plug-closeup.png" 
-            alt="Electric vehicle charger plug connected to car - luxury EV charging station detail" 
+            alt="EV Charger Plugged Into Car" 
             className="w-full h-full object-cover"
           />
         </div>

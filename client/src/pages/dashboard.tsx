@@ -13,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { trackDashboardAction, trackStatusChange } from "@/lib/analytics";
 import { GoogleWorkspacePanel } from "@/components/GoogleWorkspacePanel";
+import { EmailTemplatePanel } from "@/components/EmailTemplatePanel";
 import type { EarlyAccessApplication, HostApplication, Lead } from "@shared/schema";
 
 export default function Dashboard() {
@@ -388,7 +389,7 @@ export default function Dashboard() {
           transition={{ delay: 0.4, duration: 0.6 }}
         >
           <Tabs defaultValue="early-access" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 h-auto sm:h-11 gap-1 sm:gap-0 p-1">
+            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5 h-auto sm:h-11 gap-1 sm:gap-0 p-1">
               <TabsTrigger value="early-access" className="text-xs sm:text-sm px-1 sm:px-2 py-2 sm:py-auto">
                 <span className="hidden sm:inline">Early Access</span>
                 <span className="sm:hidden">Early</span>
@@ -402,6 +403,10 @@ export default function Dashboard() {
               <TabsTrigger value="google-workspace" className="text-xs sm:text-sm px-1 sm:px-2 py-2 sm:py-auto">
                 <span className="hidden sm:inline">Google Workspace</span>
                 <span className="sm:hidden">Google</span>
+              </TabsTrigger>
+              <TabsTrigger value="email-templates" className="text-xs sm:text-sm px-1 sm:px-2 py-2 sm:py-auto">
+                <span className="hidden sm:inline">Email Templates</span>
+                <span className="sm:hidden">Email</span>
               </TabsTrigger>
               <TabsTrigger value="leads" className="text-xs sm:text-sm px-1 sm:px-2 py-2 sm:py-auto">
                 <span>Leads</span>

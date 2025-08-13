@@ -3,9 +3,15 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertEarlyAccessApplicationSchema, insertHostApplicationSchema, insertLeadSchema } from "@shared/schema";
 import { sendVerificationEmail, sendLeadNotification } from "./email";
+import { authenticateToken, loginHandler, getCurrentUserHandler, type AuthenticatedRequest } from "./auth";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Authentication routes
+  app.post('/api/auth/login', loginHandler);
+  app.get('/api/auth/me', authenticateToken, getCurrentUserHandler);
+
+  // Protected dashboard routes (require authentication)
   // Early Access Applications API
   app.post('/api/early-access-applications', async (req, res) => {
     try {
@@ -18,7 +24,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get('/api/early-access-applications', async (req, res) => {
+  app.get('/api/early-access-applications', authenticateToken, async (req, res) => {
     try {
       const applications = await storage.getAllEarlyAccessApplications();
       res.json(applications);
@@ -28,7 +34,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get('/api/early-access-applications/:id', async (req, res) => {
+  app.get('/api/early-access-applications/:id', authenticateToken, async (req, res) => {
     try {
       const application = await storage.getEarlyAccessApplicationById(req.params.id);
       if (!application) {
@@ -41,7 +47,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.patch('/api/early-access-applications/:id/status', async (req, res) => {
+  app.patch('/api/early-access-applications/:id/status', authenticateToken, async (req, res) => {
     try {
       const { status } = req.body;
       if (!status || !['pending', 'approved', 'rejected'].includes(status)) {
@@ -67,7 +73,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get('/api/host-applications', async (req, res) => {
+  app.get('/api/host-applications', authenticateToken, async (req, res) => {
     try {
       const applications = await storage.getAllHostApplications();
       res.json(applications);
@@ -77,7 +83,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get('/api/host-applications/:id', async (req, res) => {
+  app.get('/api/host-applications/:id', authenticateToken, async (req, res) => {
     try {
       const application = await storage.getHostApplicationById(req.params.id);
       if (!application) {
@@ -90,7 +96,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.patch('/api/host-applications/:id/status', async (req, res) => {
+  app.patch('/api/host-applications/:id/status', authenticateToken, async (req, res) => {
     try {
       const { status } = req.body;
       if (!status || !['pending', 'approved', 'rejected', 'in-review'].includes(status)) {
@@ -249,8 +255,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Admin fetch of recent leads
-  app.get('/api/leads', async (req, res) => {
+  // Admin fetch of recent leads (protected)
+  app.get('/api/leads', authenticateToken, async (req, res) => {
     try {
       const limit = Math.min(Number(req.query.limit) || 200, 1000);
       const rows = await storage.getRecentLeads(limit);

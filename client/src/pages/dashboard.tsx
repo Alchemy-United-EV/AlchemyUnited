@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowLeft, Users, Building, CheckCircle, XCircle, Clock, Search, Filter } from "lucide-react";
+import { ArrowLeft, Users, Building, CheckCircle, XCircle, Clock, Search, Filter, LogOut, Shield } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,6 +18,15 @@ export default function Dashboard() {
   const [statusFilter, setStatusFilter] = useState("all");
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const { user, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    toast({
+      title: "Logged out",
+      description: "You have been successfully logged out.",
+    });
+  };
 
   // Early Access Applications
   const { data: earlyAccessApps = [], isLoading: loadingEarlyAccess } = useQuery<EarlyAccessApplication[]>({
@@ -31,9 +41,13 @@ export default function Dashboard() {
   // Status update mutations
   const updateEarlyAccessStatus = useMutation({
     mutationFn: async ({ id, status }: { id: string; status: string }) => {
+      const token = localStorage.getItem('auth_token');
       const response = await fetch(`/api/early-access-applications/${id}/status`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          ...(token && { 'Authorization': `Bearer ${token}` }),
+        },
         body: JSON.stringify({ status }),
       });
       if (!response.ok) throw new Error('Failed to update status');
@@ -47,9 +61,13 @@ export default function Dashboard() {
 
   const updateHostStatus = useMutation({
     mutationFn: async ({ id, status }: { id: string; status: string }) => {
+      const token = localStorage.getItem('auth_token');
       const response = await fetch(`/api/host-applications/${id}/status`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          ...(token && { 'Authorization': `Bearer ${token}` }),
+        },
         body: JSON.stringify({ status }),
       });
       if (!response.ok) throw new Error('Failed to update status');
@@ -146,7 +164,21 @@ export default function Dashboard() {
             </h1>
           </div>
           
-          <div className="w-32"></div> {/* Spacer for balance */}
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 text-sm text-gray-600">
+              <Shield className="h-4 w-4" />
+              <span>{user?.email}</span>
+            </div>
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={handleLogout}
+              className="flex items-center space-x-2"
+            >
+              <LogOut className="h-4 w-4" />
+              <span>Logout</span>
+            </Button>
+          </div>
         </div>
       </nav>
 

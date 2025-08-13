@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 // Simple Flip Card Component - Pure CSS, no complex animations
 function FlipCard({ problem, solution, index }: { problem: any, solution: any, index: number }) {
@@ -85,6 +85,27 @@ function FlipCard({ problem, solution, index }: { problem: any, solution: any, i
 }
 
 export default function StableHome() {
+  // Set page title and meta description for SEO
+  React.useEffect(() => {
+    document.title = "Alchemy United - Premium EV Charging Network | Luxury Electric Vehicle Stations";
+    
+    // Update meta description
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Join Alchemy United\'s exclusive luxury EV charging network. Premium fast charging stations with guaranteed reservations, 99.9% uptime, and transparent pricing. Request early access today.');
+    }
+
+    // Update Open Graph meta tags
+    let ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) {
+      ogTitle.setAttribute('content', 'Alchemy United - Premium EV Charging Network | Luxury Electric Vehicle Stations');
+    }
+
+    let ogDescription = document.querySelector('meta[property="og:description"]');
+    if (ogDescription) {
+      ogDescription.setAttribute('content', 'Join Alchemy United\'s exclusive luxury EV charging network. Premium fast charging stations with guaranteed reservations, 99.9% uptime, and transparent pricing.');
+    }
+  }, []);
   const [logoOpacity, setLogoOpacity] = useState(1);
 
   useEffect(() => {
@@ -145,14 +166,16 @@ export default function StableHome() {
         </div>
         
         <div className="relative z-20 text-center text-white px-6 max-w-5xl">
-          <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black mb-6 leading-tight">
-            <span className="block text-white mb-2">The Future of</span>
-            <span className="text-yellow-400 block">Premium Charging</span>
-          </h1>
-          
-          <p className="text-xl sm:text-2xl font-light mb-12 max-w-4xl mx-auto leading-relaxed text-white/90">
-            Join Alchemy United — an exclusive network of luxury EV charging stations built for elegance, speed, and next-gen infrastructure.
-          </p>
+          <header>
+            <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black mb-6 leading-tight">
+              <span className="block text-white mb-2">The Future of</span>
+              <span className="text-yellow-400 block">Premium Charging</span>
+            </h1>
+            
+            <p className="text-xl sm:text-2xl font-light mb-12 max-w-4xl mx-auto leading-relaxed text-white/90">
+              Join Alchemy United — an exclusive network of luxury EV charging stations built for elegance, speed, and next-gen infrastructure.
+            </p>
+          </header>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <button
@@ -172,16 +195,16 @@ export default function StableHome() {
       </section>
 
       {/* Problem vs Solution Section */}
-      <section className="py-20 px-6">
+      <section className="py-20 px-6" aria-labelledby="comparison-heading">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl sm:text-6xl font-black mb-4 text-gray-800">
+          <header className="text-center mb-16">
+            <h2 id="comparison-heading" className="text-5xl sm:text-6xl font-black mb-4 text-gray-800">
               Current Charging vs <span className="text-yellow-500">Alchemy</span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               See how we transform every pain point into a premium experience
             </p>
-          </div>
+          </header>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {cardPairs.map((pair, index) => (

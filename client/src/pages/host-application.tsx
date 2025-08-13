@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -34,6 +34,20 @@ const hostApplicationSchema = z.object({
 type HostApplicationForm = z.infer<typeof hostApplicationSchema>;
 
 export default function HostApplication() {
+  // Set SEO meta tags for Host Application page
+  React.useEffect(() => {
+    document.title = "Become a Host Partner - Alchemy United EV Charging Network";
+    
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Partner with Alchemy United to host premium EV charging stations. Earn passive income while providing luxury charging experiences. Full insurance, security, and maintenance included.');
+    }
+
+    let ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) {
+      ogTitle.setAttribute('content', 'Become a Host Partner - Alchemy United EV Charging Network');
+    }
+  }, []);
   const [submitted, setSubmitted] = useState(false);
   const { toast } = useToast();
   

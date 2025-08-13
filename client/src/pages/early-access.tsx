@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -26,6 +26,20 @@ const earlyAccessSchema = z.object({
 type EarlyAccessForm = z.infer<typeof earlyAccessSchema>;
 
 export default function EarlyAccess() {
+  // Set SEO meta tags for Early Access page
+  React.useEffect(() => {
+    document.title = "Request Early Access - Alchemy United Premium EV Charging Network";
+    
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Get early access to Alchemy United\'s exclusive luxury EV charging network. Be among the first to experience premium fast charging with guaranteed reservations and 99.9% uptime.');
+    }
+
+    let ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) {
+      ogTitle.setAttribute('content', 'Request Early Access - Alchemy United Premium EV Charging Network');
+    }
+  }, []);
   const [submitted, setSubmitted] = useState(false);
   const { toast } = useToast();
   

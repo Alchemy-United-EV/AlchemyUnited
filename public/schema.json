@@ -1,0 +1,57 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Alchemy United",
+  "alternateName": "AU",
+  "url": "https://alchemy-united.replit.app",
+  "logo": {
+    "@type": "ImageObject",
+    "url": "https://alchemy-united.replit.app/attached_assets/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.png",
+    "width": 400,
+    "height": 300
+  },
+  "description": "Premium luxury EV charging network offering fast, reliable charging stations with guaranteed reservations and transparent pricing.",
+  "foundingDate": "2024",
+  "industry": "Electric Vehicle Infrastructure",
+  "areaServed": {
+    "@type": "Place",
+    "name": "United States"
+  },
+  "serviceType": "Electric Vehicle Charging Services",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer service",
+    "availableLanguage": "English"
+  },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "EV Charging Services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Premium Fast Charging",
+          "description": "Ultra-fast charging speeds up to 350kW with luxury amenities"
+        }
+      },
+      {
+        "@type": "Offer", 
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Guaranteed Reservations",
+          "description": "Book your charging slot in advance with guaranteed availability"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service", 
+          "name": "Host Partnership Program",
+          "description": "Earn passive income by hosting premium EV charging stations"
+        }
+      }
+    ]
+  },
+  "sameAs": []
+}

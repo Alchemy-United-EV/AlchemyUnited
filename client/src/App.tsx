@@ -3,7 +3,7 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { PerformanceBudget } from "@/components/PerformanceBudget";
-import { TooltipProvider } from "@/components/ui/tooltip";
+
 import { AuthWrapper } from "@/components/ui/AuthWrapper";
 import { useEffect } from "react";
 import { initGA } from "./lib/analytics";
@@ -60,11 +60,9 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <PerformanceBudget />
-        <Router />
-        <Toaster />
-      </TooltipProvider>
+      <PerformanceBudget />
+      <Router />
+      <Toaster />
     </QueryClientProvider>
   );
 }

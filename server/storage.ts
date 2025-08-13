@@ -289,7 +289,7 @@ export class MemStorage implements IStorage {
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    for (const user of this.users.values()) {
+    for (const user of Array.from(this.users.values())) {
       if (user.username === username) {
         return user;
       }
@@ -320,7 +320,7 @@ export class MemStorage implements IStorage {
 
   async getAllEarlyAccessApplications(): Promise<EarlyAccessApplication[]> {
     return Array.from(this.earlyAccessApps.values()).sort((a, b) => 
-      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
     );
   }
 
@@ -354,7 +354,7 @@ export class MemStorage implements IStorage {
 
   async getAllHostApplications(): Promise<HostApplication[]> {
     return Array.from(this.hostApps.values()).sort((a, b) => 
-      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
     );
   }
 

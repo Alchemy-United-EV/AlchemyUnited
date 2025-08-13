@@ -1,0 +1,47 @@
+Goal: Execute ONLY the “Immediate (≤2 hrs)” items from the latest audit to move the site from 72 → 80+ readiness. Make minimal, reversible changes.
+Do not touch forms, backend, copy, or styling beyond what’s required to complete these items.
+
+Scope to Execute
+	1.	Duplicate page cleanup in client/src/pages/
+	•	Keep ONLY: stable-home.tsx, early-access.tsx, host-application.tsx, simple-dashboard.tsx, not-found.tsx.
+	•	Move all other page files (e.g., home.tsx, luxury-home.tsx, new-home.tsx, working-home.tsx, final-home.tsx, test.tsx, etc.) to client/_archive/pages/ (create folder).
+	•	Do NOT change their code; archive only.
+	2.	Asset consolidation
+	•	Create a single canonical directory: /public/assets/.
+	•	Move files from /attached_assets/ and /public/images/ into /public/assets/.
+	•	Update all import/src references across the codebase to point to /public/assets/....
+	•	Remove now-empty /attached_assets/ and /public/images/ directories.
+	3.	Home route + naming alignment
+	•	In client/src/App.tsx: ensure / renders the component currently in stable-home.tsx.
+	•	Import it as Home (alias export) without changing its internal code.
+	•	If any route/title still says “StableHome,” update label/route component name to Home only. Functionality must remain identical.
+	4.	Remove unused dependencies
+	•	From package.json: uninstall framer-motion, tw-animate-css, and any unused @radix-ui/* packages only if they have zero imports after Step 1–3.
+	•	If a package still has imports, list the files and skip removal.
+
+Process & Safety
+	•	Create Git branch: cleanup/immediate-ev-site.
+	•	Before making changes, generate a file inventory of client/src/pages/ and asset directories. Save as audit/inventory-before.md.
+	•	After changes, generate audit/inventory-after.md and a diff summary.
+
+Verification (must pass)
+	•	npm run build finishes without errors.
+	•	App boots locally; routes work: /, /early-access, /host-application, /dashboard (or /simple-dashboard), /* → not found.
+	•	No 404s for moved assets (search console/network tab).
+	•	node ./scripts/bundle-size.mjs or vite build --emptyOutDir size report shows reduced asset/page count (include numbers).
+	•	npm ls framer-motion and npm ls tw-animate-css fail (not installed) or are reported as “kept due to imports” with file list.
+
+Deliverables (post to console)
+	•	✅ Checklist of actions completed / skipped (with reasons).
+	•	📁 List of archived files and their new paths.
+	•	🧭 Files updated with asset path replacements (count).
+	•	📦 Dependency removals (or skip report).
+	•	📊 Before/after: number of page files, asset directories, and build output size.
+	•	📝 Single commit with message:
+chore(cleanup): archive duplicate pages, consolidate assets, align Home route, trim unused deps
+
+Constraints
+	•	Time-box to ~2 hours of work. If something exceeds scope, stop and report what’s left with exact file paths.
+	•	No copy/design rewrites. No backend edits. No form logic changes.
+
+If anything is ambiguous: prefer archiving over deletion and list it in the final report.

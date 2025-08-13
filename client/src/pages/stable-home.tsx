@@ -69,7 +69,7 @@ function FlipCard({ problem, solution, index }: { problem: any, solution: any, i
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <img 
-                  src="/attached_assets/AE141A66-A440-499B-8889-41BABE3F729E_1754506144500.png" 
+                  src="/assets/AE141A66-A440-499B-8889-41BABE3F729E_1754506144500.png" 
                   alt="AU"
                   className="h-6 w-auto"
                 />
@@ -148,7 +148,7 @@ export default function StableHome() {
         style={{ opacity: logoOpacity }}
       >
         <img 
-          src="/attached_assets/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.png" 
+          src="/assets/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.png" 
           alt="Alchemy United Logo"
           className="h-10 w-auto filter brightness-125"
         />
@@ -216,7 +216,7 @@ export default function StableHome() {
       <section className="bg-black py-20 px-6">
         <div className="max-w-4xl mx-auto text-center text-white">
           <img 
-            src="/attached_assets/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.png" 
+            src="/assets/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.png" 
             alt="Alchemy United Logo"
             className="h-16 w-auto mx-auto mb-8 filter brightness-125"
           />
@@ -286,7 +286,7 @@ export default function StableHome() {
       <section className="bg-black py-16 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <img 
-            src="/attached_assets/AE141A66-A440-499B-8889-41BABE3F729E_1754506144500.png" 
+            src="/assets/AE141A66-A440-499B-8889-41BABE3F729E_1754506144500.png" 
             alt="Alchemy United Logo"
             className="h-10 w-auto mx-auto mb-6 filter brightness-125"
           />

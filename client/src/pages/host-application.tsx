@@ -6,33 +6,13 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
+import { FormField } from "@/components/ui/form-field";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { Link } from "wouter";
-import { ArrowLeft, CheckCircle, Building, DollarSign, Shield, Zap } from "lucide-react";
+import { ArrowLeft, CheckCircle, Building, DollarSign, Shield, Zap, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-
-const hostApplicationSchema = z.object({
-  businessName: z.string().min(2, "Business name is required"),
-  contactFirstName: z.string().min(2, "First name must be at least 2 characters"),
-  contactLastName: z.string().min(2, "Last name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email address"),
-  phone: z.string().min(10, "Please enter a valid phone number"),
-  propertyType: z.string().min(1, "Please select property type"),
-  propertyAddress: z.string().min(10, "Please enter complete address"),
-  parkingSpaces: z.string().min(1, "Please specify number of parking spaces"),
-  electricalCapacity: z.string().min(1, "Please select electrical capacity"),
-  expectedTraffic: z.string().min(1, "Please estimate daily traffic"),
-  operatingHours: z.string().min(1, "Please specify operating hours"),
-  currentAmenities: z.string().optional(),
-  partnershipInterest: z.string().min(1, "Please select partnership type"),
-  timeline: z.string().min(1, "Please select desired timeline"),
-  additionalInfo: z.string().optional(),
-  agreeToTerms: z.boolean().refine(val => val === true, "You must agree to terms"),
-});
-
-type HostApplicationForm = z.infer<typeof hostApplicationSchema>;
+import { hostApplicationFormSchema, type HostApplicationFormData } from "@/lib/validationSchemas";
 
 export default function HostApplication() {
   const [submitted, setSubmitted] = useState(false);
@@ -43,12 +23,30 @@ export default function HostApplication() {
     handleSubmit,
     setValue,
     watch,
-    formState: { errors, isSubmitting },
-  } = useForm<HostApplicationForm>({
-    resolver: zodResolver(hostApplicationSchema),
+    formState: { errors, isSubmitting, isValid, isDirty },
+  } = useForm<HostApplicationFormData>({
+    resolver: zodResolver(hostApplicationFormSchema),
+    mode: "onChange",
+    defaultValues: {
+      businessName: '',
+      contactFirstName: '',
+      contactLastName: '',
+      email: '',
+      phone: '',
+      propertyType: '',
+      propertyAddress: '',
+      parkingSpaces: '',
+      electricalCapacity: '',
+      expectedTraffic: '',
+      operatingHours: '',
+      currentAmenities: '',
+      partnershipInterest: '',
+      timeline: '',
+      additionalInfo: '',
+    }
   });
 
-  const onSubmit = async (data: HostApplicationForm) => {
+  const onSubmit = async (data: HostApplicationFormData) => {
     try {
       const response = await fetch('/api/host-applications', {
         method: 'POST',
@@ -59,6 +57,13 @@ export default function HostApplication() {
       });
       
       if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        if (response.status === 429) {
+          throw new Error('Rate limit exceeded. Please wait before submitting again.');
+        }
+        if (response.status === 400 && errorData?.details) {
+          throw new Error(`Validation failed: ${errorData.details.map((d: any) => d.message).join(', ')}`);
+        }
         throw new Error('Failed to submit application');
       }
       
@@ -67,15 +72,37 @@ export default function HostApplication() {
         title: "Application Submitted!",
         description: "We'll review your application and contact you within 48 hours.",
       });
-    } catch (error) {
-      console.error('Error submitting application:', error);
+    } catch (error: any) {
+      console.error('Error submitting host application:', error);
+      
+      if (error.message.includes('Rate limit')) {
+        toast({
+          title: "Rate limit exceeded",
+          description: "Please wait before submitting another application.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      if (error.message.includes('Validation failed')) {
+        toast({
+          title: "Please check your input",
+          description: "Some fields contain invalid information.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
       toast({
-        title: "Error",
-        description: "Something went wrong. Please try again.",
+        title: "Application failed",
+        description: error.message || "Please try again or contact support if the problem persists.",
         variant: "destructive",
       });
     }
   };
+
+  const additionalInfoValue = watch("additionalInfo");
+  const isSubmitDisabled = !isValid || !isDirty || isSubmitting;
 
   if (submitted) {
     return (
@@ -470,10 +497,17 @@ export default function HostApplication() {
             <Button
               type="submit"
               size="lg"
-              disabled={isSubmitting}
-              className="w-full bg-gold hover:bg-gold/90 text-black font-bold py-4 rounded-full text-lg transition-all duration-300 transform hover:scale-105 font-display"
+              disabled={isSubmitDisabled}
+              className="w-full bg-gold hover:bg-gold/90 text-black font-bold py-4 rounded-full text-lg transition-all duration-300 transform hover:scale-105 font-display disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? "Submitting Application..." : "Submit Host Application"}
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  Submitting Application...
+                </>
+              ) : (
+                "Submit Host Application"
+              )}
             </Button>
           </motion.form>
         </motion.div>

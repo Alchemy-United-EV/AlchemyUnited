@@ -5,26 +5,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { FormField } from "@/components/ui/form-field";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { Link } from "wouter";
-import { ArrowLeft, CheckCircle } from "lucide-react";
+import { ArrowLeft, CheckCircle, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-
-const earlyAccessSchema = z.object({
-  firstName: z.string().min(2, "First name must be at least 2 characters"),
-  lastName: z.string().min(2, "Last name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email address"),
-  phone: z.string().min(10, "Please enter a valid phone number"),
-  vehicleType: z.string().min(1, "Please select your vehicle type"),
-  chargingFrequency: z.string().min(1, "Please select charging frequency"),
-  location: z.string().min(5, "Please enter your city and state"),
-  referralCode: z.string().optional(),
-  interests: z.string().optional(),
-});
-
-type EarlyAccessForm = z.infer<typeof earlyAccessSchema>;
+import { earlyAccessFormSchema, type EarlyAccessFormData } from "@/lib/validationSchemas";
 
 export default function EarlyAccess() {
   const [submitted, setSubmitted] = useState(false);
@@ -34,12 +21,25 @@ export default function EarlyAccess() {
     register,
     handleSubmit,
     setValue,
-    formState: { errors, isSubmitting },
-  } = useForm<EarlyAccessForm>({
-    resolver: zodResolver(earlyAccessSchema),
+    watch,
+    formState: { errors, isSubmitting, isValid, isDirty },
+  } = useForm<EarlyAccessFormData>({
+    resolver: zodResolver(earlyAccessFormSchema),
+    mode: "onChange",
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      vehicleType: '',
+      chargingFrequency: '',
+      location: '',
+      referralCode: '',
+      interests: '',
+    }
   });
 
-  const onSubmit = async (data: EarlyAccessForm) => {
+  const onSubmit = async (data: EarlyAccessFormData) => {
     try {
       const response = await fetch('/api/early-access-applications', {
         method: 'POST',
@@ -50,6 +50,13 @@ export default function EarlyAccess() {
       });
       
       if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        if (response.status === 429) {
+          throw new Error('Rate limit exceeded. Please wait before submitting again.');
+        }
+        if (response.status === 400 && errorData?.details) {
+          throw new Error(`Validation failed: ${errorData.details.map((d: any) => d.message).join(', ')}`);
+        }
         throw new Error('Failed to submit application');
       }
       
@@ -58,15 +65,37 @@ export default function EarlyAccess() {
         title: "Application Submitted!",
         description: "We'll be in touch with your early access invitation soon.",
       });
-    } catch (error) {
-      console.error('Error submitting application:', error);
+    } catch (error: any) {
+      console.error('Error submitting early access application:', error);
+      
+      if (error.message.includes('Rate limit')) {
+        toast({
+          title: "Rate limit exceeded",
+          description: "Please wait before submitting another application.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      if (error.message.includes('Validation failed')) {
+        toast({
+          title: "Please check your input",
+          description: "Some fields contain invalid information.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
       toast({
-        title: "Error",
-        description: "Something went wrong. Please try again.",
+        title: "Application failed",
+        description: error.message || "Please try again or contact support if the problem persists.",
         variant: "destructive",
       });
     }
   };
+
+  const interestsValue = watch("interests");
+  const isSubmitDisabled = !isValid || !isDirty || isSubmitting;
 
   if (submitted) {
     return (
@@ -294,10 +323,17 @@ export default function EarlyAccess() {
             <Button
               type="submit"
               size="lg"
-              disabled={isSubmitting}
-              className="w-full bg-gold hover:bg-gold/90 text-black font-bold py-4 rounded-full text-lg transition-all duration-300 transform hover:scale-105 font-display"
+              disabled={isSubmitDisabled}
+              className="w-full bg-gold hover:bg-gold/90 text-black font-bold py-4 rounded-full text-lg transition-all duration-300 transform hover:scale-105 font-display disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? "Submitting..." : "Request Early Access"}
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  Submitting...
+                </>
+              ) : (
+                "Request Early Access"
+              )}
             </Button>
           </motion.form>
         </motion.div>

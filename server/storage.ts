@@ -17,9 +17,10 @@ import {
   type InsertMember,
   type Lead,
   type InsertLead,
+  type UpdateLeadStatus,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, desc, and } from "drizzle-orm";
+import { eq, desc, and, asc, or, ilike } from "drizzle-orm";
 import { randomBytes } from "crypto";
 
 export interface IStorage {
@@ -54,6 +55,10 @@ export interface IStorage {
   // Leads operations
   createLead(data: InsertLead): Promise<Lead>;
   getRecentLeads(limit?: number): Promise<Lead[]>;
+  getLeadById(id: number): Promise<Lead | undefined>;
+  updateLeadStatus(id: number, status: string): Promise<Lead>;
+  getLeadsByStatus(status?: string): Promise<Lead[]>;
+  searchLeads(searchTerm?: string, status?: string, sortBy?: string, sortOrder?: string): Promise<Lead[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -250,7 +255,11 @@ export class DatabaseStorage implements IStorage {
   async createLead(data: InsertLead): Promise<Lead> {
     const [lead] = await db
       .insert(leads)
-      .values(data)
+      .values({
+        ...data,
+        status: "new",
+        updatedAt: new Date()
+      })
       .returning();
     return lead;
   }
@@ -262,6 +271,77 @@ export class DatabaseStorage implements IStorage {
       .orderBy(desc(leads.createdAt))
       .limit(limit);
     return recentLeads;
+  }
+
+  async getLeadById(id: number): Promise<Lead | undefined> {
+    const [lead] = await db
+      .select()
+      .from(leads)
+      .where(eq(leads.id, id));
+    return lead || undefined;
+  }
+
+  async updateLeadStatus(id: number, status: string): Promise<Lead> {
+    const [updated] = await db
+      .update(leads)
+      .set({ 
+        status: status as any,
+        updatedAt: new Date() 
+      })
+      .where(eq(leads.id, id))
+      .returning();
+    return updated;
+  }
+
+  async getLeadsByStatus(status?: string): Promise<Lead[]> {
+    if (!status) {
+      return this.getRecentLeads();
+    }
+    
+    return await db
+      .select()
+      .from(leads)
+      .where(eq(leads.status, status as any))
+      .orderBy(desc(leads.createdAt));
+  }
+
+  async searchLeads(searchTerm?: string, status?: string, sortBy = "createdAt", sortOrder = "desc"): Promise<Lead[]> {
+    let query = db.select().from(leads);
+    
+    // Build where conditions
+    const conditions = [];
+    
+    if (searchTerm) {
+      conditions.push(
+        or(
+          ilike(leads.name, `%${searchTerm}%`),
+          ilike(leads.email, `%${searchTerm}%`),
+          ilike(leads.company, `%${searchTerm}%`),
+          ilike(leads.message, `%${searchTerm}%`)
+        )
+      );
+    }
+    
+    if (status && status !== "all") {
+      conditions.push(eq(leads.status, status as any));
+    }
+    
+    if (conditions.length > 0) {
+      query = query.where(and(...conditions)) as any;
+    }
+    
+    // Add sorting
+    const sortColumn = sortBy === "name" ? leads.name : 
+                      sortBy === "email" ? leads.email :
+                      sortBy === "status" ? leads.status :
+                      sortBy === "type" ? leads.type :
+                      sortBy === "updatedAt" ? leads.updatedAt :
+                      leads.createdAt;
+    
+    const orderFunction = sortOrder === "asc" ? asc : desc;
+    query = query.orderBy(orderFunction(sortColumn)) as any;
+    
+    return await query;
   }
 }
 

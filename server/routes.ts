@@ -285,15 +285,59 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     });
 
-  // Admin fetch of recent leads (protected)
+  // Admin fetch of recent leads with search and filtering (protected)
   app.get('/api/leads', authenticateToken, async (req, res) => {
     try {
-      const limit = Math.min(Number(req.query.limit) || 200, 1000);
-      const rows = await storage.getRecentLeads(limit);
-      res.json(rows);
+      const { search, status, sortBy, sortOrder, limit } = req.query;
+      
+      if (search || status || sortBy || sortOrder) {
+        // Use enhanced search with filters
+        const leads = await storage.searchLeads(
+          search as string,
+          status as string,
+          sortBy as string,
+          sortOrder as string
+        );
+        res.json(leads);
+      } else {
+        // Default to recent leads
+        const limitNum = Math.min(Number(limit) || 200, 1000);
+        const rows = await storage.getRecentLeads(limitNum);
+        res.json(rows);
+      }
     } catch (err) {
       console.error("get leads error:", err);
       res.status(500).json({ error: "Failed to fetch leads" });
+    }
+  });
+
+  // Update lead status (protected)
+  app.patch('/api/leads/:id/status', authenticateToken, async (req, res) => {
+    try {
+      const leadId = parseInt(req.params.id);
+      const { status } = req.body;
+
+      // Validate lead ID
+      if (isNaN(leadId)) {
+        return res.status(400).json({ error: 'Invalid lead ID' });
+      }
+
+      // Validate status
+      if (!status || !['new', 'contacted', 'converted'].includes(status)) {
+        return res.status(400).json({ 
+          error: 'Invalid status. Must be one of: new, contacted, converted' 
+        });
+      }
+
+      const updatedLead = await storage.updateLeadStatus(leadId, status);
+      res.json({ 
+        ok: true, 
+        message: 'Lead status updated successfully',
+        lead: updatedLead 
+      });
+    } catch (err) {
+      console.error("update lead status error:", err);
+      res.status(500).json({ error: "Failed to update lead status" });
     }
   });
 

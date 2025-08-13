@@ -18,6 +18,7 @@ export default function Dashboard() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [leadsSearchTerm, setLeadsSearchTerm] = useState("");
   const [leadsTypeFilter, setLeadsTypeFilter] = useState("all");
+  const [leadsStatusFilter, setLeadsStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [leadsPerPage] = useState(20);
   const queryClient = useQueryClient();
@@ -88,6 +89,27 @@ export default function Dashboard() {
     },
   });
 
+  // Lead status update mutation
+  const updateLeadStatus = useMutation({
+    mutationFn: async ({ id, status }: { id: number; status: string }) => {
+      const token = localStorage.getItem('auth_token');
+      const response = await fetch(`/api/leads/${id}/status`, {
+        method: 'PATCH',
+        headers: { 
+          'Content-Type': 'application/json',
+          ...(token && { 'Authorization': `Bearer ${token}` }),
+        },
+        body: JSON.stringify({ status }),
+      });
+      if (!response.ok) throw new Error('Failed to update lead status');
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/leads'] });
+      toast({ title: "Lead Status Updated", description: "Lead status has been updated successfully." });
+    },
+  });
+
   const sendVerification = async (applicationId: string) => {
     try {
       const response = await fetch(`/api/send-verification/${applicationId}`, {
@@ -130,14 +152,16 @@ export default function Dashboard() {
     return matchesSearch && matchesStatus;
   });
 
-  // Filter leads based on search and type
+  // Filter leads based on search, type, and status
   const filteredLeads = leads.filter(lead => {
     const matchesSearch = 
       (lead.name?.toLowerCase() || "").includes(leadsSearchTerm.toLowerCase()) ||
       (lead.email?.toLowerCase() || "").includes(leadsSearchTerm.toLowerCase()) ||
-      (lead.company?.toLowerCase() || "").includes(leadsSearchTerm.toLowerCase());
+      (lead.company?.toLowerCase() || "").includes(leadsSearchTerm.toLowerCase()) ||
+      (lead.message?.toLowerCase() || "").includes(leadsSearchTerm.toLowerCase());
     const matchesType = leadsTypeFilter === 'all' || lead.type === leadsTypeFilter;
-    return matchesSearch && matchesType;
+    const matchesStatus = leadsStatusFilter === 'all' || lead.status === leadsStatusFilter;
+    return matchesSearch && matchesType && matchesStatus;
   });
 
   // Pagination for leads
@@ -152,10 +176,15 @@ export default function Dashboard() {
   // Status badge component
   const StatusBadge = ({ status }: { status: string }) => {
     const variants = {
+      // Application statuses
       pending: { color: "bg-yellow-500", icon: Clock },
       approved: { color: "bg-green-500", icon: CheckCircle },
       rejected: { color: "bg-red-500", icon: XCircle },
       "in-review": { color: "bg-blue-500", icon: Clock },
+      // Lead statuses
+      new: { color: "bg-blue-500", icon: Mail },
+      contacted: { color: "bg-yellow-500", icon: MessageSquare },
+      converted: { color: "bg-green-500", icon: CheckCircle },
     };
     
     const variant = variants[status as keyof typeof variants] || variants.pending;
@@ -166,6 +195,26 @@ export default function Dashboard() {
         <Icon className="w-3 h-3 mr-1" />
         {status.charAt(0).toUpperCase() + status.slice(1).replace('-', ' ')}
       </Badge>
+    );
+  };
+
+  // Lead status dropdown component
+  const LeadStatusDropdown = ({ lead }: { lead: Lead }) => {
+    const handleStatusChange = (newStatus: string) => {
+      updateLeadStatus.mutate({ id: lead.id, status: newStatus });
+    };
+
+    return (
+      <Select value={lead.status} onValueChange={handleStatusChange}>
+        <SelectTrigger className="w-32">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="new">New</SelectItem>
+          <SelectItem value="contacted">Contacted</SelectItem>
+          <SelectItem value="converted">Converted</SelectItem>
+        </SelectContent>
+      </Select>
     );
   };
 
@@ -554,6 +603,22 @@ export default function Dashboard() {
                     <SelectItem value="waitlist">Waitlist</SelectItem>
                   </SelectContent>
                 </Select>
+
+                <Select value={leadsStatusFilter} onValueChange={(value) => {
+                  setLeadsStatusFilter(value);
+                  resetPage();
+                }}>
+                  <SelectTrigger className="w-full sm:w-40 h-10">
+                    <Filter className="w-4 h-4 mr-2" />
+                    <SelectValue placeholder="Filter by status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Statuses</SelectItem>
+                    <SelectItem value="new">New</SelectItem>
+                    <SelectItem value="contacted">Contacted</SelectItem>
+                    <SelectItem value="converted">Converted</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               {loadingLeads ? (
@@ -573,6 +638,7 @@ export default function Dashboard() {
                             <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">Company</th>
                             <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">Phone</th>
                             <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">Message</th>
+                            <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">Status</th>
                             <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">Date</th>
                           </tr>
                         </thead>
@@ -612,6 +678,9 @@ export default function Dashboard() {
                                 ) : (
                                   <span className="text-gray-400">-</span>
                                 )}
+                              </td>
+                              <td className="py-3 px-4">
+                                <LeadStatusDropdown lead={lead} />
                               </td>
                               <td className="py-3 px-4 text-sm text-gray-600">
                                 {lead.createdAt ? new Date(lead.createdAt).toLocaleDateString() : 'N/A'}

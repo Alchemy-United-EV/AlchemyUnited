@@ -3,6 +3,8 @@
 This is a premium web platform for Alchemy United, a luxury EV charging network. The project features a sophisticated one-page marketing website with comprehensive application forms for early access and host partnerships. Built with React and Express.js, it showcases high-end EV charging technology with luxury automotive brand positioning and premium user experience. The platform includes functional routing, form validation, and professional success flows for lead generation.
 
 ## Recent Changes
+- **Lead Status Tracking**: Added status field to leads database with options: 'New', 'Contacted', 'Converted' and pushed schema changes successfully
+- **Admin Dashboard Enhancement**: Updated dashboard with status management capabilities including dropdown controls for changing lead status and filtering
 - **Enhanced Form Validation**: Implemented comprehensive client-side validation with react-hook-form and zod schemas across all forms
 - **Real-time Feedback**: Added real-time error messages, field validation, character counting, and submit button state management
 - **Improved UX**: Forms now show loading spinners, disable submit until valid, highlight errors with red borders, and provide clear feedback

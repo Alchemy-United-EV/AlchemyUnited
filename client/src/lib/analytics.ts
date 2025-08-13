@@ -60,6 +60,46 @@ export const trackEvent = (
   });
 };
 
+// Track scroll depth
+export const trackScrollDepth = (percentage: number) => {
+  trackEvent('scroll_depth', 'engagement', `${percentage}%`, percentage);
+};
+
+// Track time on page
+export const trackTimeOnPage = (seconds: number) => {
+  trackEvent('time_on_page', 'engagement', 'duration', seconds);
+};
+
+// Track CTA clicks
+export const trackCTAClick = (ctaName: string, location: string) => {
+  trackEvent('cta_click', 'conversion', `${ctaName}_${location}`);
+};
+
+// Track form abandonment
+export const trackFormAbandonment = (formType: string, lastField: string) => {
+  trackEvent('form_abandonment', 'conversion', `${formType}_${lastField}`);
+};
+
+// Track hover interactions
+export const trackHoverInteraction = (element: string, duration: number) => {
+  trackEvent('hover_interaction', 'engagement', element, duration);
+};
+
+// Track section visibility
+export const trackSectionView = (sectionName: string, timeSpent: number) => {
+  trackEvent('section_view', 'engagement', sectionName, timeSpent);
+};
+
+// Track performance metrics
+export const trackPerformance = (metric: string, value: number) => {
+  trackEvent('performance', 'technical', metric, value);
+};
+
+// Track error events
+export const trackError = (errorType: string, errorMessage: string) => {
+  trackEvent('error', 'technical', `${errorType}_${errorMessage}`);
+};
+
 // Specific tracking functions for common events
 export const trackFormSubmission = (formType: string, success: boolean = true) => {
   trackEvent('form_submit', 'engagement', formType, success ? 1 : 0);

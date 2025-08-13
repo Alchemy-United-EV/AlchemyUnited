@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { submitContact } from "@/lib/api";
 import { contactFormSchema, type ContactFormData } from "@/lib/validationSchemas";
 import { trackFormSubmission } from "@/lib/analytics";
+import { useFormAbandonment } from "@/hooks/use-form-abandonment";
 import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 
@@ -26,7 +27,10 @@ export default function ContactForm() {
     mode: "onChange" // Enable real-time validation
   });
 
-  const { register, handleSubmit, formState: { errors, isValid, isDirty }, reset, watch } = form;
+  const { register, handleSubmit, formState: { errors, isValid, isDirty, isSubmitSuccessful }, reset, watch } = form;
+  
+  // Track form abandonment
+  useFormAbandonment('contact', { isSubmitSuccessful });
 
   // Watch form values for character counting
   const messageValue = watch("message");

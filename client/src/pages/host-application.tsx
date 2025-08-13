@@ -14,6 +14,7 @@ import { ArrowLeft, CheckCircle, Building, DollarSign, Shield, Zap, Loader2 } fr
 import { useToast } from "@/hooks/use-toast";
 import { hostApplicationFormSchema, type HostApplicationFormData } from "@/lib/validationSchemas";
 import { trackFormSubmission } from "@/lib/analytics";
+import { useFormAbandonment } from "@/hooks/use-form-abandonment";
 
 export default function HostApplication() {
   const [submitted, setSubmitted] = useState(false);
@@ -24,7 +25,7 @@ export default function HostApplication() {
     handleSubmit,
     setValue,
     watch,
-    formState: { errors, isSubmitting, isValid, isDirty },
+    formState: { errors, isSubmitting, isValid, isDirty, isSubmitSuccessful },
   } = useForm<HostApplicationFormData>({
     resolver: zodResolver(hostApplicationFormSchema),
     mode: "onChange",
@@ -46,6 +47,9 @@ export default function HostApplication() {
       additionalInfo: '',
     }
   });
+
+  // Track form abandonment
+  useFormAbandonment('host_application', { isSubmitSuccessful });
 
   const onSubmit = async (data: HostApplicationFormData) => {
     try {

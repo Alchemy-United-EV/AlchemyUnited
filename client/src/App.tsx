@@ -7,6 +7,9 @@ import { AuthWrapper } from "@/components/ui/AuthWrapper";
 import { useEffect } from "react";
 import { initGA } from "./lib/analytics";
 import { useAnalytics } from "./hooks/use-analytics";
+import { useScrollTracking } from "./hooks/use-scroll-tracking";
+import { usePerformanceTracking } from "./hooks/use-performance-tracking";
+import { useBusinessAnalytics } from "./hooks/use-business-analytics";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import EarlyAccess from "@/pages/early-access";
@@ -17,6 +20,11 @@ import Verify from "@/pages/verify";
 function Router() {
   // Track page views when routes change
   useAnalytics();
+  
+  // Track scroll behavior, performance, and business metrics
+  useScrollTracking();
+  usePerformanceTracking();
+  useBusinessAnalytics();
   
   return (
     <Switch>

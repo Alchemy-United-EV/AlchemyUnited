@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { submitWaitlist } from "@/lib/api";
 import { waitlistFormSchema, type WaitlistFormData } from "@/lib/validationSchemas";
 import { trackFormSubmission } from "@/lib/analytics";
+import { useFormAbandonment } from "@/hooks/use-form-abandonment";
 import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 
@@ -22,7 +23,10 @@ export default function WaitlistForm() {
     mode: "onChange"
   });
 
-  const { register, handleSubmit, formState: { errors, isValid, isDirty }, reset } = form;
+  const { register, handleSubmit, formState: { errors, isValid, isDirty, isSubmitSuccessful }, reset } = form;
+  
+  // Track form abandonment
+  useFormAbandonment('waitlist', { isSubmitSuccessful });
 
   const mutation = useMutation({
     mutationFn: submitWaitlist,

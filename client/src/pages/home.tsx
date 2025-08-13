@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { trackPageInteraction } from "@/lib/analytics";
+import { useCTATracking } from "@/hooks/use-cta-tracking";
 import ContactForm from "@/components/forms/ContactForm";
 import WaitlistForm from "@/components/forms/WaitlistForm";
 import PartnerForm from "@/components/forms/PartnerForm";
@@ -169,6 +170,7 @@ function ProblemSolutionSlideshow() {
 export default function Home() {
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
+  const { trackCTA } = useCTATracking();
   
   // Hero parallax effects - gentler fade for better interaction
   const heroOpacity = useTransform(scrollY, [0, 800], [1, 0]);
@@ -207,6 +209,7 @@ export default function Home() {
 
       {/* Hero Section */}
       <motion.section 
+        data-section="hero"
         className="relative h-screen bg-black overflow-hidden flex items-center justify-center"
         style={{ opacity: heroOpacity, y: heroY }}
       >
@@ -251,13 +254,19 @@ export default function Home() {
             transition={{ delay: 1.8, duration: 1 }}
           >
             <button
-              onClick={() => window.location.href = '/early-access'}
+              onClick={() => {
+                trackCTA('request_early_access', 'hero');
+                window.location.href = '/early-access';
+              }}
               className="inline-flex items-center justify-center bg-gold hover:bg-gold/90 text-black font-bold py-4 px-12 sm:py-6 sm:px-16 rounded-full text-lg sm:text-xl transition-all duration-300 transform hover:scale-105 font-display w-full sm:w-auto cursor-pointer"
             >
               Request Early Access
             </button>
             <button
-              onClick={() => window.location.href = '/host'}
+              onClick={() => {
+                trackCTA('become_host', 'hero');
+                window.location.href = '/host';
+              }}
               className="inline-flex items-center justify-center border-2 border-white/30 hover:border-gold text-white hover:text-gold hover:bg-gold/10 font-bold py-4 px-12 sm:py-6 sm:px-16 rounded-full text-lg sm:text-xl transition-all duration-300 bg-transparent font-display w-full sm:w-auto cursor-pointer"
             >
               Become a Host
@@ -267,14 +276,14 @@ export default function Home() {
       </motion.section>
 
       {/* Problem > Solution Slideshow Section */}
-      <section className="relative min-h-screen bg-white py-20 px-6 sm:px-12 lg:px-20 overflow-hidden">
+      <section data-section="problem_solution" className="relative min-h-screen bg-white py-20 px-6 sm:px-12 lg:px-20 overflow-hidden">
         <div className="max-w-6xl mx-auto">
           <ProblemSolutionSlideshow />
         </div>
       </section>
 
       {/* Offer Section */}
-      <section className="relative min-h-screen bg-gray-900 py-20 px-6 sm:px-12 lg:px-20 flex items-center">
+      <section data-section="early_access_offer" className="relative min-h-screen bg-gray-900 py-20 px-6 sm:px-12 lg:px-20 flex items-center">
         <div className="absolute inset-0 opacity-20">
           <img 
             src="/assets/cable-flow.png" 
@@ -363,7 +372,10 @@ export default function Home() {
             viewport={{ once: true }}
           >
             <button
-              onClick={() => window.location.href = '/early-access'}
+              onClick={() => {
+                trackCTA('get_on_list', 'early_access_offer');
+                window.location.href = '/early-access';
+              }}
               className="inline-flex items-center justify-center bg-gold hover:bg-gold/90 text-black font-bold py-8 px-16 rounded-full text-2xl transition-all duration-300 transform hover:scale-105 font-display cursor-pointer"
             >
               Get On The List
@@ -373,7 +385,7 @@ export default function Home() {
       </section>
 
       {/* Become a Host Section */}
-      <section className="relative min-h-screen bg-black py-20 px-6 sm:px-12 lg:px-20 flex items-center">
+      <section data-section="become_host" className="relative min-h-screen bg-black py-20 px-6 sm:px-12 lg:px-20 flex items-center">
         <div className="absolute inset-0 opacity-40">
           <img 
             src="/assets/plug-closeup.png" 
@@ -404,7 +416,10 @@ export default function Home() {
             viewport={{ once: true }}
           >
             <button
-              onClick={() => window.location.href = '/host'}
+              onClick={() => {
+                trackCTA('apply_to_host', 'become_host');
+                window.location.href = '/host';
+              }}
               className="inline-flex items-center justify-center bg-gold hover:bg-gold/90 text-black font-bold py-8 px-16 rounded-full text-2xl transition-all duration-300 transform hover:scale-105 font-display cursor-pointer"
             >
               Apply to Host
@@ -414,7 +429,7 @@ export default function Home() {
       </section>
 
       {/* How It Works Section */}
-      <section className="relative min-h-screen bg-white py-20 px-6 sm:px-12 lg:px-20 flex items-center">
+      <section data-section="how_it_works" className="relative min-h-screen bg-white py-20 px-6 sm:px-12 lg:px-20 flex items-center">
         <motion.div 
           className="max-w-6xl mx-auto"
           initial={{ y: 60, opacity: 0 }}
@@ -487,7 +502,7 @@ export default function Home() {
       </section>
 
       {/* Contact & Partnership Section */}
-      <section className="relative bg-gray-50 py-20 px-6 sm:px-12 lg:px-20">
+      <section data-section="contact_partnership" className="relative bg-gray-50 py-20 px-6 sm:px-12 lg:px-20">
         <motion.div 
           className="max-w-6xl mx-auto"
           initial={{ y: 60, opacity: 0 }}
@@ -512,7 +527,7 @@ export default function Home() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="relative bg-white py-20 px-6 sm:px-12 lg:px-20">
+      <section data-section="testimonials" className="relative bg-white py-20 px-6 sm:px-12 lg:px-20">
         <motion.div 
           className="max-w-6xl mx-auto text-center"
           initial={{ y: 60, opacity: 0 }}
@@ -545,7 +560,7 @@ export default function Home() {
       </section>
 
       {/* Final CTA Footer with Waitlist */}
-      <section className="relative min-h-screen bg-black flex items-center justify-center">
+      <section data-section="final_cta" className="relative min-h-screen bg-black flex items-center justify-center">
         <div className="absolute inset-0 opacity-50">
           <img 
             src="/assets/hero-ev-charger.png" 
@@ -589,7 +604,10 @@ export default function Home() {
               Or apply for full early access
             </p>
             <button
-              onClick={() => window.location.href = '/early-access'}
+              onClick={() => {
+                trackCTA('full_application', 'final_cta');
+                window.location.href = '/early-access';
+              }}
               className="inline-flex items-center justify-center bg-transparent border-2 border-gold text-gold hover:bg-gold hover:text-black font-bold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 font-display cursor-pointer"
             >
               Full Application

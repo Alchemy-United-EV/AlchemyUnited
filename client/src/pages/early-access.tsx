@@ -13,6 +13,7 @@ import { ArrowLeft, CheckCircle, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { earlyAccessFormSchema, type EarlyAccessFormData } from "@/lib/validationSchemas";
 import { trackFormSubmission } from "@/lib/analytics";
+import { useFormAbandonment } from "@/hooks/use-form-abandonment";
 
 export default function EarlyAccess() {
   const [submitted, setSubmitted] = useState(false);
@@ -23,7 +24,7 @@ export default function EarlyAccess() {
     handleSubmit,
     setValue,
     watch,
-    formState: { errors, isSubmitting, isValid, isDirty },
+    formState: { errors, isSubmitting, isValid, isDirty, isSubmitSuccessful },
   } = useForm<EarlyAccessFormData>({
     resolver: zodResolver(earlyAccessFormSchema),
     mode: "onChange",
@@ -39,6 +40,9 @@ export default function EarlyAccess() {
       interests: '',
     }
   });
+
+  // Track form abandonment
+  useFormAbandonment('early_access', { isSubmitSuccessful });
 
   const onSubmit = async (data: EarlyAccessFormData) => {
     try {

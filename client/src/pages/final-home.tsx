@@ -10,10 +10,6 @@ export default function FinalHome() {
               src="/attached_assets/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.png"
               alt="Alchemy United Logo"
               className="h-24 w-auto mx-auto drop-shadow-2xl"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.style.display = 'none';
-              }}
             />
           </div>
 

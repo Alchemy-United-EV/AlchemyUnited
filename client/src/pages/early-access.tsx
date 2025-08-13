@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -71,12 +70,7 @@ export default function EarlyAccess() {
   if (submitted) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center px-4">
-        <motion.div
-          className="max-w-2xl mx-auto text-center text-white"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
+        <div className="max-w-2xl mx-auto text-center text-white animate-fade-in-up">
           <div className="mb-8">
             <img 
               src="/assets/au-logo.png" 
@@ -106,7 +100,7 @@ export default function EarlyAccess() {
               Return Home
             </Button>
           </Link>
-        </motion.div>
+        </div>
       </div>
     );
   }
@@ -130,12 +124,7 @@ export default function EarlyAccess() {
       </nav>
 
       <div className="pt-24 pb-12 px-4 sm:px-6 lg:px-8">
-        <motion.div 
-          className="max-w-2xl mx-auto"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
+        <div className="max-w-2xl mx-auto animate-fade-in-up">
           <div className="text-center mb-12">
             <h1 className="text-4xl sm:text-5xl font-black text-white mb-4 font-display">
               Request <span className="text-gold">Early Access</span>
@@ -145,12 +134,9 @@ export default function EarlyAccess() {
             </p>
           </div>
 
-          <motion.form 
+          <form 
             onSubmit={handleSubmit(onSubmit)}
-            className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 space-y-6"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.8 }}
+            className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 space-y-6 animate-fade-in-up"
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
@@ -299,8 +285,8 @@ export default function EarlyAccess() {
             >
               {isSubmitting ? "Submitting..." : "Request Early Access"}
             </Button>
-          </motion.form>
-        </motion.div>
+          </form>
+        </div>
       </div>
     </div>
   );

@@ -6,31 +6,60 @@
 @tailwind utilities;
 
 :root {
-  --background: hsl(0, 0%, 100%);
-  --foreground: hsl(20, 14.3%, 4.1%);
-  --muted: hsl(60, 4.8%, 95.9%);
-  --muted-foreground: hsl(25, 5.3%, 44.7%);
-  --popover: hsl(0, 0%, 100%);
-  --popover-foreground: hsl(20, 14.3%, 4.1%);
-  --card: hsl(0, 0%, 100%);
-  --card-foreground: hsl(20, 14.3%, 4.1%);
-  --border: hsl(20, 5.9%, 90%);
-  --input: hsl(20, 5.9%, 90%);
-  --primary: hsl(207, 90%, 54%);
-  --primary-foreground: hsl(211, 100%, 99%);
-  --secondary: hsl(60, 4.8%, 95.9%);
-  --secondary-foreground: hsl(24, 9.8%, 10%);
-  --accent: hsl(60, 4.8%, 95.9%);
-  --accent-foreground: hsl(24, 9.8%, 10%);
-  --destructive: hsl(0, 84.2%, 60.2%);
-  --destructive-foreground: hsl(60, 9.1%, 97.8%);
-  --ring: hsl(20, 14.3%, 4.1%);
-  --radius: 0.5rem;
-  --gradient-primary: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%);
-  --gold: #D4AF37;
+  --background: hsl(240, 10%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 3.7%, 15.9%);
+  --muted-foreground: hsl(240, 5%, 64.9%);
+  --popover: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 3.7%, 15.9%);
+  --input: hsl(240, 3.7%, 15.9%);
+  --primary: hsl(47, 76%, 55%);
+  --primary-foreground: hsl(240, 10%, 3.9%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(47, 76%, 55%);
+  --accent-foreground: hsl(240, 10%, 3.9%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(47, 76%, 55%);
+  --radius: 0.75rem;
   
-  /* Gold gradient for luxury branding - matches logo */
-  --gradient-gold: linear-gradient(135deg, #B8860B 0%, #D4AF37 50%, #FFD700 100%);
+  /* Enhanced Gold System */
+  --gold-50: hsl(47, 76%, 95%);
+  --gold-100: hsl(47, 76%, 88%);
+  --gold-200: hsl(47, 76%, 78%);
+  --gold-300: hsl(47, 76%, 68%);
+  --gold-400: hsl(47, 76%, 58%);
+  --gold-500: hsl(47, 76%, 48%);
+  --gold-600: hsl(47, 76%, 38%);
+  --gold-700: hsl(47, 76%, 28%);
+  --gold-800: hsl(47, 76%, 18%);
+  --gold-900: hsl(47, 76%, 8%);
+  
+  --gold: hsl(47, 76%, 55%);
+  --gold-bright: hsl(51, 100%, 65%);
+  --gold-deep: hsl(43, 74%, 45%);
+  --gold-dark: hsl(38, 67%, 35%);
+  
+  /* Luxury Gradients */
+  --gradient-primary: linear-gradient(135deg, hsl(47, 76%, 55%) 0%, hsl(51, 100%, 65%) 50%, hsl(47, 76%, 55%) 100%);
+  --gradient-gold: linear-gradient(135deg, hsl(43, 74%, 45%) 0%, hsl(47, 76%, 55%) 30%, hsl(51, 100%, 65%) 70%, hsl(47, 76%, 55%) 100%);
+  --gradient-hero: linear-gradient(135deg, hsl(240, 10%, 3.9%) 0%, hsl(240, 8%, 8%) 25%, hsl(47, 76%, 8%) 75%, hsl(47, 76%, 12%) 100%);
+  --gradient-card: linear-gradient(135deg, hsl(240, 10%, 6%) 0%, hsl(240, 8%, 10%) 50%, hsl(240, 10%, 6%) 100%);
+  
+  /* Shadows & Glows */
+  --shadow-gold: 0 4px 20px hsla(47, 76%, 55%, 0.3);
+  --shadow-gold-lg: 0 8px 40px hsla(47, 76%, 55%, 0.4);
+  --glow-gold: 0 0 20px hsla(47, 76%, 55%, 0.6);
+  --glow-gold-intense: 0 0 40px hsla(47, 76%, 55%, 0.8);
+  
+  /* Glass & Blur Effects */
+  --glass-bg: hsla(240, 10%, 6%, 0.8);
+  --glass-border: hsla(47, 76%, 55%, 0.2);
+  --blur-amount: 12px;
 }
 
 .dark {
@@ -87,62 +116,150 @@
 }
 
 @layer utilities {
+  /* Enhanced Animation System */
   .animate-float {
-    animation: float 3s ease-in-out infinite;
+    animation: float 4s ease-in-out infinite;
+  }
+  
+  .animate-float-delayed {
+    animation: float 4s ease-in-out infinite 0.5s;
   }
   
   .animate-glow {
-    animation: glow 2s ease-in-out infinite alternate;
+    animation: glow 3s ease-in-out infinite alternate;
   }
   
+  .animate-pulse-gold {
+    animation: pulse-gold 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  .animate-gradient-x {
+    animation: gradient-x 3s ease infinite;
+    background-size: 200% 200%;
+  }
+  
+  .animate-shimmer {
+    animation: shimmer 2.5s linear infinite;
+    background: linear-gradient(90deg, transparent 0%, hsla(47, 76%, 55%, 0.4) 50%, transparent 100%);
+    background-size: 200% 100%;
+  }
+  
+  .animate-bounce-gentle {
+    animation: bounce-gentle 3s ease-in-out infinite;
+  }
+  
+  /* Gold Color System */
   .text-gold {
     color: var(--gold);
   }
   
-  .font-display {
-    font-family: 'Montserrat', 'Inter', system-ui, sans-serif;
-    font-weight: 700;
+  .text-gold-bright {
+    color: var(--gold-bright);
+  }
+  
+  .text-gold-deep {
+    color: var(--gold-deep);
   }
   
   .bg-gold {
     background-color: var(--gold);
   }
   
+  .bg-gold-gradient {
+    background: var(--gradient-gold);
+  }
+  
+  .bg-hero-gradient {
+    background: var(--gradient-hero);
+  }
+  
+  .bg-card-gradient {
+    background: var(--gradient-card);
+  }
+  
+  .bg-glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--blur-amount));
+    border: 1px solid var(--glass-border);
+  }
+  
   .border-gold {
     border-color: var(--gold);
   }
   
+  .border-gold-bright {
+    border-color: var(--gold-bright);
+  }
+  
+  /* Enhanced Typography */
+  .font-display {
+    font-family: 'Montserrat', 'Inter', system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+  }
+  
+  .font-luxury {
+    font-family: 'Montserrat', 'Inter', system-ui, sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  
+  /* Shadow & Glow Effects */
+  .shadow-gold {
+    box-shadow: var(--shadow-gold);
+  }
+  
+  .shadow-gold-lg {
+    box-shadow: var(--shadow-gold-lg);
+  }
+  
+  .glow-gold {
+    box-shadow: var(--glow-gold);
+  }
+  
+  .glow-gold-intense {
+    box-shadow: var(--glow-gold-intense);
+  }
+  
+  /* Interactive States */
+  .hover\:glow-gold:hover {
+    box-shadow: var(--glow-gold);
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .hover\:glow-gold-intense:hover {
+    box-shadow: var(--glow-gold-intense);
+    transition: box-shadow 0.3s ease;
+  }
+  
   .hover\:bg-gold\/90:hover {
-    background-color: rgba(212, 175, 55, 0.9);
+    background-color: hsla(47, 76%, 55%, 0.9);
   }
   
   .hover\:text-gold:hover {
     color: var(--gold);
   }
   
+  .hover\:text-gold-bright:hover {
+    color: var(--gold-bright);
+  }
+  
   .hover\:border-gold:hover {
     border-color: var(--gold);
   }
   
-  @keyframes float {
-    0%, 100% { 
-      transform: translateY(0px); 
-    }
-    50% { 
-      transform: translateY(-10px); 
-    }
+  .hover\:scale-105:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
   }
   
-  @keyframes glow {
-    from { 
-      box-shadow: 0 0 20px hsla(216, 87%, 54%, 0.5); 
-    }
-    to { 
-      box-shadow: 0 0 30px hsla(216, 87%, 54%, 0.8); 
-    }
+  .hover\:scale-110:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
   }
   
-  /* 3D Flip Card Utilities */
+  /* 3D Effects */
   .perspective-1000 {
     perspective: 1000px;
   }
@@ -155,19 +272,67 @@
     backface-visibility: hidden;
   }
   
-  /* Pulsating flip button animation */
-  .animate-pulse-gold {
-    animation: pulse-gold 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+  
+  /* Enhanced Keyframe Animations */
+  @keyframes float {
+    0%, 100% { 
+      transform: translateY(0px) rotate(0deg);
+    }
+    33% { 
+      transform: translateY(-8px) rotate(1deg);
+    }
+    66% { 
+      transform: translateY(-12px) rotate(-1deg);
+    }
+  }
+  
+  @keyframes glow {
+    from { 
+      box-shadow: var(--shadow-gold);
+    }
+    to { 
+      box-shadow: var(--glow-gold-intense);
+    }
   }
   
   @keyframes pulse-gold {
     0%, 100% {
-      box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7);
+      box-shadow: 0 0 0 0 hsla(47, 76%, 55%, 0.7);
       transform: scale(1);
     }
     50% {
-      box-shadow: 0 0 0 10px rgba(212, 175, 55, 0);
-      transform: scale(1.05);
+      box-shadow: 0 0 0 15px hsla(47, 76%, 55%, 0);
+      transform: scale(1.08);
+    }
+  }
+  
+  @keyframes gradient-x {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+  
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+  
+  @keyframes bounce-gentle {
+    0%, 100% { 
+      transform: translateY(0px);
+    }
+    50% { 
+      transform: translateY(-15px);
     }
   }
 }

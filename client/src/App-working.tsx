@@ -4,7 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { AuthWrapper } from "@/components/ui/AuthWrapper";
 import NotFound from "@/pages/not-found";
-import Home from "@/pages/home-simple";
+import Home from "@/pages/home-fixed";
 import EarlyAccess from "@/pages/early-access";
 import HostApplication from "@/pages/host-application";
 import SmartFormDemo from "@/pages/smart-form-demo";

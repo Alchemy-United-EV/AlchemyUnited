@@ -1,85 +1,71 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { FormField } from "@/components/ui/form-field";
 import { useToast } from "@/hooks/use-toast";
-import { submitPartner } from "@/lib/api";
-import { partnerFormSchema, type PartnerFormData } from "@/lib/validationSchemas";
-import { trackFormSubmission } from "@/lib/analytics";
-import { useFormAbandonment } from "@/hooks/use-form-abandonment";
+import { submitPartner, type PartnerSubmission } from "@/lib/api";
 import { motion } from "framer-motion";
-import { Loader2 } from "lucide-react";
 
 export default function PartnerForm() {
-  const { toast } = useToast();
-  
-  const form = useForm<PartnerFormData>({
-    resolver: zodResolver(partnerFormSchema),
-    defaultValues: {
-      name: '',
-      email: '',
-      company: '',
-      phone: '',
-      message: ''
-    },
-    mode: "onChange"
+  const [formData, setFormData] = useState<PartnerSubmission>({
+    name: '',
+    email: '',
+    company: '',
+    phone: '',
+    message: ''
   });
-
-  const { register, handleSubmit, formState: { errors, isValid, isDirty, isSubmitSuccessful }, reset, watch } = form;
-  
-  // Track form abandonment
-  useFormAbandonment('partner', { isSubmitSuccessful });
-
-  const messageValue = watch("message");
+  const { toast } = useToast();
 
   const mutation = useMutation({
     mutationFn: submitPartner,
     onSuccess: (data) => {
-      trackFormSubmission('partner', true);
       toast({
         title: "Partnership inquiry sent!",
         description: data.message || "Thanks for your interest. Our team will contact you soon.",
       });
-      reset();
+      setFormData({ name: '', email: '', company: '', phone: '', message: '' });
     },
     onError: (error: Error) => {
-      trackFormSubmission('partner', false);
-      console.error('Partner form submission error:', error);
-      
-      if (error.message.includes('Too many')) {
-        toast({
-          title: "Rate limit exceeded",
-          description: "Please wait before submitting another inquiry.",
-          variant: "destructive",
-        });
-        return;
-      }
-      
-      if (error.message.includes('Validation failed')) {
-        toast({
-          title: "Please check your input",
-          description: "Some fields contain invalid information.",
-          variant: "destructive",
-        });
-        return;
-      }
-      
       toast({
-        title: "Failed to send inquiry",
-        description: error.message || "Please try again or contact support if the problem persists.",
+        title: "Something went wrong",
+        description: error.message || "Failed to send inquiry. Please try again.",
         variant: "destructive",
       });
     },
   });
 
-  const onSubmit = (data: PartnerFormData) => {
-    mutation.mutate(data);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Basic validation
+    if (!formData.name.trim() || !formData.email.trim()) {
+      toast({
+        title: "Required fields missing",
+        description: "Name and email are required.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!formData.email.includes('@')) {
+      toast({
+        title: "Invalid email",
+        description: "Please enter a valid email address.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    mutation.mutate(formData);
   };
 
-  const isSubmitDisabled = !isValid || !isDirty || mutation.isPending;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
 
   return (
     <motion.div
@@ -91,78 +77,68 @@ export default function PartnerForm() {
     >
       <h3 className="text-2xl font-bold text-gray-800 mb-6 font-display">Partner With Us</h3>
       
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <FormField error={errors.name?.message}>
-            <Input
-              type="text"
-              placeholder="Your Name *"
-              {...register("name")}
-              disabled={mutation.isPending}
-              className={`w-full ${errors.name ? 'border-red-500 focus:border-red-500' : ''}`}
-            />
-          </FormField>
-          
-          <FormField error={errors.email?.message}>
-            <Input
-              type="email"
-              placeholder="Your Email *"
-              {...register("email")}
-              disabled={mutation.isPending}
-              className={`w-full ${errors.email ? 'border-red-500 focus:border-red-500' : ''}`}
-            />
-          </FormField>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <FormField error={errors.company?.message}>
-            <Input
-              type="text"
-              placeholder="Company Name"
-              {...register("company")}
-              disabled={mutation.isPending}
-              className={`w-full ${errors.company ? 'border-red-500 focus:border-red-500' : ''}`}
-            />
-          </FormField>
-          
-          <FormField error={errors.phone?.message}>
-            <Input
-              type="tel"
-              placeholder="Phone Number"
-              {...register("phone")}
-              disabled={mutation.isPending}
-              className={`w-full ${errors.phone ? 'border-red-500 focus:border-red-500' : ''}`}
-            />
-          </FormField>
-        </div>
-        
-        <FormField error={errors.message?.message}>
-          <Textarea
-            placeholder="Tell us about your partnership interest..."
-            {...register("message")}
+          <Input
+            type="text"
+            name="name"
+            placeholder="Your Name *"
+            value={formData.name}
+            onChange={handleChange}
             disabled={mutation.isPending}
-            className={`w-full min-h-[100px] ${errors.message ? 'border-red-500 focus:border-red-500' : ''}`}
+            className="w-full"
+            required
           />
-          {messageValue && (
-            <div className="text-right text-sm text-gray-500 mt-1">
-              {messageValue.length}/2000 characters
-            </div>
-          )}
-        </FormField>
+          
+          <Input
+            type="email"
+            name="email"
+            placeholder="Your Email *"
+            value={formData.email}
+            onChange={handleChange}
+            disabled={mutation.isPending}
+            className="w-full"
+            required
+          />
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Input
+            type="text"
+            name="company"
+            placeholder="Company Name"
+            value={formData.company}
+            onChange={handleChange}
+            disabled={mutation.isPending}
+            className="w-full"
+          />
+          
+          <Input
+            type="tel"
+            name="phone"
+            placeholder="Phone Number"
+            value={formData.phone}
+            onChange={handleChange}
+            disabled={mutation.isPending}
+            className="w-full"
+          />
+        </div>
+        
+        <Textarea
+          name="message"
+          placeholder="Tell us about your partnership interest..."
+          value={formData.message}
+          onChange={handleChange}
+          disabled={mutation.isPending}
+          className="w-full min-h-[100px]"
+        />
         
         <Button
           type="submit"
-          disabled={isSubmitDisabled}
-          className="w-full bg-gold hover:bg-gold/90 text-black font-bold py-3 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={mutation.isPending}
+          className="w-full bg-gold hover:bg-gold/90 text-black font-bold py-3 transition-all duration-300"
         >
-          {mutation.isPending ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Sending...
-            </>
-          ) : (
-            'Submit Partnership Inquiry'
-          )}
+          {mutation.isPending ? 'Sending...' : 'Submit Partnership Inquiry'}
         </Button>
       </form>
     </motion.div>

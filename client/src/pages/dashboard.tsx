@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowLeft, Users, Building, CheckCircle, XCircle, Clock, Search, Filter, LogOut, Shield, Mail, MessageSquare, UserPlus } from "lucide-react";
+import { ArrowLeft, Users, Building, CheckCircle, XCircle, Clock, Search, Filter, LogOut, Shield } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,18 +11,11 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { trackDashboardAction, trackStatusChange } from "@/lib/analytics";
-import { GoogleWorkspacePanel } from "@/components/GoogleWorkspacePanel";
-import type { EarlyAccessApplication, HostApplication, Lead } from "@shared/schema";
+import type { EarlyAccessApplication, HostApplication } from "@shared/schema";
 
 export default function Dashboard() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [leadsSearchTerm, setLeadsSearchTerm] = useState("");
-  const [leadsTypeFilter, setLeadsTypeFilter] = useState("all");
-  const [leadsStatusFilter, setLeadsStatusFilter] = useState("all");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [leadsPerPage] = useState(20);
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const { user, logout } = useAuth();
@@ -45,11 +38,6 @@ export default function Dashboard() {
     queryKey: ['/api/host-applications'],
   });
 
-  // Leads
-  const { data: leads = [], isLoading: loadingLeads } = useQuery<Lead[]>({
-    queryKey: ['/api/leads'],
-  });
-
   // Status update mutations
   const updateEarlyAccessStatus = useMutation({
     mutationFn: async ({ id, status }: { id: string; status: string }) => {
@@ -65,8 +53,7 @@ export default function Dashboard() {
       if (!response.ok) throw new Error('Failed to update status');
       return response.json();
     },
-    onSuccess: (_, { id, status }) => {
-      trackDashboardAction('status_change', `early_access_${status}`);
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/early-access-applications'] });
       toast({ title: "Status Updated", description: "Application status has been updated successfully." });
     },
@@ -86,32 +73,9 @@ export default function Dashboard() {
       if (!response.ok) throw new Error('Failed to update status');
       return response.json();
     },
-    onSuccess: (_, { id, status }) => {
-      trackDashboardAction('status_change', `host_application_${status}`);
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/host-applications'] });
-      toast({ title: "Status Updated", description: "Host application status has been updated successfully." });
-    },
-  });
-
-  // Lead status update mutation
-  const updateLeadStatus = useMutation({
-    mutationFn: async ({ id, status }: { id: number; status: string }) => {
-      const token = localStorage.getItem('auth_token');
-      const response = await fetch(`/api/leads/${id}/status`, {
-        method: 'PATCH',
-        headers: { 
-          'Content-Type': 'application/json',
-          ...(token && { 'Authorization': `Bearer ${token}` }),
-        },
-        body: JSON.stringify({ status }),
-      });
-      if (!response.ok) throw new Error('Failed to update lead status');
-      return response.json();
-    },
-    onSuccess: (_, { id, status }) => {
-      trackDashboardAction('lead_status_change', status);
-      queryClient.invalidateQueries({ queryKey: ['/api/leads'] });
-      toast({ title: "Lead Status Updated", description: "Lead status has been updated successfully." });
+      toast({ title: "Status Updated", description: "Application status has been updated successfully." });
     },
   });
 
@@ -157,39 +121,13 @@ export default function Dashboard() {
     return matchesSearch && matchesStatus;
   });
 
-  // Filter leads based on search, type, and status
-  const filteredLeads = leads.filter(lead => {
-    const matchesSearch = 
-      (lead.name?.toLowerCase() || "").includes(leadsSearchTerm.toLowerCase()) ||
-      (lead.email?.toLowerCase() || "").includes(leadsSearchTerm.toLowerCase()) ||
-      (lead.company?.toLowerCase() || "").includes(leadsSearchTerm.toLowerCase()) ||
-      (lead.message?.toLowerCase() || "").includes(leadsSearchTerm.toLowerCase());
-    const matchesType = leadsTypeFilter === 'all' || lead.type === leadsTypeFilter;
-    const matchesStatus = leadsStatusFilter === 'all' || lead.status === leadsStatusFilter;
-    return matchesSearch && matchesType && matchesStatus;
-  });
-
-  // Pagination for leads
-  const totalLeads = filteredLeads.length;
-  const totalPages = Math.ceil(totalLeads / leadsPerPage);
-  const startIndex = (currentPage - 1) * leadsPerPage;
-  const paginatedLeads = filteredLeads.slice(startIndex, startIndex + leadsPerPage);
-
-  // Reset page when filters change
-  const resetPage = () => setCurrentPage(1);
-
   // Status badge component
   const StatusBadge = ({ status }: { status: string }) => {
     const variants = {
-      // Application statuses
       pending: { color: "bg-yellow-500", icon: Clock },
       approved: { color: "bg-green-500", icon: CheckCircle },
       rejected: { color: "bg-red-500", icon: XCircle },
       "in-review": { color: "bg-blue-500", icon: Clock },
-      // Lead statuses
-      new: { color: "bg-blue-500", icon: Mail },
-      contacted: { color: "bg-yellow-500", icon: MessageSquare },
-      converted: { color: "bg-green-500", icon: CheckCircle },
     };
     
     const variant = variants[status as keyof typeof variants] || variants.pending;
@@ -203,117 +141,77 @@ export default function Dashboard() {
     );
   };
 
-  // Lead status dropdown component
-  const LeadStatusDropdown = ({ lead }: { lead: Lead }) => {
-    const handleStatusChange = (newStatus: string) => {
-      updateLeadStatus.mutate({ id: lead.id, status: newStatus });
-    };
-
-    return (
-      <Select value={lead.status} onValueChange={handleStatusChange}>
-        <SelectTrigger className="w-32">
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="new">New</SelectItem>
-          <SelectItem value="contacted">Contacted</SelectItem>
-          <SelectItem value="converted">Converted</SelectItem>
-        </SelectContent>
-      </Select>
-    );
-  };
-
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navigation */}
-      <nav className="bg-white shadow-sm border-b p-2 sm:p-4">
+      <nav className="bg-white shadow-sm border-b p-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link href="/">
-            <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-900 p-1 sm:p-2">
-              <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-              <span className="hidden sm:inline">Back to Website</span>
-              <span className="sm:hidden">Back</span>
+            <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-900">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Website
             </Button>
           </Link>
           
-          <div className="flex items-center space-x-2 sm:space-x-3">
+          <div className="flex items-center space-x-3">
             <img 
               src="/assets/au-logo.png" 
               alt="Alchemy United Logo"
-              className="h-6 w-6 sm:h-8 sm:w-8"
+              className="h-8 w-auto"
             />
-            <h1 className="text-lg sm:text-2xl font-bold text-gray-900 font-display">
-              <span className="hidden sm:inline">Alchemy United Dashboard</span>
-              <span className="sm:hidden">Dashboard</span>
+            <h1 className="text-2xl font-bold text-gray-900 font-display">
+              Alchemy United Dashboard
             </h1>
           </div>
           
-          <div className="flex items-center space-x-2 sm:space-x-4">
-            <div className="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm text-gray-600 hidden md:flex">
-              <Shield className="h-3 w-3 sm:h-4 sm:w-4" />
-              <span className="truncate max-w-32 sm:max-w-none">{user?.email}</span>
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 text-sm text-gray-600">
+              <Shield className="h-4 w-4" />
+              <span>{user?.email}</span>
             </div>
             <Button 
               variant="outline" 
               size="sm"
               onClick={handleLogout}
-              className="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm p-1 sm:p-2"
+              className="flex items-center space-x-2"
             >
-              <LogOut className="h-3 w-3 sm:h-4 sm:w-4" />
+              <LogOut className="h-4 w-4" />
               <span>Logout</span>
             </Button>
           </div>
         </div>
       </nav>
 
-      <div className="max-w-7xl mx-auto p-3 sm:p-4 lg:p-6">
+      <div className="max-w-7xl mx-auto p-6">
         {/* Stats Overview */}
         <motion.div 
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 mb-4 sm:mb-6"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-xs sm:text-sm font-medium">Early Access</CardTitle>
-              <Users className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium">Total Early Access</CardTitle>
+              <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-xl sm:text-2xl font-bold text-gold">{earlyAccessApps.length}</div>
+              <div className="text-2xl font-bold text-gold">{earlyAccessApps.length}</div>
               <p className="text-xs text-muted-foreground">
-                {earlyAccessApps.filter(app => app.status === 'pending').length} pending
+                {earlyAccessApps.filter(app => app.status === 'pending').length} pending approval
               </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-xs sm:text-sm font-medium">Host Partners</CardTitle>
-              <Building className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium">Host Applications</CardTitle>
+              <Building className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-xl sm:text-2xl font-bold text-gold">{hostApps.length}</div>
+              <div className="text-2xl font-bold text-gold">{hostApps.length}</div>
               <p className="text-xs text-muted-foreground">
-                {hostApps.filter(app => app.status === 'pending').length} pending
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-xs sm:text-sm font-medium">Total Leads</CardTitle>
-              <Mail className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-xl sm:text-2xl font-bold text-gold">{leads.length}</div>
-              <p className="text-xs text-muted-foreground">
-                <span className="hidden sm:inline">
-                  {leads.filter(lead => lead.type === 'contact').length} contact, {leads.filter(lead => lead.type === 'partner').length} partner, {leads.filter(lead => lead.type === 'waitlist').length} waitlist
-                </span>
-                <span className="sm:hidden">
-                  {leads.filter(lead => lead.status === 'new').length} new
-                </span>
+                {hostApps.filter(app => app.status === 'pending').length} pending review
               </p>
             </CardContent>
           </Card>
@@ -351,7 +249,7 @@ export default function Dashboard() {
 
         {/* Search and Filter Controls */}
         <motion.div 
-          className="flex flex-col sm:flex-row gap-2 sm:gap-3 mb-4 sm:mb-6"
+          className="flex flex-col sm:flex-row gap-3 mb-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
@@ -388,35 +286,23 @@ export default function Dashboard() {
           transition={{ delay: 0.4, duration: 0.6 }}
         >
           <Tabs defaultValue="early-access" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 h-auto sm:h-11 gap-1 sm:gap-0 p-1">
-              <TabsTrigger value="early-access" className="text-xs sm:text-sm px-1 sm:px-2 py-2 sm:py-auto">
-                <span className="hidden sm:inline">Early Access</span>
-                <span className="sm:hidden">Early</span>
-                <span className="ml-1">({filteredEarlyAccess.length})</span>
+            <TabsList className="grid w-full grid-cols-2 h-11">
+              <TabsTrigger value="early-access" className="text-sm px-2">
+                Early Access ({filteredEarlyAccess.length})
               </TabsTrigger>
-              <TabsTrigger value="host-applications" className="text-xs sm:text-sm px-1 sm:px-2 py-2 sm:py-auto">
-                <span className="hidden sm:inline">Host Partners</span>
-                <span className="sm:hidden">Hosts</span>
-                <span className="ml-1">({filteredHost.length})</span>
-              </TabsTrigger>
-              <TabsTrigger value="google-workspace" className="text-xs sm:text-sm px-1 sm:px-2 py-2 sm:py-auto">
-                <span className="hidden sm:inline">Google Workspace</span>
-                <span className="sm:hidden">Google</span>
-              </TabsTrigger>
-              <TabsTrigger value="leads" className="text-xs sm:text-sm px-1 sm:px-2 py-2 sm:py-auto">
-                <span>Leads</span>
-                <span className="ml-1">({filteredLeads.length})</span>
+              <TabsTrigger value="host-applications" className="text-sm px-2">
+                Host Partners ({filteredHost.length})
               </TabsTrigger>
             </TabsList>
 
             {/* Early Access Tab */}
-            <TabsContent value="early-access" className="space-y-3 sm:space-y-4">
+            <TabsContent value="early-access" className="space-y-4">
               {loadingEarlyAccess ? (
-                <div className="flex items-center justify-center py-8 sm:py-12">
-                  <div className="animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-b-2 border-gold"></div>
+                <div className="flex items-center justify-center py-12">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gold"></div>
                 </div>
               ) : (
-                <div className="grid gap-3 sm:gap-4">
+                <div className="grid gap-4">
                   {filteredEarlyAccess.map((app) => (
                     <Card key={app.id} className="hover:shadow-md transition-shadow">
                       <CardHeader className="pb-3">
@@ -462,7 +348,7 @@ export default function Dashboard() {
                         </div>
                       </CardHeader>
                       <CardContent className="pt-0">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 text-sm mb-3">
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 text-sm mb-3">
                           <div>
                             <p className="font-medium text-gray-500 text-xs">Vehicle</p>
                             <p className="truncate">{app.vehicleType}</p>
@@ -506,13 +392,13 @@ export default function Dashboard() {
             </TabsContent>
 
             {/* Host Applications Tab */}
-            <TabsContent value="host-applications" className="space-y-3 sm:space-y-4">
+            <TabsContent value="host-applications" className="space-y-4">
               {loadingHost ? (
-                <div className="flex items-center justify-center py-8 sm:py-12">
-                  <div className="animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-b-2 border-gold"></div>
+                <div className="flex items-center justify-center py-12">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gold"></div>
                 </div>
               ) : (
-                <div className="grid gap-3 sm:gap-4">
+                <div className="grid gap-4">
                   {filteredHost.map((app) => (
                     <Card key={app.id} className="hover:shadow-md transition-shadow">
                       <CardHeader className="pb-3">
@@ -547,7 +433,7 @@ export default function Dashboard() {
                         </div>
                       </CardHeader>
                       <CardContent className="pt-0">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 text-sm mb-3">
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 text-sm mb-3">
                           <div>
                             <p className="font-medium text-gray-500 text-xs">Property</p>
                             <p className="truncate">{app.propertyType}</p>
@@ -589,252 +475,6 @@ export default function Dashboard() {
                     </div>
                   )}
                 </div>
-              )}
-            </TabsContent>
-
-            {/* Google Workspace Tab */}
-            <TabsContent value="google-workspace" className="space-y-4">
-              <GoogleWorkspacePanel />
-            </TabsContent>
-
-            {/* Leads Tab */}
-            <TabsContent value="leads" className="space-y-4">
-              {/* Leads Search and Filter Controls */}
-              <div className="flex flex-col sm:flex-row gap-3 mb-4">
-                <div className="relative flex-1">
-                  <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <Input
-                    placeholder="Search leads by name, email, or company..."
-                    value={leadsSearchTerm}
-                    onChange={(e) => {
-                      setLeadsSearchTerm(e.target.value);
-                      resetPage();
-                    }}
-                    className="pl-10 h-10"
-                  />
-                </div>
-                
-                <Select value={leadsTypeFilter} onValueChange={(value) => {
-                  setLeadsTypeFilter(value);
-                  resetPage();
-                }}>
-                  <SelectTrigger className="w-full sm:w-40 h-10">
-                    <Filter className="w-4 h-4 mr-2" />
-                    <SelectValue placeholder="Filter by type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Types</SelectItem>
-                    <SelectItem value="contact">Contact</SelectItem>
-                    <SelectItem value="partner">Partner</SelectItem>
-                    <SelectItem value="waitlist">Waitlist</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                <Select value={leadsStatusFilter} onValueChange={(value) => {
-                  setLeadsStatusFilter(value);
-                  resetPage();
-                }}>
-                  <SelectTrigger className="w-full sm:w-40 h-10">
-                    <Filter className="w-4 h-4 mr-2" />
-                    <SelectValue placeholder="Filter by status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Statuses</SelectItem>
-                    <SelectItem value="new">New</SelectItem>
-                    <SelectItem value="contacted">Contacted</SelectItem>
-                    <SelectItem value="converted">Converted</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {loadingLeads ? (
-                <div className="flex items-center justify-center py-12">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gold"></div>
-                </div>
-              ) : (
-                <>
-                  {/* Mobile Card Layout for Leads */}
-                  <div className="sm:hidden space-y-3">
-                    {paginatedLeads.map((lead) => (
-                      <Card key={lead.id} className="border border-gray-200">
-                        <CardHeader className="pb-3">
-                          <div className="flex justify-between items-start">
-                            <div className="flex-1 min-w-0">
-                              <CardTitle className="text-base truncate">{lead.name}</CardTitle>
-                              <CardDescription className="text-sm truncate">{lead.email}</CardDescription>
-                              {lead.company && (
-                                <p className="text-xs text-gray-500 mt-1">{lead.company}</p>
-                              )}
-                            </div>
-                            <div className="flex flex-col items-end gap-1 ml-3">
-                              <StatusBadge status={lead.status || 'new'} />
-                              <Badge 
-                                variant={lead.type === 'contact' ? 'default' : lead.type === 'partner' ? 'secondary' : 'outline'}
-                                className="text-xs"
-                              >
-                                {lead.type}
-                              </Badge>
-                            </div>
-                          </div>
-                        </CardHeader>
-                        <CardContent className="pt-0 space-y-2">
-                          {lead.phone && (
-                            <p className="text-sm text-gray-600">{lead.phone}</p>
-                          )}
-                          {lead.message && (
-                            <p className="text-sm text-gray-700 line-clamp-2">{lead.message}</p>
-                          )}
-                          <div className="flex items-center justify-between pt-2">
-                            <span className="text-xs text-gray-400">
-                              {new Date(lead.createdAt).toLocaleDateString()}
-                            </span>
-                            <Select
-                              value={lead.status || 'new'}
-                              onValueChange={(status) => 
-                                updateLeadStatus.mutate({ id: lead.id, status })
-                              }
-                            >
-                              <SelectTrigger className="w-24 h-7 text-xs">
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="new">New</SelectItem>
-                                <SelectItem value="contacted">Contacted</SelectItem>
-                                <SelectItem value="converted">Converted</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-
-                  {/* Desktop Table Layout */}
-                  <div className="hidden sm:block bg-white rounded-lg border overflow-hidden">
-                    <div className="overflow-x-auto">
-                      <table className="w-full">
-                        <thead className="bg-gray-50 border-b">
-                          <tr>
-                            <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">Type</th>
-                            <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">Name/Email</th>
-                            <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">Company</th>
-                            <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">Phone</th>
-                            <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">Message</th>
-                            <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">Status</th>
-                            <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">Date</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-100">
-                          {paginatedLeads.map((lead) => (
-                            <tr key={lead.id} className="hover:bg-gray-50">
-                              <td className="py-3 px-4">
-                                <div className="flex items-center space-x-2">
-                                  {lead.type === 'contact' && <MessageSquare className="h-4 w-4 text-blue-500" />}
-                                  {lead.type === 'partner' && <Building className="h-4 w-4 text-purple-500" />}
-                                  {lead.type === 'waitlist' && <UserPlus className="h-4 w-4 text-green-500" />}
-                                  <Badge 
-                                    variant={lead.type === 'contact' ? 'default' : lead.type === 'partner' ? 'secondary' : 'outline'}
-                                    className="text-xs"
-                                  >
-                                    {lead.type}
-                                  </Badge>
-                                </div>
-                              </td>
-                              <td className="py-3 px-4">
-                                <div className="space-y-1">
-                                  {lead.name && <div className="font-medium text-sm text-gray-900">{lead.name}</div>}
-                                  <div className="text-sm text-gray-600">{lead.email}</div>
-                                </div>
-                              </td>
-                              <td className="py-3 px-4 text-sm text-gray-700">
-                                {lead.company || '-'}
-                              </td>
-                              <td className="py-3 px-4 text-sm text-gray-700">
-                                {lead.phone || '-'}
-                              </td>
-                              <td className="py-3 px-4">
-                                {lead.message ? (
-                                  <div className="text-sm text-gray-700 max-w-xs truncate" title={lead.message}>
-                                    {lead.message}
-                                  </div>
-                                ) : (
-                                  <span className="text-gray-400">-</span>
-                                )}
-                              </td>
-                              <td className="py-3 px-4">
-                                <LeadStatusDropdown lead={lead} />
-                              </td>
-                              <td className="py-3 px-4 text-sm text-gray-600">
-                                {lead.createdAt ? new Date(lead.createdAt).toLocaleDateString() : 'N/A'}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                    
-                    {filteredLeads.length === 0 && (
-                      <div className="text-center py-12 text-gray-500">
-                        {leadsSearchTerm || leadsTypeFilter !== 'all' 
-                          ? 'No leads found matching your filters.' 
-                          : 'No leads submitted yet.'
-                        }
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Pagination */}
-                  {totalPages > 1 && (
-                    <div className="flex items-center justify-between mt-4">
-                      <div className="text-sm text-gray-600">
-                        Showing {startIndex + 1} to {Math.min(startIndex + leadsPerPage, totalLeads)} of {totalLeads} leads
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                          disabled={currentPage === 1}
-                        >
-                          Previous
-                        </Button>
-                        <div className="flex items-center space-x-1">
-                          {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                            const pageNum = i + 1;
-                            if (totalPages <= 5) {
-                              return pageNum;
-                            }
-                            if (currentPage <= 3) {
-                              return pageNum;
-                            }
-                            if (currentPage >= totalPages - 2) {
-                              return totalPages - 4 + i;
-                            }
-                            return currentPage - 2 + i;
-                          }).map((pageNum) => (
-                            <Button
-                              key={pageNum}
-                              variant={currentPage === pageNum ? "default" : "outline"}
-                              size="sm"
-                              onClick={() => setCurrentPage(pageNum)}
-                              className="w-8 h-8 p-0"
-                            >
-                              {pageNum}
-                            </Button>
-                          ))}
-                        </div>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                          disabled={currentPage === totalPages}
-                        >
-                          Next
-                        </Button>
-                      </div>
-                    </div>
-                  )}
-                </>
               )}
             </TabsContent>
           </Tabs>

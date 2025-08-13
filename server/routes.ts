@@ -1,42 +1,28 @@
-import type { Express, Request, Response } from "express";
+import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertEarlyAccessApplicationSchema, insertHostApplicationSchema, insertLeadSchema } from "@shared/schema";
 import { sendVerificationEmail, sendLeadNotification } from "./email";
 import { authenticateToken, loginHandler, getCurrentUserHandler, type AuthenticatedRequest } from "./auth";
-import { 
-  formSubmissionRateLimit, 
-  authRateLimit,
-  validateContactForm,
-  validatePartnerForm,
-  validateWaitlistForm,
-  validateEarlyAccessForm,
-  validateHostForm,
-  handleValidationErrors
-} from "./security";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Authentication routes with rate limiting
-  app.post('/api/auth/login', authRateLimit, loginHandler);
+  // Authentication routes
+  app.post('/api/auth/login', loginHandler);
   app.get('/api/auth/me', authenticateToken, getCurrentUserHandler);
 
   // Protected dashboard routes (require authentication)
   // Early Access Applications API
-  app.post('/api/early-access-applications', 
-    formSubmissionRateLimit,
-    validateEarlyAccessForm,
-    handleValidationErrors,
-    async (req: Request, res: Response) => {
-      try {
-        const validatedData = insertEarlyAccessApplicationSchema.parse(req.body);
-        const application = await storage.createEarlyAccessApplication(validatedData);
-        res.status(201).json(application);
-      } catch (error) {
-        console.error('Error creating early access application:', error);
-        res.status(400).json({ error: 'Invalid application data' });
-      }
-    });
+  app.post('/api/early-access-applications', async (req, res) => {
+    try {
+      const validatedData = insertEarlyAccessApplicationSchema.parse(req.body);
+      const application = await storage.createEarlyAccessApplication(validatedData);
+      res.status(201).json(application);
+    } catch (error) {
+      console.error('Error creating early access application:', error);
+      res.status(400).json({ error: 'Invalid application data' });
+    }
+  });
 
   app.get('/api/early-access-applications', authenticateToken, async (req, res) => {
     try {
@@ -76,20 +62,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Host Applications API
-  app.post('/api/host-applications', 
-    formSubmissionRateLimit,
-    validateHostForm,
-    handleValidationErrors,
-    async (req: Request, res: Response) => {
-      try {
-        const validatedData = insertHostApplicationSchema.parse(req.body);
-        const application = await storage.createHostApplication(validatedData);
-        res.status(201).json(application);
-      } catch (error) {
-        console.error('Error creating host application:', error);
-        res.status(400).json({ error: 'Invalid application data' });
-      }
-    });
+  app.post('/api/host-applications', async (req, res) => {
+    try {
+      const validatedData = insertHostApplicationSchema.parse(req.body);
+      const application = await storage.createHostApplication(validatedData);
+      res.status(201).json(application);
+    } catch (error) {
+      console.error('Error creating host application:', error);
+      res.status(400).json({ error: 'Invalid application data' });
+    }
+  });
 
   app.get('/api/host-applications', authenticateToken, async (req, res) => {
     try {
@@ -228,126 +210,62 @@ export async function registerRoutes(app: Express): Promise<Server> {
     type: z.literal("waitlist"),
   }).pick({ type: true, email: true });
 
-  app.post('/api/contact', 
-    formSubmissionRateLimit,
-    validateContactForm,
-    handleValidationErrors,
-    async (req: Request, res: Response) => {
-      try {
-        const data = contactSchema.parse({ ...req.body, type: "contact" });
-        const lead = await storage.createLead(data);
-        await sendLeadNotification(
-          "[Alchemy United] New Contact Lead",
-          `Name: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone || ""}\n\nMessage:\n${data.message || ""}`
-        );
-        res.status(201).json({ ok: true, message: "Thanks — we'll be in touch shortly.", leadId: lead.id });
-      } catch (err) {
-        console.error("contact error:", err);
-        res.status(400).json({ error: "Invalid contact data" });
-      }
-    });
+  app.post('/api/contact', async (req, res) => {
+    try {
+      const data = contactSchema.parse({ ...req.body, type: "contact" });
+      const lead = await storage.createLead(data);
+      await sendLeadNotification(
+        "[Alchemy United] New Contact Lead",
+        `Name: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone || ""}\n\nMessage:\n${data.message || ""}`
+      );
+      res.status(201).json({ ok: true, message: "Thanks — we'll be in touch shortly.", leadId: lead.id });
+    } catch (err) {
+      console.error("contact error:", err);
+      res.status(400).json({ error: "Invalid contact data" });
+    }
+  });
 
-  app.post('/api/partner', 
-    formSubmissionRateLimit,
-    validatePartnerForm,
-    handleValidationErrors,
-    async (req: Request, res: Response) => {
-      try {
-        const data = partnerSchema.parse({ ...req.body, type: "partner" });
-        const lead = await storage.createLead(data);
-        await sendLeadNotification(
-          "[Alchemy United] New Partner/Advertiser Inquiry",
-          `Name: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone || ""}\nCompany: ${data.company || ""}\n\nNotes:\n${data.message || ""}`
-        );
-        res.status(201).json({ ok: true, message: "Thanks — our team will reach out about partnership options.", leadId: lead.id });
-      } catch (err) {
-        console.error("partner error:", err);
-        res.status(400).json({ error: "Invalid partner data" });
-      }
-    });
+  app.post('/api/partner', async (req, res) => {
+    try {
+      const data = partnerSchema.parse({ ...req.body, type: "partner" });
+      const lead = await storage.createLead(data);
+      await sendLeadNotification(
+        "[Alchemy United] New Partner/Advertiser Inquiry",
+        `Name: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone || ""}\nCompany: ${data.company || ""}\n\nNotes:\n${data.message || ""}`
+      );
+      res.status(201).json({ ok: true, message: "Thanks — our team will reach out about partnership options.", leadId: lead.id });
+    } catch (err) {
+      console.error("partner error:", err);
+      res.status(400).json({ error: "Invalid partner data" });
+    }
+  });
 
-  app.post('/api/waitlist', 
-    formSubmissionRateLimit,
-    validateWaitlistForm,
-    handleValidationErrors,
-    async (req: Request, res: Response) => {
-      try {
-        const data = waitlistSchema.parse({ ...req.body, type: "waitlist" });
-        const lead = await storage.createLead(data);
-        await sendLeadNotification(
-          "[Alchemy United] New Waitlist Signup",
-          `Email: ${data.email}`
-        );
-        res.status(201).json({ ok: true, message: "You're on the list — we'll notify you soon.", leadId: lead.id });
-      } catch (err) {
-        console.error("waitlist error:", err);
-        res.status(400).json({ error: "Invalid waitlist data" });
-      }
-    });
+  app.post('/api/waitlist', async (req, res) => {
+    try {
+      const data = waitlistSchema.parse({ ...req.body, type: "waitlist" });
+      const lead = await storage.createLead(data);
+      await sendLeadNotification(
+        "[Alchemy United] New Waitlist Signup",
+        `Email: ${data.email}`
+      );
+      res.status(201).json({ ok: true, message: "You're on the list — we'll notify you soon.", leadId: lead.id });
+    } catch (err) {
+      console.error("waitlist error:", err);
+      res.status(400).json({ error: "Invalid waitlist data" });
+    }
+  });
 
-  // Admin fetch of recent leads with search and filtering (protected)
+  // Admin fetch of recent leads (protected)
   app.get('/api/leads', authenticateToken, async (req, res) => {
     try {
-      const { search, status, sortBy, sortOrder, limit } = req.query;
-      
-      if (search || status || sortBy || sortOrder) {
-        // Use enhanced search with filters
-        const leads = await storage.searchLeads(
-          search as string,
-          status as string,
-          sortBy as string,
-          sortOrder as string
-        );
-        res.json(leads);
-      } else {
-        // Default to recent leads
-        const limitNum = Math.min(Number(limit) || 200, 1000);
-        const rows = await storage.getRecentLeads(limitNum);
-        res.json(rows);
-      }
+      const limit = Math.min(Number(req.query.limit) || 200, 1000);
+      const rows = await storage.getRecentLeads(limit);
+      res.json(rows);
     } catch (err) {
       console.error("get leads error:", err);
       res.status(500).json({ error: "Failed to fetch leads" });
     }
   });
-
-  // Update lead status (protected)
-  app.patch('/api/leads/:id/status', authenticateToken, async (req, res) => {
-    try {
-      const leadId = parseInt(req.params.id);
-      const { status } = req.body;
-
-      // Validate lead ID
-      if (isNaN(leadId)) {
-        return res.status(400).json({ error: 'Invalid lead ID' });
-      }
-
-      // Validate status
-      if (!status || !['new', 'contacted', 'converted'].includes(status)) {
-        return res.status(400).json({ 
-          error: 'Invalid status. Must be one of: new, contacted, converted' 
-        });
-      }
-
-      const updatedLead = await storage.updateLeadStatus(leadId, status);
-      res.json({ 
-        ok: true, 
-        message: 'Lead status updated successfully',
-        lead: updatedLead 
-      });
-    } catch (err) {
-      console.error("update lead status error:", err);
-      res.status(500).json({ error: "Failed to update lead status" });
-    }
-  });
-
-  // Register Google Workspace routes
-  try {
-    const { registerGoogleWorkspaceRoutes } = await import('./google-workspace-routes');
-    registerGoogleWorkspaceRoutes(app);
-  } catch (error) {
-    console.warn('Google Workspace integration disabled:', error);
-  }
 
   const httpServer = createServer(app);
   return httpServer;

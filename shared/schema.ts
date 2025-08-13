@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, timestamp, serial, pgEnum, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, timestamp, serial, pgEnum } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -71,7 +71,6 @@ export const hostApplications = pgTable("host_applications", {
   partnershipInterest: varchar("partnership_interest").notNull(),
   timeline: varchar("timeline").notNull(),
   additionalInfo: text("additional_info"),
-  agreeToTerms: boolean("agree_to_terms").notNull().default(false),
   status: varchar("status").default("pending"), // pending, approved, rejected, in-review
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
@@ -137,7 +136,6 @@ export type InsertMember = typeof members.$inferInsert;
 
 // --- Leads schema ---
 export const leadTypeEnum = pgEnum("lead_type", ["contact", "partner", "waitlist"]);
-export const leadStatusEnum = pgEnum("lead_status", ["new", "contacted", "converted"]);
 
 export const leads = pgTable("leads", {
   id: serial("id").primaryKey(),
@@ -147,9 +145,7 @@ export const leads = pgTable("leads", {
   phone: text("phone"),
   company: text("company"),
   message: text("message"),
-  status: leadStatusEnum("status").default("new").notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull()
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull()
 });
 
 export const insertLeadSchema = createInsertSchema(leads, {
@@ -158,17 +154,7 @@ export const insertLeadSchema = createInsertSchema(leads, {
   phone: z.string().optional(),
   company: z.string().optional(),
   message: z.string().min(1).optional()
-}).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-  status: true
-});
-
-export const updateLeadStatusSchema = z.object({
-  status: z.enum(["new", "contacted", "converted"])
 });
 
 export type InsertLead = z.infer<typeof insertLeadSchema>;
 export type Lead = typeof leads.$inferSelect;
-export type UpdateLeadStatus = z.infer<typeof updateLeadStatusSchema>;

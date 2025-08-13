@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, timestamp, serial, pgEnum } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -117,28 +117,3 @@ export const members = pgTable("members", {
 
 export type Member = typeof members.$inferSelect;
 export type InsertMember = typeof members.$inferInsert;
-
-// --- Leads schema ---
-export const leadTypeEnum = pgEnum("lead_type", ["contact", "partner", "waitlist"]);
-
-export const leads = pgTable("leads", {
-  id: serial("id").primaryKey(),
-  type: leadTypeEnum("type").notNull(),
-  name: text("name"),
-  email: text("email").notNull(),
-  phone: text("phone"),
-  company: text("company"),
-  message: text("message"),
-  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull()
-});
-
-export const insertLeadSchema = createInsertSchema(leads, {
-  email: z.string().email(),
-  name: z.string().min(2).optional(),
-  phone: z.string().optional(),
-  company: z.string().optional(),
-  message: z.string().min(1).optional()
-});
-
-export type InsertLead = z.infer<typeof insertLeadSchema>;
-export type Lead = typeof leads.$inferSelect;

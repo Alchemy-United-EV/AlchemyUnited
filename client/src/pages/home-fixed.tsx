@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "wouter";
-import { trackPageView, trackCTA, trackFormStart } from "@/lib/analytics";
+import { trackPageView, trackEvent } from "@/lib/analytics";
 import { SEOHead } from "@/components/SEOHead";
 
 export default function Home() {
@@ -31,7 +31,7 @@ export default function Home() {
   }, []);
 
   const handleCTA = (action: string, section: string) => {
-    trackCTA(action, section);
+    trackEvent(action, 'cta', section);
   };
 
   return (

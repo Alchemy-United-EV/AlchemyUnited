@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, timestamp, serial, pgEnum } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, timestamp, serial, pgEnum, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -71,6 +71,7 @@ export const hostApplications = pgTable("host_applications", {
   partnershipInterest: varchar("partnership_interest").notNull(),
   timeline: varchar("timeline").notNull(),
   additionalInfo: text("additional_info"),
+  agreeToTerms: boolean("agree_to_terms").notNull().default(false),
   status: varchar("status").default("pending"), // pending, approved, rejected, in-review
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),

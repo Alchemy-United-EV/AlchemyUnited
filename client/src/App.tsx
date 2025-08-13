@@ -14,6 +14,7 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import EarlyAccess from "@/pages/early-access";
 import HostApplication from "@/pages/host-application";
+import SmartFormDemo from "@/pages/smart-form-demo";
 import Dashboard from "@/pages/dashboard";
 import Verify from "@/pages/verify";
 
@@ -31,6 +32,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/early-access" component={EarlyAccess} />
       <Route path="/host" component={HostApplication} />
+      <Route path="/smart-form-demo" component={SmartFormDemo} />
       <Route path="/dashboard">
         {() => (
           <AuthWrapper>

@@ -6,6 +6,14 @@ import { setupVite, serveStatic, log } from "./vite";
 import { generalRateLimit, corsOptions, sanitizeInputs } from "./security";
 import { initSentry, sentryRequestHandler, sentryErrorHandler } from "./sentry";
 import { logger, requestLogger, errorLogger } from "./logger";
+import { 
+  setCacheHeaders, 
+  setupCompression, 
+  setupResourceHints, 
+  setupImageOptimization, 
+  performanceMonitoring, 
+  setSecurityHeaders 
+} from "./performance";
 
 // Initialize Sentry before creating Express app
 initSentry();
@@ -22,6 +30,9 @@ app.set('trust proxy', 1);
 
 // Request logging
 app.use(requestLogger);
+
+// Performance monitoring
+app.use(performanceMonitoring);
 
 // Security middleware - relaxed for development
 if (process.env.NODE_ENV === 'production') {
@@ -47,6 +58,13 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use(cors(corsOptions));
 app.use(generalRateLimit);
+
+// Performance optimizations
+app.use(setCacheHeaders);
+app.use(setSecurityHeaders);
+setupCompression(app);
+setupResourceHints(app);
+setupImageOptimization(app);
 
 // Body parsing middleware with size limits
 app.use(express.json({ limit: '10mb' }));

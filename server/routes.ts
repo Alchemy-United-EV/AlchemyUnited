@@ -2,7 +2,6 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertEarlyAccessApplicationSchema, insertHostApplicationSchema } from "@shared/schema";
-import { sendVerificationEmail } from "./email";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Early Access Applications API
@@ -100,87 +99,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Error updating host application status:', error);
       res.status(500).json({ error: 'Failed to update application' });
-    }
-  });
-
-  // Verification and Member Management API
-  app.post('/api/send-verification/:applicationId', async (req, res) => {
-    try {
-      const { applicationId } = req.params;
-      
-      // Check if application exists and is approved
-      const application = await storage.getEarlyAccessApplicationById(applicationId);
-      if (!application || application.status !== 'approved') {
-        return res.status(400).json({ error: 'Application not found or not approved' });
-      }
-
-      // Check if verification already exists
-      let verification = await storage.getVerificationByApplicationId(applicationId);
-      if (!verification) {
-        verification = await storage.createVerification(applicationId);
-      }
-
-      // Send professional verification email
-      const verificationUrl = `${req.protocol}://${req.get('host')}/verify?token=${verification.verificationToken}`;
-      
-      const emailSent = await sendVerificationEmail({
-        firstName: application.firstName,
-        lastName: application.lastName,
-        email: application.email,
-        verificationUrl,
-        invitationCode: verification.invitationCode || ''
-      });
-
-      res.json({
-        message: emailSent ? 'Verification email sent successfully' : 'Verification created (email not configured)',
-        verificationToken: verification.verificationToken,
-        invitationCode: verification.invitationCode,
-        verificationUrl,
-        emailSent
-      });
-    } catch (error) {
-      console.error('Error sending verification:', error);
-      res.status(500).json({ error: 'Failed to send verification' });
-    }
-  });
-
-  app.post('/api/verify-email', async (req, res) => {
-    try {
-      const { token } = req.body;
-      
-      if (!token) {
-        return res.status(400).json({ error: 'Verification token required' });
-      }
-
-      const result = await storage.verifyEmail(token);
-      if (!result) {
-        return res.status(400).json({ error: 'Invalid or expired verification token' });
-      }
-
-      res.json({
-        message: 'Email verified successfully',
-        member: result.member,
-        verification: result.verification
-      });
-    } catch (error) {
-      console.error('Error verifying email:', error);
-      res.status(500).json({ error: 'Failed to verify email' });
-    }
-  });
-
-  app.get('/api/member/:membershipNumber', async (req, res) => {
-    try {
-      const { membershipNumber } = req.params;
-      const member = await storage.getMemberByMembershipNumber(membershipNumber);
-      
-      if (!member) {
-        return res.status(404).json({ error: 'Member not found' });
-      }
-
-      res.json(member);
-    } catch (error) {
-      console.error('Error fetching member:', error);
-      res.status(500).json({ error: 'Failed to fetch member' });
     }
   });
 

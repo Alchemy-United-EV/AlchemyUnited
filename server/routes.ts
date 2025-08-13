@@ -1,7 +1,6 @@
 import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { emailService } from "./email-service";
 import { insertEarlyAccessApplicationSchema, insertHostApplicationSchema, insertLeadSchema } from "@shared/schema";
 import { sendVerificationEmail, sendLeadNotification } from "./email";
 import { authenticateToken, loginHandler, getCurrentUserHandler, type AuthenticatedRequest } from "./auth";
@@ -237,40 +236,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       try {
         const data = contactSchema.parse({ ...req.body, type: "contact" });
         const lead = await storage.createLead(data);
-        
-        // Send professional lead confirmation email
-        await emailService.sendLeadConfirmation({
-          to: data.email,
-          email: data.email,
-          name: data.name
-        });
-
-        // Send admin notification with professional template
-        await emailService.sendAdminNotification({
-          to: process.env.EMAIL_TO || 'admin@alchemyunited.com',
-          leadType: 'contact',
-          leadName: data.name,
-          leadEmail: data.email,
-          leadPhone: data.phone,
-          leadMessage: data.message,
-          leadSource: 'Website Contact Form',
-          leadId: lead.id.toString(),
-          timestamp: new Date().toLocaleString(),
-          isHighPriority: false,
-          totalToday: 0,
-          newCount: 0,
-          responseTime: '24h',
-          dashboardUrl: `${req.protocol}://${req.get('host')}/dashboard`,
-          leadUrl: `${req.protocol}://${req.get('host')}/dashboard?tab=leads&leadId=${lead.id}`,
-          settingsUrl: `${req.protocol}://${req.get('host')}/dashboard?tab=settings`
-        });
-
-        // Keep legacy notification as fallback
         await sendLeadNotification(
           "[Alchemy United] New Contact Lead",
           `Name: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone || ""}\n\nMessage:\n${data.message || ""}`
         );
-        
         res.status(201).json({ ok: true, message: "Thanks — we'll be in touch shortly.", leadId: lead.id });
       } catch (err) {
         console.error("contact error:", err);
@@ -286,43 +255,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       try {
         const data = partnerSchema.parse({ ...req.body, type: "partner" });
         const lead = await storage.createLead(data);
-        
-        // Send professional partner follow-up email
-        await emailService.sendPartnerFollowup({
-          to: data.email,
-          partnerName: data.name,
-          email: data.email,
-          schedulingLink: `${req.protocol}://${req.get('host')}/schedule-consultation`,
-          proposalLink: `${req.protocol}://${req.get('host')}/partnership-proposal`
-        });
-
-        // Send admin notification with professional template
-        await emailService.sendAdminNotification({
-          to: process.env.EMAIL_TO || 'admin@alchemyunited.com',
-          leadType: 'partner',
-          leadName: data.name,
-          leadEmail: data.email,
-          leadPhone: data.phone,
-          leadCompany: data.company,
-          leadMessage: data.message,
-          leadSource: 'Website Partner Form',
-          leadId: lead.id.toString(),
-          timestamp: new Date().toLocaleString(),
-          isHighPriority: true, // Partners are high priority
-          totalToday: 0,
-          newCount: 0,
-          responseTime: '24h',
-          dashboardUrl: `${req.protocol}://${req.get('host')}/dashboard`,
-          leadUrl: `${req.protocol}://${req.get('host')}/dashboard?tab=leads&leadId=${lead.id}`,
-          settingsUrl: `${req.protocol}://${req.get('host')}/dashboard?tab=settings`
-        });
-
-        // Keep legacy notification as fallback
         await sendLeadNotification(
           "[Alchemy United] New Partner/Advertiser Inquiry",
           `Name: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone || ""}\nCompany: ${data.company || ""}\n\nNotes:\n${data.message || ""}`
         );
-        
         res.status(201).json({ ok: true, message: "Thanks — our team will reach out about partnership options.", leadId: lead.id });
       } catch (err) {
         console.error("partner error:", err);
@@ -338,38 +274,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       try {
         const data = waitlistSchema.parse({ ...req.body, type: "waitlist" });
         const lead = await storage.createLead(data);
-        
-        // Send professional waitlist confirmation email
-        await emailService.sendLeadConfirmation({
-          to: data.email,
-          email: data.email,
-          name: data.email.split('@')[0] // Use email prefix as name fallback
-        });
-
-        // Send admin notification
-        await emailService.sendAdminNotification({
-          to: process.env.EMAIL_TO || 'admin@alchemyunited.com',
-          leadType: 'waitlist',
-          leadName: data.email,
-          leadEmail: data.email,
-          leadSource: 'Website Waitlist Form',
-          leadId: lead.id.toString(),
-          timestamp: new Date().toLocaleString(),
-          isHighPriority: false,
-          totalToday: 0,
-          newCount: 0,
-          responseTime: '24h',
-          dashboardUrl: `${req.protocol}://${req.get('host')}/dashboard`,
-          leadUrl: `${req.protocol}://${req.get('host')}/dashboard?tab=leads&leadId=${lead.id}`,
-          settingsUrl: `${req.protocol}://${req.get('host')}/dashboard?tab=settings`
-        });
-
-        // Keep legacy notification as fallback
         await sendLeadNotification(
           "[Alchemy United] New Waitlist Signup",
           `Email: ${data.email}`
         );
-        
         res.status(201).json({ ok: true, message: "You're on the list — we'll notify you soon.", leadId: lead.id });
       } catch (err) {
         console.error("waitlist error:", err);
@@ -430,73 +338,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (err) {
       console.error("update lead status error:", err);
       res.status(500).json({ error: "Failed to update lead status" });
-    }
-  });
-
-  // Email template testing endpoint
-  app.post('/api/test-email', authenticateToken, async (req: Request, res: Response) => {
-    try {
-      const { to, type, testData } = req.body;
-      
-      if (!to || !type) {
-        return res.status(400).json({ error: 'Email address and type required' });
-      }
-      
-      let success = false;
-      
-      switch (type) {
-        case 'test':
-          success = await emailService.sendTestEmail(to);
-          break;
-          
-        case 'lead-confirmation':
-          success = await emailService.sendLeadConfirmation({
-            to,
-            email: to,
-            name: testData?.name || 'Test User'
-          });
-          break;
-          
-        case 'partner-followup':
-          success = await emailService.sendPartnerFollowup({
-            to,
-            partnerName: testData?.name || 'Test Partner',
-            email: to,
-            schedulingLink: `${req.protocol}://${req.get('host')}/schedule-consultation`,
-            proposalLink: `${req.protocol}://${req.get('host')}/partnership-proposal`
-          });
-          break;
-          
-        case 'admin-notification':
-          success = await emailService.sendAdminNotification({
-            to,
-            leadType: 'contact',
-            leadName: testData?.name || 'Test Contact',
-            leadEmail: to,
-            leadSource: 'Test Email System',
-            leadId: '12345',
-            timestamp: new Date().toLocaleString(),
-            isHighPriority: false,
-            totalToday: 5,
-            newCount: 2,
-            responseTime: '24h',
-            dashboardUrl: `${req.protocol}://${req.get('host')}/dashboard`,
-            leadUrl: `${req.protocol}://${req.get('host')}/dashboard?tab=leads&leadId=12345`,
-            settingsUrl: `${req.protocol}://${req.get('host')}/dashboard?tab=settings`
-          });
-          break;
-          
-        default:
-          return res.status(400).json({ error: 'Invalid email type' });
-      }
-      
-      res.json({ 
-        success, 
-        message: success ? 'Email sent successfully' : 'Email sending failed or disabled' 
-      });
-    } catch (error) {
-      console.error('Email test error:', error);
-      res.status(500).json({ error: 'Failed to send test email' });
     }
   });
 

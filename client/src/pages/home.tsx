@@ -2,9 +2,6 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
-import ContactForm from "@/components/forms/ContactForm";
-import WaitlistForm from "@/components/forms/WaitlistForm";
-import PartnerForm from "@/components/forms/PartnerForm";
 
 // Flip Card Component
 function FlipCard({ problem, solution, index }: { problem: any, solution: any, index: number }) {
@@ -482,33 +479,8 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* Contact & Partnership Section */}
-      <section className="relative bg-gray-50 py-20 px-6 sm:px-12 lg:px-20">
-        <motion.div 
-          className="max-w-6xl mx-auto"
-          initial={{ y: 60, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-        >
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-6 text-gray-800 font-display">
-              Ready to Get Started?
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Contact us or explore partnership opportunities to join the future of EV charging.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <ContactForm />
-            <PartnerForm />
-          </div>
-        </motion.div>
-      </section>
-
       {/* Testimonials Section */}
-      <section className="relative bg-white py-20 px-6 sm:px-12 lg:px-20">
+      <section className="relative bg-gray-50 py-20 px-6 sm:px-12 lg:px-20">
         <motion.div 
           className="max-w-6xl mx-auto text-center"
           initial={{ y: 60, opacity: 0 }}
@@ -517,7 +489,7 @@ export default function Home() {
           viewport={{ once: true }}
         >
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-16 text-gray-800 font-display">
-            Trusted by Leading EV Brands
+            Trusted by Drivers and Developers Alike
           </h2>
           
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12 opacity-60">
@@ -540,7 +512,7 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* Final CTA Footer with Waitlist */}
+      {/* Final CTA Footer */}
       <section className="relative min-h-screen bg-black flex items-center justify-center">
         <div className="absolute inset-0 opacity-50">
           <img 
@@ -570,25 +542,12 @@ export default function Home() {
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.8 }}
             viewport={{ once: true }}
-            className="max-w-lg mx-auto mb-8"
           >
-            <WaitlistForm />
-          </motion.div>
-          
-          <motion.div
-            initial={{ y: 30, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <p className="text-white/60 text-sm mb-4">
-              Or apply for full early access
-            </p>
             <button
               onClick={() => window.location.href = '/early-access'}
-              className="inline-flex items-center justify-center bg-transparent border-2 border-gold text-gold hover:bg-gold hover:text-black font-bold py-4 px-8 rounded-full transition-all duration-300 transform hover:scale-105 font-display cursor-pointer"
+              className="inline-flex items-center justify-center bg-gold hover:bg-gold/90 text-black font-bold py-10 px-20 rounded-full text-2xl transition-all duration-300 transform hover:scale-105 font-display cursor-pointer"
             >
-              Full Application
+              Request Invite
             </button>
           </motion.div>
         </motion.div>

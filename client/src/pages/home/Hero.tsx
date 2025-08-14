@@ -1,22 +1,37 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useLayoutEffect } from 'react';
 import { CTATracker } from '@/components/CTA-Tracker';
 
 export default function Hero() {
   const heroRef = useRef<HTMLElement>(null);
   const badgeRef = useRef<HTMLDivElement>(null);
-  const wingRef = useRef<HTMLDivElement>(null);
+  const wingRef = useRef<HTMLImageElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const positionWing = () => {
       if (!heroRef.current || !badgeRef.current || !wingRef.current) return;
 
       const heroRect = heroRef.current.getBoundingClientRect();
       const badgeRect = badgeRef.current.getBoundingClientRect();
       
-      const topPosition = badgeRect.bottom - heroRect.top + 12;
-      wingRef.current.style.top = `${topPosition}px`;
+      const top = badgeRect.bottom - heroRect.top + 12;
+      wingRef.current.style.top = `${top}px`;
     };
 
+    // Initial positioning
+    positionWing();
+
+    // ResizeObserver for better performance
+    const resizeObserver = new ResizeObserver(positionWing);
+    if (heroRef.current) {
+      resizeObserver.observe(heroRef.current);
+    }
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
     const handleScroll = () => {
       if (!wingRef.current) return;
 
@@ -24,24 +39,19 @@ export default function Hero() {
       const maxScroll = 160;
       const progress = Math.min(scrollY / maxScroll, 1);
 
-      // Translate down, scale down, fade out
+      // Translate down, scale down, fade out for first 160px of scroll
       const translateY = progress * 18;
-      const scale = 1 - (progress * 0.04);
+      const scale = 1 - (progress * 0.04); // Scale down to 0.96
       const opacity = 0.95 - (progress * 0.8); // Fade from 0.95 to 0.15
 
       wingRef.current.style.transform = `translateX(-50%) translateY(${translateY}px) scale(${scale})`;
       wingRef.current.style.opacity = opacity.toString();
     };
 
-    // Initial positioning
-    positionWing();
-
-    // Add event listeners
-    window.addEventListener('resize', positionWing);
+    // Add scroll listener
     window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
-      window.removeEventListener('resize', positionWing);
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
@@ -49,7 +59,7 @@ export default function Hero() {
   return (
     <section 
       ref={heroRef}
-      className="relative h-screen bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center overflow-hidden"
+      className="relative overflow-hidden h-screen bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center"
       id="hero-section"
     >
       {/* Animated background elements */}
@@ -59,37 +69,28 @@ export default function Hero() {
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full bg-gradient-radial from-yellow-400/5 via-transparent to-transparent"></div>
       </div>
       
-      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20 z-10"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20"></div>
       
       {/* Wing Logo - positioned under Premium Network pill */}
-      <div 
+      <img 
         ref={wingRef}
-        className="absolute left-1/2 z-0 pointer-events-none"
-        style={{
-          transform: 'translateX(-50%)',
-          opacity: 0.95,
-          filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))'
-        }}
+        src="/assets/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.png" 
+        alt=""
+        className="pointer-events-none absolute left-1/2 -translate-x-1/2 z-0 drop-shadow-md h-10 w-auto filter brightness-125"
+        style={{ opacity: 0.95 }}
+        width="160"
+        height="40"
         aria-hidden="true"
-      >
-        <picture>
-          <source srcSet="/assets/webp/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.webp" type="image/webp" />
-          <img 
-            src="/assets/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.png" 
-            alt=""
-            className="h-10 w-auto filter brightness-125"
-            width="160"
-            height="40"
-          />
-        </picture>
-      </div>
+      />
 
       <div className="relative z-10 text-center text-white px-4 sm:px-6 max-w-5xl animate-fade-in">
         <header>
           <div className="mb-8">
-            <div ref={badgeRef} className="inline-block p-1 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-2xl mb-6 animate-shimmer">
-              <div className="bg-black px-6 py-2 rounded-2xl">
-                <span className="text-yellow-400 font-semibold text-sm tracking-wide">⚡ PREMIUM NETWORK</span>
+            <div ref={badgeRef}>
+              <div className="inline-block p-1 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-2xl mb-6 animate-shimmer">
+                <div className="bg-black px-6 py-2 rounded-2xl">
+                  <span className="text-yellow-400 font-semibold text-sm tracking-wide">⚡ PREMIUM NETWORK</span>
+                </div>
               </div>
             </div>
           </div>

@@ -1,0 +1,35 @@
+Adjust the hero’s decorative wing alignment and fade effect exactly as specified below:
+	•	File: client/src/pages/home/Hero.tsx
+	•	Make the root hero element position: relative (className="relative overflow-hidden").
+	•	Add refs: heroRef (section), badgeRef (wrapper around the “Premium Network” pill), wingRef (wing image).
+	•	Wrap the pill with <div ref={badgeRef}>…</div> (no other changes).
+	•	Insert a single wing image before the heading block, with:
+	•	ref={wingRef}
+	•	className="pointer-events-none absolute left-1/2 -translate-x-1/2 z-0 drop-shadow-md"
+	•	aria-hidden="true" alt="" style={{ opacity: 0.95 }}
+	•	Wrap the rest of the hero (H1, paragraph, CTAs, bullets) in <div className="relative z-10">…</div>.
+	•	Positioning & animation:
+	•	In useLayoutEffect: compute top = badge.getBoundingClientRect().bottom - hero.getBoundingClientRect().top + 12 and set wing.style.top = \${top}px``.
+	•	Also run that same calculation in a resize handler (use ResizeObserver or a debounced window.onresize).
+	•	In useEffect: add a passive scroll listener that, for the first 160px of scroll, applies:
+	•	translateY up to 18px
+	•	scale down to 0.96
+	•	fade opacity down to about 0.15
+	•	Clean up both listeners on unmount.
+	•	Asset path: keep the current wing image path (e.g., /assets/wing-logo.png).
+	•	Tuning knobs (if it’s a hair off):
+	•	Gap: +12 → +4…20
+	•	Scroll distance: 160 → 120…220
+	•	Movement: 18px / scale 0.04
+	•	Fade: target opacity 0.15 (raise it for less fade)
+	•	Verification
+	•	On load, the wing sits directly under the pill (not overlapping).
+	•	During the first ~160px of scroll it drifts down slightly and fades.
+	•	It never covers the pill/H1 (z-10 content above z-0 wing).
+
+Common gotchas (quick checks)
+	•	The hero container must be relative; otherwise top will be wrong.
+	•	If you see a 1-frame misalignment on slow devices, you forgot useLayoutEffect for the first set.
+	•	Give the wing image explicit width/height (or Tailwind w-[..] h-auto) to avoid layout shift.
+	•	On iOS Safari, ensure your scroll listener is { passive: true }.
+	•	If the header is sticky and overlaps, subtract its height in the top calc.

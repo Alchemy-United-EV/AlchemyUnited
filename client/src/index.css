@@ -283,3 +283,14 @@
     }
   }
 }
+
+:root {
+  --gold: #D4AF37;
+  --gold-light: #FFD700;
+  --gold-dark: #B8860B;
+}
+.bg-gold-gradient { background: linear-gradient(90deg, var(--gold-light), var(--gold), var(--gold-dark)); }
+.text-gold { color: var(--gold); }
+.border-gold { border-color: var(--gold); }
+.hover-scale { transition: transform .2s ease; }
+.hover-scale:hover { transform: scale(1.02); }

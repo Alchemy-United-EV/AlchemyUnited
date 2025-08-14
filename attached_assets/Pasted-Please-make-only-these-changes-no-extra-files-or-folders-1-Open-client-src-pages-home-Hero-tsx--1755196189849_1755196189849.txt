@@ -1,3 +1,8 @@
+Please make only these changes (no extra files or folders):
+
+1) Open client/src/pages/home/Hero.tsx and REPLACE the component with:
+
+--- REPLACEMENT START ---
 import React from "react";
 import { Link } from "wouter";
 
@@ -43,3 +48,7 @@ export default function Hero() {
     </section>
   );
 }
+--- REPLACEMENT END ---
+
+2) This removes the logo image completely and reduces top padding so there’s no large white space above the EV CHARGING pill.
+3) Do not alter routes, forms, or other styling outside the hero section.

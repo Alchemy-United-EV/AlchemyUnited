@@ -29,14 +29,24 @@ export default function CTA() {
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
+            data-cta="cta-early-access"
+            data-cta-section="cta"
+            data-cta-variant="primary"
             onClick={() => window.location.href = '/early-access'}
             className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-4 px-8 rounded-full text-xl transition-all duration-300 transform hover:scale-105"
+            type="button"
+            aria-label="Request Early Access to Premium EV Charging Network"
           >
             Request Early Access
           </button>
           <button
-            onClick={() => window.location.href = '/host'}
+            data-cta="cta-host-partner"
+            data-cta-section="cta"
+            data-cta-variant="secondary"
+            onClick={() => window.location.href = '/host-application'}
             className="border-2 border-yellow-400 hover:bg-yellow-400 text-yellow-400 hover:text-black font-bold py-4 px-8 rounded-full text-xl transition-all duration-300"
+            type="button"
+            aria-label="Become a Host Partner and Generate Passive Income"
           >
             Partner With Us
           </button>

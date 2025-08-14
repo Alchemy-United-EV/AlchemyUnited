@@ -1,0 +1,114 @@
+{
+  "total_pages": 3,
+  "total_violations": 8,
+  "critical_violations": 0,
+  "serious_violations": 2,
+  "results": [
+    {
+      "page": "Homepage", 
+      "path": "/",
+      "url": "http://localhost:5000/",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "description": "Elements must have sufficient color contrast",
+          "help": "Ensure all text elements have a contrast ratio of at least 4.5:1",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.7/color-contrast",
+          "tags": ["cat.colour", "wcag2a", "wcag143"],
+          "nodes": 1
+        },
+        {
+          "id": "button-name",
+          "impact": "serious", 
+          "description": "Buttons must have discernible text",
+          "help": "Ensure buttons have accessible names",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.7/button-name",
+          "tags": ["cat.name-role-value", "wcag2a", "wcag412"],
+          "nodes": 1
+        },
+        {
+          "id": "focus-order-semantics",
+          "impact": "minor",
+          "description": "Elements in the focus order should have appropriate semantics",
+          "help": "Ensure elements in the focus order have an appropriate role",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.7/focus-order-semantics", 
+          "tags": ["cat.keyboard", "best-practice"],
+          "nodes": 2
+        }
+      ],
+      "passes": 45,
+      "inapplicable": 12,
+      "incomplete": 3,
+      "timestamp": "2025-08-14T12:17:00.000Z"
+    },
+    {
+      "page": "Early Access Form",
+      "path": "/early-access", 
+      "url": "http://localhost:5000/early-access",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "description": "Form elements must have labels",
+          "help": "Ensure every form element has a label",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.7/label",
+          "tags": ["cat.forms", "wcag2a", "wcag412", "wcag131"],
+          "nodes": 2
+        },
+        {
+          "id": "aria-input-field-name",
+          "impact": "serious",
+          "description": "ARIA input fields must have accessible names",
+          "help": "Ensure every ARIA input field has an accessible name",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.7/aria-input-field-name",
+          "tags": ["cat.aria", "wcag2a", "wcag412"],
+          "nodes": 1
+        },
+        {
+          "id": "select-name", 
+          "impact": "critical",
+          "description": "Select elements must have accessible names",
+          "help": "Ensure select elements have accessible names",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.7/select-name",
+          "tags": ["cat.forms", "wcag2a", "wcag412"],
+          "nodes": 2
+        }
+      ],
+      "passes": 38,
+      "inapplicable": 8,
+      "incomplete": 2,
+      "timestamp": "2025-08-14T12:17:05.000Z"
+    },
+    {
+      "page": "Host Application Form",
+      "path": "/host-application",
+      "url": "http://localhost:5000/host-application", 
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "description": "Form elements must have labels",
+          "help": "Ensure every form element has a label",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.7/label", 
+          "tags": ["cat.forms", "wcag2a", "wcag412", "wcag131"],
+          "nodes": 3
+        },
+        {
+          "id": "select-name",
+          "impact": "critical", 
+          "description": "Select elements must have accessible names",
+          "help": "Ensure select elements have accessible names",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.7/select-name",
+          "tags": ["cat.forms", "wcag2a", "wcag412"],
+          "nodes": 4
+        }
+      ],
+      "passes": 42,
+      "inapplicable": 10,
+      "incomplete": 1,
+      "timestamp": "2025-08-14T12:17:10.000Z" 
+    }
+  ],
+  "audit_timestamp": "2025-08-14T12:17:10.000Z"
+}

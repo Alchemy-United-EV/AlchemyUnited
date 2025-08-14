@@ -1,0 +1,64 @@
+Act as a full-stack auditor. Do NOT refactor the project structure. Only add audit scripts, tests, and non-breaking fixes. Focus on buttons/CTAs, forms, and the pages they hit.
+
+SCOPE
+- All buttons, links, and CTAs on every route.
+- All forms (Early Access + Host).
+- Pages reached from those buttons.
+- Frontend behavior, accessibility, SEO, and backend handling/logs.
+- Tracking/analytics (stub GA4 if not configured).
+
+WHAT TO CREATE (files only, no restructuring)
+1) /audit/crawl-routes.json
+   - Auto-detect all internal routes by parsing router config and crawling from "/" up to depth 2.
+2) /audit/playwright/cta.spec.ts
+   - Playwright tests that:
+     a) Find every visible <button>, <a role="button">, and clickable element with data-cta.
+     b) Click each; assert navigation succeeds (HTTP 2xx), no client console errors, and the target page’s <h1> exists.
+     c) For forms: fill happy-path data, submit, assert 2xx response, success message toast, and record returned ID.
+3) /audit/accessibility/axe-report.json
+   - Run axe-core on each page; fail test if critical issues (color contrast, roles, labels, tabindex traps).
+4) /audit/seo/seo-pages-report.md
+   - For each page: title, meta description, canonical, H1/H2 presence, index/follow, OpenGraph, structured data presence, and LCP element hint.
+5) /audit/backend/cta-server-log.md
+   - While tests run, tail server logs and record for each click/form:
+     - route, method, status code, response time, validation errors (if any).
+6) /audit/tracking/ga4-plan.md and /audit/tracking/ga4-validation.md
+   - Plan: events {cta_click, form_submit, form_success, form_error} with parameters {button_id, page, variant}.
+   - Validation: if GA4 not configured, create a lightweight analytics stub that logs the same payloads to /tmp/analytics.log; assert one event per click/submit.
+
+NON-BREAKING FIXES TO APPLY (only if missing)
+- Add data-cta="[semantic-name]" to major CTAs (Get Early Access, Become a Host, etc.).
+- Ensure all buttons have type="button" or type="submit" as appropriate.
+- Ensure keyboard access: role, aria-labels, :focus-visible outlines, min 44x44 touch target.
+- For SEO: add canonical to index.html, ensure one <h1> per page, meaningful meta descriptions, and LocalBusiness JSON-LD kept as a separate component.
+
+COMMANDS TO RUN (write scripts in package.json; then execute)
+- "audit:crawl": crawl site starting at http://localhost:5000 and produce /audit/crawl-routes.json
+- "audit:playwright": run Playwright headed=false on all routes using /audit/playwright/cta.spec.ts
+- "audit:axe": run axe against each route and save /audit/accessibility/axe-report.json
+- "audit:seo": static analyze DOM for meta/structured data and write /audit/seo/seo-pages-report.md
+- "audit:server": run the above while tee'ing server output to /audit/backend/cta-server-log.md
+- "audit:all": concurrently run audit:playwright + audit:axe + audit:seo + audit:server
+
+ACCEPTANCE CRITERIA (fail build if not met)
+- 0 broken buttons/links (all return 2xx and reach a page with an <h1>).
+- Forms: 2xx response, success message, and persisted ID in server log for both Early Access and Host.
+- Accessibility: 0 "serious" or "critical" axe violations; button contrast ratio >= 4.5:1; focus visible on TAB.
+- SEO: each page has unique <title>, meta description, canonical, one <h1>, and no-blocking robots meta.
+- Tracking: an event for every CTA click and form submit (GA4 or stub) written to /tmp/analytics.log and summarized in /audit/tracking/ga4-validation.md.
+
+OUTPUT DELIVERABLES
+- /audit/final-buttons-audit-summary.md summarizing:
+  - Broken CTAs (if any), exact selectors and pages.
+  - Slow or erroring endpoints with response times.
+  - Accessibility violations by page with fixes.
+  - SEO gaps by page with copy/paste meta tag snippets.
+  - Tracking gaps and the exact code lines to add (or confirm present).
+  - A prioritized “Top 10 conversion wins” list (with estimated lift).
+
+IMPORTANT
+- Do NOT rename or move existing folders.
+- If you add any code to components, gate it behind data-cta or aria attributes only; no visual changes.
+- After running "audit:all", print a short PASS/FAIL summary with counts and direct links to the generated files.
+
+Finally: run the full audit now and then implement only SAFE quick wins (attribute additions, missing meta tags, analytics stub) and include the diffs in final-buttons-audit-summary.md.

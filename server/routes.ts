@@ -102,6 +102,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Analytics logging endpoint for tracking
+  app.post('/api/analytics/log', (req, res) => {
+    try {
+      const logEntry = {
+        timestamp: new Date().toISOString(),
+        ...req.body
+      };
+      
+      // Log to console for development
+      console.log('[Analytics]', logEntry);
+      
+      // Would log to file in production: fs.appendFileSync('/tmp/analytics.log', JSON.stringify(logEntry) + '\n');
+      
+      res.status(200).json({ logged: true });
+    } catch (error) {
+      console.error('Analytics logging error:', error);
+      res.status(500).json({ error: 'Failed to log analytics event' });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

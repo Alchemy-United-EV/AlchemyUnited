@@ -1,0 +1,25 @@
+{
+  "routes": [
+    {
+      "path": "/",
+      "title": "Alchemy Network | Premium EV Charging for Drivers & Hosts",
+      "status": "active",
+      "depth": 0
+    },
+    {
+      "path": "/early-access",
+      "title": "Request Early Access - Alchemy Network Premium EV Charging",
+      "status": "active", 
+      "depth": 1
+    },
+    {
+      "path": "/host-application",
+      "title": "Become a Host Partner - Alchemy Network",
+      "status": "active",
+      "depth": 1
+    }
+  ],
+  "crawled_at": "2025-08-14T03:12:00.000Z",
+  "total_routes": 3,
+  "discovery_method": "router_analysis"
+}

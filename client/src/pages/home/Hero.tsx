@@ -105,15 +105,25 @@ export default function Hero() {
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up delay-500">
           <button
+            data-cta="hero-early-access"
+            data-cta-section="hero" 
+            data-cta-variant="primary"
             onClick={() => window.location.href = '/early-access'}
             className="group relative bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-300 hover:to-yellow-400 text-black font-bold py-4 px-8 rounded-2xl text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-yellow-400/25 w-full sm:w-auto"
+            type="button"
+            aria-label="Get Early Access to Premium EV Charging Network"
           >
             <span className="relative z-10">Get Early Access</span>
             <div className="absolute inset-0 bg-gradient-to-r from-yellow-300 to-yellow-600 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-lg"></div>
           </button>
           <button
-            onClick={() => window.location.href = '/host'}
+            data-cta="hero-host-partner"
+            data-cta-section="hero"
+            data-cta-variant="secondary"
+            onClick={() => window.location.href = '/host-application'}
             className="group border-2 border-white/20 hover:border-yellow-400 bg-white/5 backdrop-blur-sm text-white hover:text-yellow-400 font-bold py-4 px-8 rounded-2xl text-lg transition-all duration-300 hover:bg-yellow-400/10 w-full sm:w-auto"
+            type="button"
+            aria-label="Become a Host Partner and Generate Passive Income"
           >
             Become a Host
           </button>

@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { Router, Route, Switch } from "wouter";
 import Home from "@/pages/home/Home";
 import "./index.css";
+import './integrations/forms';
 
 // FlipCard Component for Problems ↔ Solutions
 interface FlipCardProps {

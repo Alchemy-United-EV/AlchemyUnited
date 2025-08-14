@@ -1,0 +1,206 @@
+STRICT MODE. Do NOT change existing UI/UX (markup, classes, layout, copy, assets, routes). 
+No refactors. Only perform the tasks listed. If any step requires altering protected UI, STOP and report.
+
+GOAL
+Create a small backend (Express + SQLite) and non-visual form integration, add UI-freeze guardrails, optionally insert GTM, then LOCK today’s UI. Do everything automatically—no manual shell needed.
+
+ALLOWED UI CHANGES (two only):
+  (A) Add ONE import line in client/src/main.tsx:   import './integrations/forms';
+  (B) (Optional) Insert GTM snippet in client/index.html <head>. Nothing else visual.
+
+---------------------------------------
+A) FILES TO CREATE (write exact contents)
+---------------------------------------
+
+1) server/server.ts
+---8<---
+import express from 'express';
+import rateLimit from 'express-rate-limit';
+import cors from 'cors';
+import { db } from './sqlite';
+import { sendEmail } from './email';
+
+const app = express();
+app.use(express.json());
+app.use(cors({ origin: true, credentials: true }));
+app.use(rateLimit({ windowMs: 60_000, max: 60 }));
+
+app.get('/api/health', (_req, res) => res.json({ ok: true }));
+
+app.post('/api/lead', async (req, res) => {
+  const { firstName='', lastName='', email='', phone='' } = req.body || {};
+  if (!email) return res.status(400).json({ error: 'email required' });
+  const stmt = db.prepare(
+    `INSERT INTO leads (first_name,last_name,email,phone,created_at) VALUES (?,?,?,?,datetime('now'))`
+  );
+  stmt.run(firstName, lastName, email, phone);
+  await sendEmail('New Early Access lead', JSON.stringify(req.body, null, 2));
+  res.json({ ok: true });
+});
+
+app.post('/api/host-application', async (req, res) => {
+  const d = req.body || {};
+  if (!d.email) return res.status(400).json({ error: 'email required' });
+  const stmt = db.prepare(
+    `INSERT INTO hosts (data_json,created_at) VALUES (?,datetime('now'))`
+  );
+  stmt.run(JSON.stringify(d));
+  await sendEmail('New Host Application', JSON.stringify(d, null, 2));
+  res.json({ ok: true });
+});
+
+const port = process.env.PORT || 5050;
+app.listen(port, () => console.log(`[server] listening on ${port}`));
+---8<---
+
+2) server/sqlite.ts
+---8<---
+import Database from 'better-sqlite3';
+import fs from 'fs';
+const dbFile = 'server/data.sqlite';
+const firstRun = !fs.existsSync(dbFile);
+export const db = new Database(dbFile);
+if (firstRun) {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS leads(
+      id INTEGER PRIMARY KEY, first_name TEXT, last_name TEXT,
+      email TEXT UNIQUE, phone TEXT, created_at TEXT
+    );
+    CREATE TABLE IF NOT EXISTS hosts(
+      id INTEGER PRIMARY KEY, data_json TEXT, created_at TEXT
+    );
+  `);
+}
+---8<---
+
+3) server/email.ts
+---8<---
+import nodemailer from 'nodemailer';
+
+export async function sendEmail(subject: string, text: string) {
+  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_TO, SMTP_FROM } = process.env;
+  if (!SMTP_HOST || !SMTP_PORT || !SMTP_USER || !SMTP_PASS || !SMTP_TO || !SMTP_FROM) {
+    console.warn('[email] skipped (missing SMTP env)');
+    return;
+  }
+  const transporter = nodemailer.createTransport({
+    host: SMTP_HOST, port: Number(SMTP_PORT), secure: Number(SMTP_PORT) === 465,
+    auth: { user: SMTP_USER, pass: SMTP_PASS }
+  });
+  await transporter.sendMail({ from: SMTP_FROM, to: SMTP_TO, subject, text });
+}
+---8<---
+
+4) client/src/integrations/forms.ts
+---8<---
+function hook(id: string, url: string) {
+  const el = document.getElementById(id) as HTMLFormElement | null;
+  if (!el) return;
+  el.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(el).entries());
+    try {
+      const res = await fetch(url, { method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data) });
+      (window as any).dataLayer?.push({ event:'form_submit', form_id:id, ok: res.ok });
+      alert(res.ok ? 'Thanks! We received your submission.' : 'Submission failed.');
+      if (res.ok) el.reset();
+    } catch {
+      alert('Network error, please try again.');
+    }
+  });
+}
+hook('early-access-form', '/api/lead');
+hook('host-application-form', '/api/host-application');
+---8<---
+
+5) scripts/ui-freeze.js
+---8<---
+import { createHash } from 'crypto';
+import fs from 'fs';
+
+const CRITICAL = [
+  'client/index.html',
+  'client/src/main.tsx',
+  'client/src/pages/home/Hero.tsx',
+  'client/src/index.css'
+];
+const STATE = 'scripts/ui-freeze.json';
+
+function hashFile(p){ return createHash('sha256').update(fs.readFileSync(p)).digest('hex'); }
+
+const mode = process.argv[2];
+if (mode === '--lock') {
+  const map = Object.fromEntries(CRITICAL.map(p => [p, hashFile(p)]));
+  fs.writeFileSync(STATE, JSON.stringify(map, null, 2));
+  console.log('[ui-freeze] baseline locked');
+  process.exit(0);
+}
+
+if (mode === '--check') {
+  if (!fs.existsSync(STATE)) process.exit(0);
+  const baseline = JSON.parse(fs.readFileSync(STATE,'utf8'));
+  const diffs = [];
+  for (const p of Object.keys(baseline)) {
+    const cur = hashFile(p);
+    if (cur !== baseline[p]) diffs.push(p);
+  }
+  if (diffs.length) {
+    console.error('[ui-freeze] blocked changes in:', diffs);
+    process.exit(1);
+  }
+  process.exit(0);
+}
+---8<---
+
+---------------------------------------
+B) PACKAGE + SCRIPTS (update package.json)
+---------------------------------------
+- Add dependencies (if missing): 
+  "express", "cors", "express-rate-limit", "better-sqlite3", "nodemailer"
+- Add devDependencies (if missing):
+  "concurrently", "tsx"
+- Add/merge scripts (do not remove existing):
+  "dev": "npm run ui:check && concurrently \"npm:dev:client\" \"npm:dev:server\"",
+  "dev:client": "cd client && npm run dev",
+  "dev:server": "tsx server/server.ts",
+  "build": "cd client && npm run build",
+  "ui:lock": "node scripts/ui-freeze.js --lock",
+  "ui:check": "node scripts/ui-freeze.js --check"
+
+Install the listed packages as needed. Perform package.json edits programmatically (no manual shell from the user).
+
+---------------------------------------
+C) WHITELISTED UI HOOKS ONLY
+---------------------------------------
+1) In client/src/main.tsx add this single import line (once):
+   import './integrations/forms';
+
+2) (Optional but recommended) In client/index.html, right after <head> opens, insert the GTM snippet, replacing GTM-XXXXXXX with my container ID if I provided one. If none provided, SKIP and report you skipped.
+<!-- GTM -->
+<script>window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'gtm.js'});</script>
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-XXXXXXX"></script>
+<!-- End GTM -->
+
+---------------------------------------
+D) LOCK THE CURRENT UI
+---------------------------------------
+- Execute: node scripts/ui-freeze.js --lock
+- From now on, before running dev or building, execute: node scripts/ui-freeze.js --check
+  (You can wire this into the "dev" script already as defined.)
+
+---------------------------------------
+E) START THE APP (no visual changes)
+---------------------------------------
+- Run the "dev" script to start both client and server. If Replit requires, run the scripts programmatically—do not ask me to open shell.
+
+---------------------------------------
+F) POST-RUN VERIFICATION (print results)
+---------------------------------------
+1) Print:
+   - Confirmed forms present? IDs found: early-access-form, host-application-form (true/false each).
+   - Server health: HTTP GET /api/health result JSON.
+2) Show where the SQLite file is: server/data.sqlite (file exists: true/false).
+3) Output which UI files were hashed for freeze and the stored hashes (shortened).
+4) Confirm that NO other UI files were changed during this run.
+
+If any step fails or requires changing UI beyond the two whitelisted edits, STOP and report clearly without making that change.

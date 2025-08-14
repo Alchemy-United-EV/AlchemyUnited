@@ -13,10 +13,12 @@ export default function Home() {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const heroHeight = window.innerHeight;
-      const fadeStart = heroHeight * 0.7;
+      // Adjust fade start to begin after hero section ends
+      const fadeStart = heroHeight;
+      const fadeEnd = heroHeight + 200; // Fade over 200px of scroll
       
       if (scrollY > fadeStart) {
-        const fadeProgress = (scrollY - fadeStart) / (heroHeight * 0.3);
+        const fadeProgress = (scrollY - fadeStart) / (fadeEnd - fadeStart);
         setLogoOpacity(Math.max(0, 1 - fadeProgress));
       } else {
         setLogoOpacity(1);
@@ -29,9 +31,11 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Navigation Logo */}
+      <Hero />
+      
+      {/* Navigation Logo - positioned after hero to avoid overlap */}
       <nav 
-        className="fixed top-0 left-0 right-0 z-50 flex justify-center p-6 transition-opacity duration-300"
+        className="relative flex justify-center p-6 transition-opacity duration-300 -mt-20 z-10"
         style={{ opacity: logoOpacity }}
       >
         <picture>
@@ -45,8 +49,7 @@ export default function Home() {
           />
         </picture>
       </nav>
-
-      <Hero />
+      
       <Features />
       {showSocialProof && <SocialProof showLogos={true} />}
       <CTA />

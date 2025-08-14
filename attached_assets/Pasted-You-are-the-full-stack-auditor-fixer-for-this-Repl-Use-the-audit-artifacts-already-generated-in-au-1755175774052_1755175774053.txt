@@ -1,0 +1,57 @@
+You are the full-stack auditor/fixer for this Repl. Use the audit artifacts already generated in /audit to implement only the highest-ROI, non-breaking improvements.
+
+SCOPE
+- Cover pages, buttons/CTAs, forms/APIs, SEO, accessibility, and analytics.
+- Do NOT alter visual design, layout, or copy tone. Keep the current hero, cards, and theme intact.
+
+INPUTS
+- Read: /audit/summary.md, /audit/pages-audit.md, /audit/cta-audit.md, /audit/forms-report.md, /audit/seo-report.md, /audit/a11y-report.json, /audit/a11y-fixes.md, /audit/tracking-plan.md, /audit/fix-priorities.csv
+
+IMPLEMENT THESE FIXES (in this order)
+1) SEO quick wins (sitewide)
+   - Add unique, descriptive <title> and <meta name="description"> for every route listed in pages-audit.md.
+   - Ensure <html lang="en"> (or correct language) on every page shell.
+   - Add <link rel="canonical"> to index.html and any other routable HTML entry points.
+   - Generate public/robots.txt and a minimal public/sitemap.xml that lists all routes.
+   - Add Organization + WebSite JSON-LD to the home page using /audit/seo-report.md guidance.
+
+2) Accessibility (WCAG) fixes (no styling changes)
+   - Apply the exact aria-label / role / id associations from /audit/a11y-fixes.md.
+   - Ensure form <label for> bindings are correct; add aria-describedby for helper/error text.
+   - Make all buttons real <button type="button|submit"> and all links real <a>.
+   - Add “Skip to main content” link and target id="main" on the main content container.
+
+3) CTA tracking & analytics (per /audit/tracking-plan.md)
+   - Add data-cta attributes to all primary/secondary CTAs exactly as specified.
+   - Wire the existing /api/analytics/log endpoint to send a POST on each CTA click with {ctaId, page, ts}.
+   - Guard failures (non-blocking) and ensure no console errors.
+
+4) Performance hygiene (safe wins only)
+   - Defer any non-critical scripts; preload critical font(s) if applicable.
+   - Ensure images have width/height and loading="lazy" when below the fold.
+
+VALIDATION (automate and attach results to /audit/after/)
+- Run Playwright/axe/lighthouse or the existing scripts used in the previous audit.
+- Re-run button and page route checks; confirm 0 console errors.
+- Re-test both form endpoints; expect 201 with <100ms local response.
+- Export: 
+  - /audit/after/seo-score.txt (new score + diffs)
+  - /audit/after/a11y-report.json (axe) + a11y-summary.md
+  - /audit/after/pages-audit.md and cta-audit.md (updated)
+  - /audit/after/forms-report.md (latency + status)
+  - /audit/after/change-log.md (file-by-file changes, before→after)
+  - /audit/after/roi-proof.md (what fixes shipped, estimated lift based on fix-priorities.csv)
+
+GUARDRAILS
+- No visual layout changes, spacing shifts, or copy rewrites.
+- Do not remove existing components or animations.
+- If a fix would change design, skip it and note it in /audit/after/change-log.md under “Deferred (design-impact).”
+
+SUCCESS CRITERIA
+- All 6+ CTAs tracked (data-cta present) and still navigate correctly.
+- Forms still return 201; no console errors anywhere.
+- SEO checks: unique titles/descriptions; canonical present; robots.txt + sitemap.xml created; JSON-LD valid.
+- A11y: all issues listed in /audit/a11y-report.json are resolved or documented as “Deferred”.
+- Provide a final executive summary at /audit/after/summary.md with checkboxes for each criterion and next 3 recommended steps.
+
+When finished, post a short summary with: new SEO score, number of a11y issues fixed, CTA tracking status, and links to the /audit/after/* files.

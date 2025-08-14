@@ -29,16 +29,17 @@ type EarlyAccessForm = z.infer<typeof earlyAccessSchema>;
 export default function EarlyAccess() {
   // Set SEO meta tags and structured data for Early Access page
   React.useEffect(() => {
-    document.title = "Request Early Access - Alchemy Network Premium EV Charging";
+    document.title = "Request Early Access | Alchemy Premium EV Charging Network";
+    document.documentElement.setAttribute('lang', 'en');
     
     let metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Get early access to Alchemy Network\'s exclusive luxury EV charging network. Be among the first to experience premium fast charging with guaranteed reservations and 99.9% uptime.');
+      metaDescription.setAttribute('content', 'Get early access to Alchemy\'s premium EV charging network. Experience guaranteed fast charging with 99.9% uptime and exclusive member benefits.');
     }
 
     let ogTitle = document.querySelector('meta[property="og:title"]');
     if (ogTitle) {
-      ogTitle.setAttribute('content', 'Request Early Access - Alchemy Network Premium EV Charging');
+      ogTitle.setAttribute('content', 'Request Early Access | Alchemy Premium EV Charging Network');
     }
 
     // Add canonical URL
@@ -50,6 +51,15 @@ export default function EarlyAccess() {
       link.rel = 'canonical';
       link.href = 'https://alchemy-united.replit.app/early-access';
       document.head.appendChild(link);
+    }
+
+    // Add robots meta tag
+    let robotsMeta = document.querySelector('meta[name="robots"]');
+    if (!robotsMeta) {
+      const meta = document.createElement('meta');
+      meta.name = 'robots';
+      meta.content = 'index, follow';
+      document.head.appendChild(meta);
     }
   }, []);
   const [submitted, setSubmitted] = useState(false);
@@ -134,6 +144,12 @@ export default function EarlyAccess() {
   return (
     <>
       <StructuredData data={earlyAccessPageSchema} />
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-gold text-black px-4 py-2 rounded z-50"
+      >
+        Skip to main content
+      </a>
       <div className="min-h-screen bg-black">
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 sm:p-8">
@@ -151,7 +167,7 @@ export default function EarlyAccess() {
         <div></div>
       </nav>
 
-      <div className="pt-24 pb-12 px-4 sm:px-6 lg:px-8">
+      <main id="main-content" className="pt-24 pb-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto animate-fade-in-up">
           <div className="text-center mb-12">
             <h1 className="text-4xl sm:text-5xl font-black text-white mb-4 font-display">
@@ -236,9 +252,13 @@ export default function EarlyAccess() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
-                <Label htmlFor="vehicleType" className="text-white font-medium">Current EV</Label>
+                <Label htmlFor="vehicle-type-select" className="text-white font-medium">Current EV</Label>
                 <Select onValueChange={(value) => setValue("vehicleType", value)}>
-                  <SelectTrigger className="bg-white/10 border-white/30 text-white">
+                  <SelectTrigger 
+                    id="vehicle-type-select"
+                    className="bg-white/10 border-white/30 text-white"
+                    aria-label="Select your vehicle type"
+                  >
                     <SelectValue placeholder="Select your vehicle" />
                   </SelectTrigger>
                   <SelectContent>
@@ -266,9 +286,13 @@ export default function EarlyAccess() {
               </div>
 
               <div>
-                <Label htmlFor="chargingFrequency" className="text-white font-medium">Charging Frequency</Label>
+                <Label htmlFor="charging-frequency-select" className="text-white font-medium">Charging Frequency</Label>
                 <Select onValueChange={(value) => setValue("chargingFrequency", value)}>
-                  <SelectTrigger className="bg-white/10 border-white/30 text-white">
+                  <SelectTrigger 
+                    id="charging-frequency-select"
+                    className="bg-white/10 border-white/30 text-white"
+                    aria-label="How often do you charge your vehicle"
+                  >
                     <SelectValue placeholder="How often do you charge?" />
                   </SelectTrigger>
                   <SelectContent>
@@ -310,12 +334,16 @@ export default function EarlyAccess() {
               size="lg"
               disabled={isSubmitting}
               className="w-full bg-gold hover:bg-gold/90 text-black font-bold py-4 rounded-full text-lg transition-all duration-300 transform hover:scale-105 font-display"
+              data-cta="early-access-submit"
+              data-cta-section="form"
+              data-cta-variant="primary"
+              aria-label="Submit Early Access Application"
             >
               {isSubmitting ? "Submitting..." : "Request Early Access"}
             </Button>
           </form>
         </div>
-      </div>
+      </main>
     </div>
     </>
   );

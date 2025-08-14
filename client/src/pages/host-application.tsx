@@ -37,16 +37,37 @@ type HostApplicationForm = z.infer<typeof hostApplicationSchema>;
 export default function HostApplication() {
   // Set SEO meta tags for Host Application page
   React.useEffect(() => {
-    document.title = "Become a Host Partner - Alchemy United EV Charging Network";
+    document.title = "Become a Host Partner | Alchemy EV Charging Stations";
+    document.documentElement.setAttribute('lang', 'en');
     
     let metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Partner with Alchemy United to host premium EV charging stations. Earn passive income while providing luxury charging experiences. Full insurance, security, and maintenance included.');
+      metaDescription.setAttribute('content', 'Partner with Alchemy to host profitable EV charging stations. Generate passive income with our premium charging network and full support.');
     }
 
     let ogTitle = document.querySelector('meta[property="og:title"]');
     if (ogTitle) {
-      ogTitle.setAttribute('content', 'Become a Host Partner - Alchemy United EV Charging Network');
+      ogTitle.setAttribute('content', 'Become a Host Partner | Alchemy EV Charging Stations');
+    }
+
+    // Add canonical URL
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) {
+      canonical.setAttribute('href', 'https://alchemy-united.replit.app/host-application');
+    } else {
+      const link = document.createElement('link');
+      link.rel = 'canonical';
+      link.href = 'https://alchemy-united.replit.app/host-application';
+      document.head.appendChild(link);
+    }
+
+    // Add robots meta tag
+    let robotsMeta = document.querySelector('meta[name="robots"]');
+    if (!robotsMeta) {
+      const meta = document.createElement('meta');
+      meta.name = 'robots';
+      meta.content = 'index, follow';
+      document.head.appendChild(meta);
     }
   }, []);
   const [submitted, setSubmitted] = useState(false);
@@ -141,7 +162,14 @@ export default function HostApplication() {
   }
 
   return (
-    <div className="min-h-screen bg-black">
+    <>
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-gold text-black px-4 py-2 rounded z-50"
+      >
+        Skip to main content
+      </a>
+      <div className="min-h-screen bg-black">
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 sm:p-8">
         <Link href="/">
@@ -158,7 +186,7 @@ export default function HostApplication() {
         <div></div>
       </nav>
 
-      <div className="pt-24 pb-12 px-4 sm:px-6 lg:px-8">
+      <main id="main-content" className="pt-24 pb-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto animate-fade-in-up">
           <div className="text-center mb-12">
             <h1 className="text-4xl sm:text-5xl font-black text-white mb-4 font-display">
@@ -274,9 +302,13 @@ export default function HostApplication() {
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <Label htmlFor="propertyType" className="text-white font-medium">Property Type</Label>
+                  <Label htmlFor="property-type-select" className="text-white font-medium">Property Type</Label>
                   <Select onValueChange={(value) => setValue("propertyType", value)}>
-                    <SelectTrigger className="bg-white/10 border-white/30 text-white">
+                    <SelectTrigger 
+                      id="property-type-select"
+                      className="bg-white/10 border-white/30 text-white"
+                      aria-label="Select your property type"
+                    >
                       <SelectValue placeholder="Select property type" />
                     </SelectTrigger>
                     <SelectContent>
@@ -299,9 +331,13 @@ export default function HostApplication() {
                 </div>
 
                 <div>
-                  <Label htmlFor="parkingSpaces" className="text-white font-medium">Available Parking Spaces</Label>
+                  <Label htmlFor="parking-spaces-select" className="text-white font-medium">Available Parking Spaces</Label>
                   <Select onValueChange={(value) => setValue("parkingSpaces", value)}>
-                    <SelectTrigger className="bg-white/10 border-white/30 text-white">
+                    <SelectTrigger 
+                      id="parking-spaces-select"
+                      className="bg-white/10 border-white/30 text-white"
+                      aria-label="Number of available parking spaces"
+                    >
                       <SelectValue placeholder="Number of spaces" />
                     </SelectTrigger>
                     <SelectContent>
@@ -334,9 +370,13 @@ export default function HostApplication() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <Label htmlFor="electricalCapacity" className="text-white font-medium">Current Electrical Capacity</Label>
+                  <Label htmlFor="electrical-capacity-select" className="text-white font-medium">Current Electrical Capacity</Label>
                   <Select onValueChange={(value) => setValue("electricalCapacity", value)}>
-                    <SelectTrigger className="bg-white/10 border-white/30 text-white">
+                    <SelectTrigger 
+                      id="electrical-capacity-select"
+                      className="bg-white/10 border-white/30 text-white"
+                      aria-label="Available electrical capacity"
+                    >
                       <SelectValue placeholder="Select capacity" />
                     </SelectTrigger>
                     <SelectContent>
@@ -353,9 +393,13 @@ export default function HostApplication() {
                 </div>
 
                 <div>
-                  <Label htmlFor="expectedTraffic" className="text-white font-medium">Expected Daily Traffic</Label>
+                  <Label htmlFor="expected-traffic-select" className="text-white font-medium">Expected Daily Traffic</Label>
                   <Select onValueChange={(value) => setValue("expectedTraffic", value)}>
-                    <SelectTrigger className="bg-white/10 border-white/30 text-white">
+                    <SelectTrigger 
+                      id="expected-traffic-select"
+                      className="bg-white/10 border-white/30 text-white"
+                      aria-label="Select expected traffic volume"
+                    >
                       <SelectValue placeholder="Daily visitors" />
                     </SelectTrigger>
                     <SelectContent>
@@ -378,9 +422,13 @@ export default function HostApplication() {
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <Label htmlFor="operatingHours" className="text-white font-medium">Operating Hours</Label>
+                  <Label htmlFor="operating-hours-select" className="text-white font-medium">Operating Hours</Label>
                   <Select onValueChange={(value) => setValue("operatingHours", value)}>
-                    <SelectTrigger className="bg-white/10 border-white/30 text-white">
+                    <SelectTrigger 
+                      id="operating-hours-select"
+                      className="bg-white/10 border-white/30 text-white"
+                      aria-label="Select operating hours"
+                    >
                       <SelectValue placeholder="Select hours" />
                     </SelectTrigger>
                     <SelectContent>
@@ -396,9 +444,13 @@ export default function HostApplication() {
                 </div>
 
                 <div>
-                  <Label htmlFor="partnershipInterest" className="text-white font-medium">Partnership Type Interest</Label>
+                  <Label htmlFor="partnership-interest-select" className="text-white font-medium">Partnership Type Interest</Label>
                   <Select onValueChange={(value) => setValue("partnershipInterest", value)}>
-                    <SelectTrigger className="bg-white/10 border-white/30 text-white">
+                    <SelectTrigger 
+                      id="partnership-interest-select"
+                      className="bg-white/10 border-white/30 text-white"
+                      aria-label="Select partnership type interest"
+                    >
                       <SelectValue placeholder="Select partnership" />
                     </SelectTrigger>
                     <SelectContent>
@@ -415,9 +467,13 @@ export default function HostApplication() {
               </div>
 
               <div>
-                <Label htmlFor="timeline" className="text-white font-medium">Preferred Timeline</Label>
+                <Label htmlFor="timeline-select" className="text-white font-medium">Preferred Timeline</Label>
                 <Select onValueChange={(value) => setValue("timeline", value)}>
-                  <SelectTrigger className="bg-white/10 border-white/30 text-white">
+                  <SelectTrigger 
+                    id="timeline-select"
+                    className="bg-white/10 border-white/30 text-white"
+                    aria-label="Select preferred timeline"
+                  >
                     <SelectValue placeholder="When would you like to launch?" />
                   </SelectTrigger>
                   <SelectContent>
@@ -473,12 +529,17 @@ export default function HostApplication() {
               size="lg"
               disabled={isSubmitting}
               className="w-full bg-gold hover:bg-gold/90 text-black font-bold py-4 rounded-full text-lg transition-all duration-300 transform hover:scale-105 font-display"
+              data-cta="host-application-submit"
+              data-cta-section="form"
+              data-cta-variant="primary"
+              aria-label="Submit Host Partnership Application"
             >
               {isSubmitting ? "Submitting Application..." : "Submit Host Application"}
             </Button>
           </form>
         </div>
-      </div>
+      </main>
     </div>
+    </>
   );
 }

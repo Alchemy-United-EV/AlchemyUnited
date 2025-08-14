@@ -22,14 +22,28 @@ function EarlyAccessForm() {
     console.log('Form submitted:', formData);
     
     try {
+      // Map to match server schema - need ALL required fields
+      const submissionData = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        vehicleType: "Model S", // Default values for required fields
+        chargingFrequency: "Weekly",
+        location: "Not specified"
+      };
+      
       const response = await fetch('/api/early-access-applications', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(submissionData),
       });
       
       if (response.ok) {
         setSubmitted(true);
+      } else {
+        const error = await response.json();
+        console.error('Submission error:', error);
       }
     } catch (error) {
       console.error('Submission failed:', error);
@@ -150,102 +164,141 @@ function EarlyAccessForm() {
   );
 }
 
-// Minimal Home Component - Inline to avoid React context issues
+// Simplified Home Component that works with current setup
 function HomeComponent() {
   useEffect(() => {
     console.log("[home] mounted successfully");
     document.title = "Alchemy Network | Premium EV Charging for Drivers & Hosts";
   }, []);
 
-  const handleEarlyAccessClick = () => {
-    console.log("Early access button clicked");
-    window.location.href = '/early-access';
-  };
-
-  const handleHostClick = () => {
-    console.log("Host application button clicked");
-    window.location.href = '/host-application';
-  };
-
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 sm:p-8 bg-black/80 backdrop-blur-sm">
-        <img 
-          src="/assets/au-logo.png" 
-          alt="Alchemy United Logo"
-          className="h-8 w-auto filter brightness-125"
-        />
-        <div className="flex gap-4">
-          <button
-            onClick={handleEarlyAccessClick}
-            className="text-white hover:text-gold transition-colors px-4 py-2"
-          >
-            Get Early Access
-          </button>
-          <button
-            onClick={handleHostClick}
-            className="bg-gold text-black px-6 py-2 rounded-full font-semibold hover:bg-gold/90 transition-colors"
-          >
-            Become a Host
-          </button>
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
+        <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16">
+          <img 
+            src="/public/alchemy-voltstream-logo.png" 
+            alt="Alchemy Voltstream"
+            className="h-8 w-auto"
+          />
+          <div className="flex gap-4">
+            <button
+              onClick={() => window.location.href = '/early-access'}
+              className="text-gray-700 hover:text-gold transition-colors px-4 py-2"
+            >
+              Get Early Access
+            </button>
+            <button
+              onClick={() => window.location.href = '/host-application'}
+              className="bg-gold text-black px-6 py-2 rounded-full font-semibold hover:bg-gold/90 transition-colors"
+            >
+              Become a Host
+            </button>
+          </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <main className="pt-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center py-20">
-            <h1 className="text-5xl sm:text-7xl font-black mb-8 leading-tight">
-              Premium <span className="text-gold">EV Charging</span><br />
-              Network
-            </h1>
-            <p className="text-xl sm:text-2xl text-white/80 mb-12 max-w-3xl mx-auto">
-              Experience the future of electric vehicle charging with our luxury network. 
-              Reliable, fast, and premium locations for discerning EV drivers.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <button
-                onClick={handleEarlyAccessClick}
-                className="bg-gold text-black px-8 py-4 rounded-full text-lg font-bold hover:bg-gold/90 transform hover:scale-105 transition-all duration-300"
-              >
-                Get Early Access
-              </button>
-              <button
-                onClick={handleHostClick}
-                className="border-2 border-gold text-gold px-8 py-4 rounded-full text-lg font-bold hover:bg-gold hover:text-black transition-all duration-300"
-              >
-                Become a Host Partner
-              </button>
+      <main className="pt-16">
+        <div className="relative overflow-hidden bg-white">
+          <div className="max-w-7xl mx-auto">
+            <div className="relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
+              <div className="pt-10 mx-auto max-w-7xl px-4 sm:pt-12 sm:px-6 md:pt-16 lg:pt-20 lg:px-8 xl:pt-28">
+                <div className="sm:text-center lg:text-left">
+                  <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+                    <span className="block xl:inline">Premium</span>
+                    <span className="block text-gold xl:inline"> EV Charging</span>
+                    <span className="block xl:inline"> Network</span>
+                  </h1>
+                  <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
+                    Experience the future of electric vehicle charging with our luxury network. 
+                    Reliable, fast, and premium locations for discerning EV drivers.
+                  </p>
+                  <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+                    <div className="rounded-md shadow">
+                      <button
+                        onClick={() => window.location.href = '/early-access'}
+                        className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-black bg-gold hover:bg-gold/90 md:py-4 md:text-lg md:px-10"
+                      >
+                        Get Early Access
+                      </button>
+                    </div>
+                    <div className="mt-3 sm:mt-0 sm:ml-3">
+                      <button
+                        onClick={() => window.location.href = '/host-application'}
+                        className="w-full flex items-center justify-center px-8 py-3 border border-gold text-base font-medium rounded-md text-gold bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10"
+                      >
+                        Become a Host
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+        </div>
 
-          {/* Features Section */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 py-20">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gold/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-gold text-2xl">⚡</span>
-              </div>
-              <h3 className="text-xl font-bold mb-4">Ultra-Fast Charging</h3>
-              <p className="text-white/70">State-of-the-art charging technology delivering up to 350kW power for rapid charging sessions.</p>
+        {/* Features Section */}
+        <div className="py-12 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="lg:text-center">
+              <h2 className="text-base text-gold font-semibold tracking-wide uppercase">Premium Network</h2>
+              <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                Why Choose Alchemy Network?
+              </p>
             </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gold/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-gold text-2xl">🏆</span>
+
+            <div className="mt-10">
+              <div className="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10">
+                <div className="relative">
+                  <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-gold text-black">
+                    ⚡
+                  </div>
+                  <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Ultra-Fast Charging</p>
+                  <p className="mt-2 ml-16 text-base text-gray-500">
+                    State-of-the-art charging technology delivering up to 350kW power for rapid charging sessions.
+                  </p>
+                </div>
+
+                <div className="relative">
+                  <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-gold text-black">
+                    🏆
+                  </div>
+                  <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Premium Locations</p>
+                  <p className="mt-2 ml-16 text-base text-gray-500">
+                    Carefully curated charging stations at luxury hotels, premium shopping centers, and exclusive venues.
+                  </p>
+                </div>
+
+                <div className="relative">
+                  <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-gold text-black">
+                    🔒
+                  </div>
+                  <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Reliable Network</p>
+                  <p className="mt-2 ml-16 text-base text-gray-500">
+                    99.8% uptime guarantee with 24/7 customer support and real-time station monitoring.
+                  </p>
+                </div>
               </div>
-              <h3 className="text-xl font-bold mb-4">Premium Locations</h3>
-              <p className="text-white/70">Carefully curated charging stations at luxury hotels, premium shopping centers, and exclusive venues.</p>
             </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gold/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-gold text-2xl">🔒</span>
-              </div>
-              <h3 className="text-xl font-bold mb-4">Reliable Network</h3>
-              <p className="text-white/70">99.8% uptime guarantee with 24/7 customer support and real-time station monitoring.</p>
-            </div>
+          </div>
+        </div>
+
+        {/* CTA Section */}
+        <div className="bg-gold">
+          <div className="max-w-2xl mx-auto text-center py-16 px-4 sm:py-20 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-extrabold text-black sm:text-4xl">
+              <span className="block">Ready to experience premium EV charging?</span>
+            </h2>
+            <p className="mt-4 text-lg leading-6 text-black/80">
+              Join thousands of satisfied drivers who have chosen the premium experience.
+            </p>
+            <button
+              onClick={() => window.location.href = '/early-access'}
+              className="mt-8 w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-gold bg-black hover:bg-gray-900 sm:w-auto"
+            >
+              Get Early Access Today
+            </button>
           </div>
         </div>
       </main>

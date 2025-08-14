@@ -45,8 +45,18 @@ export default function Features() {
     setFlipped(prev => ({ ...prev, [id]: !prev[id] }));
 
   return (
-    <section aria-labelledby="features-heading" className="mx-auto max-w-6xl px-4 py-12">
-      <h2 id="features-heading" className="text-3xl font-bold mb-8 text-center">EV Pain Points → Solutions</h2>
+    <section aria-labelledby="features-heading" className="mx-auto max-w-6xl px-4 py-16">
+      <div className="text-center mb-12">
+        <div className="inline-flex items-center gap-2 bg-gradient-to-r from-red-100 to-green-100 text-gray-800 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+          <span>Problems</span>
+          <div className="w-6 h-6 text-yellow-500">🔄</div>
+          <span>Solutions</span>
+        </div>
+        <h2 id="features-heading" className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
+          We Solve Real <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-green-600">EV Problems</span>
+        </h2>
+        <p className="text-gray-600 max-w-2xl mx-auto">Tap any card to see how we transform industry pain points into seamless experiences</p>
+      </div>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {pairs.map(pair => {
           const isFlipped = !!flipped[pair.id];
@@ -58,22 +68,40 @@ export default function Features() {
                 onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(pair.id); }}}
                 aria-pressed={isFlipped}
                 aria-label={isFlipped ? "Show problem" : "Show solution"}
-                className="relative w-full h-56 focus:outline-none"
+                className="relative w-full h-72 focus:outline-none transform hover:scale-105 transition-transform duration-200"
               >
-                <div className={`preserve-3d duration-500 ease-out relative w-full h-full ${isFlipped ? "rotate-y-180" : ""}`}>
+                <div className={`preserve-3d duration-700 ease-out relative w-full h-full ${isFlipped ? "rotate-y-180" : ""} hover:shadow-2xl`}>
                   {/* Problem side (front) */}
-                  <div className="absolute inset-0 backface-hidden rounded-lg p-4 border shadow-sm bg-red-50 hover:shadow-md transition-shadow duration-300">
-                    <p className="text-sm font-semibold text-red-700 uppercase tracking-wide">Problem</p>
-                    <h3 className="mt-1 text-lg font-bold text-red-800">{pair.problemTitle}</h3>
-                    <p className="mt-2 text-sm text-red-900/80 leading-relaxed">{pair.problemText}</p>
-                    <p className="absolute bottom-3 right-4 text-xs text-red-700 font-medium">Tap ↻ for solution</p>
+                  <div className="absolute inset-0 backface-hidden rounded-2xl p-6 shadow-lg bg-gradient-to-br from-red-50 to-red-100 hover:shadow-xl transition-all duration-300 border border-red-200">
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
+                        <span className="text-white text-sm">⚠️</span>
+                      </div>
+                      <p className="text-sm font-bold text-red-700 uppercase tracking-wide">Problem</p>
+                    </div>
+                    <h3 className="text-xl font-bold text-red-800 mb-3 leading-tight">{pair.problemTitle}</h3>
+                    <p className="text-sm text-red-900/90 leading-relaxed mb-4">{pair.problemText}</p>
+                    <div className="absolute bottom-4 right-4 flex items-center gap-1 text-xs text-red-600 font-semibold bg-red-200/50 px-3 py-1.5 rounded-full">
+                      <span>Tap</span>
+                      <div className="w-4 h-4 animate-spin">🔄</div>
+                      <span>for solution</span>
+                    </div>
                   </div>
                   {/* Solution side (back) */}
-                  <div className="absolute inset-0 backface-hidden rotate-y-180 rounded-lg p-4 border shadow-sm bg-green-50 hover:shadow-md transition-shadow duration-300">
-                    <p className="text-sm font-semibold text-green-700 uppercase tracking-wide">Solution</p>
-                    <h3 className="mt-1 text-lg font-bold text-green-800">{pair.solutionTitle}</h3>
-                    <p className="mt-2 text-sm text-green-900/80 leading-relaxed">{pair.solutionText}</p>
-                    <p className="absolute bottom-3 right-4 text-xs text-green-700 font-medium">Tap ↻ for problem</p>
+                  <div className="absolute inset-0 backface-hidden rotate-y-180 rounded-2xl p-6 shadow-lg bg-gradient-to-br from-green-50 to-green-100 hover:shadow-xl transition-all duration-300 border border-green-200">
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                        <span className="text-white text-sm">✅</span>
+                      </div>
+                      <p className="text-sm font-bold text-green-700 uppercase tracking-wide">Solution</p>
+                    </div>
+                    <h3 className="text-xl font-bold text-green-800 mb-3 leading-tight">{pair.solutionTitle}</h3>
+                    <p className="text-sm text-green-900/90 leading-relaxed mb-4">{pair.solutionText}</p>
+                    <div className="absolute bottom-4 right-4 flex items-center gap-1 text-xs text-green-600 font-semibold bg-green-200/50 px-3 py-1.5 rounded-full">
+                      <span>Tap</span>
+                      <div className="w-4 h-4 animate-spin">🔄</div>
+                      <span>for problem</span>
+                    </div>
                   </div>
                 </div>
               </button>

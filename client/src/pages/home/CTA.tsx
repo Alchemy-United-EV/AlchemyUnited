@@ -1,7 +1,11 @@
 export default function CTA() {
   return (
-    <section className="bg-black py-20 px-6">
-      <div className="max-w-4xl mx-auto text-center text-white">
+    <section className="bg-gradient-to-br from-black via-gray-900 to-black py-20 px-6 relative overflow-hidden">
+      <div className="absolute inset-0">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-yellow-400/10 to-transparent rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-l from-yellow-400/5 to-transparent rounded-full blur-3xl"></div>
+      </div>
+      <div className="max-w-4xl mx-auto text-center text-white relative z-10">
         <picture>
           <source srcSet="/assets/webp/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.webp" type="image/webp" />
           <img 

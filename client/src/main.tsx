@@ -362,8 +362,8 @@ function HomeComponent() {
       {/* Hero Section */}
       <main>
         <div className="relative overflow-hidden bg-[url('/assets/hero-image.jpeg')] bg-cover bg-center py-20 md:py-28">
-          {/* Overlay for contrast - reduced opacity for more visible background */}
-          <div className="pointer-events-none absolute inset-0 bg-white/75"></div>
+          {/* Overlay for contrast */}
+          <div className="pointer-events-none absolute inset-0 bg-white/80"></div>
           
           <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
             <div className="fade-in">
@@ -375,7 +375,7 @@ function HomeComponent() {
                 <span className="block text-[#D4AF37]">EV Charging</span>
                 <span className="block">Network</span>
               </h1>
-              <p className="text-lg md:text-xl text-gray-900 font-medium max-w-2xl md:max-w-3xl mx-auto mt-3 leading-relaxed bg-white/60 backdrop-blur-sm px-6 py-3 rounded-2xl">
+              <p className="text-lg md:text-xl text-gray-800 max-w-2xl md:max-w-3xl mx-auto mt-3 leading-relaxed font-medium">
                 Experience the future of electric vehicle charging with our luxury network. 
                 Reliable, fast, and premium locations for discerning EV drivers.
               </p>

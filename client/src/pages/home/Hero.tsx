@@ -14,7 +14,8 @@ export default function Hero() {
         <img
           src="/assets/au-logo.png"
           alt="Alchemy United"
-          className="mx-auto mb-6 h-40 w-auto object-contain drop-shadow-lg"
+          className="mx-auto mb-6 h-40 w-auto object-contain drop-shadow-lg mix-blend-multiply"
+          style={{ filter: 'brightness(1.1) contrast(1.2)' }}
           width={200}
           height={200}
           onError={(e) => ((e.currentTarget.style.display = 'none'))}

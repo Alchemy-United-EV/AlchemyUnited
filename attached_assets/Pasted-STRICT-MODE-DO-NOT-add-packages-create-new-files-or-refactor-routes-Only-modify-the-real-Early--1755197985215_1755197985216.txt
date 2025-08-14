@@ -1,0 +1,48 @@
+STRICT MODE — DO NOT add packages, create new files, or refactor routes. Only modify the real Early Access page file and (optionally) index.css. 
+
+Goal (mobile first):
+1) When visiting /early-access the content must appear without extra scrolling (no huge blank space at top).
+2) The submit button must be visually prominent: wrapped in a styled container with premium gold gradient, larger touch area, and clear spacing.
+
+✅ What you must do (step-by-step, no skipping):
+A) Locate the REAL component rendered at /early-access
+   - Search the repo for these strings (case-insensitive): 
+     "early-access", "EarlyAccess", "Request Early Access", "waitlist", "email address", "<form"
+   - List all candidate files with full paths.
+   - OPEN the top candidate and paste the first 60 lines and the export line so I can see the component name.
+   - Confirm in your notes which file is actually imported by the router for path "/early-access" (show the import path from App.tsx/main router).
+
+B) Before changing anything, show a tiny DOM fingerprint from that file (the current h1 text and the current button text).
+
+C) Make ONLY these minimal, focused edits to the confirmed Early Access file:
+   - Add a top wrapper with classes to remove extra top spacing on mobile: "pt-8 sm:pt-16"
+   - Ensure no element above the hero/form has "pt-24", "pt-32", "mt-32" or similar; reduce to "pt-8" or remove.
+   - Wrap the submit button in a small CTA box for prominence:
+        <div className="mt-6 rounded-2xl p-3 bg-white/70 border border-[#D4AF37]/40 shadow-[0_8px_28px_rgba(0,0,0,0.08)]">
+          <button type="submit" className="w-full rounded-xl px-5 py-3.5 font-semibold text-black
+            bg-[linear-gradient(180deg,#F5D36B_0%,#D4AF37_60%,#B89022_100%)]
+            shadow-[0_10px_26px_rgba(212,175,55,.45)] transition-transform duration-150 hover:-translate-y-0.5">
+            Request Early Access
+          </button>
+          <p className="mt-2 text-xs text-neutral-600 text-center">No spam. 60-second signup.</p>
+        </div>
+   - Ensure the form/container has reasonable vertical rhythm:
+        outer section: "mx-auto max-w-xl px-4"
+        title h1: "text-4xl sm:text-5xl font-extrabold tracking-tight"
+        paragraph: "mt-3 text-base sm:text-lg text-neutral-700"
+   - If there’s a hero spacer or logo above the form, cap its height on mobile or hide it:
+        add class "hidden sm:block" to decorative elements OR set "max-h-24" on mobile.
+
+D) OPTIONAL (only if file exists) — append small utilities to the END of client/src/index.css (do not create file):
+/* early-access mobile polish */
+.ea-card { background: radial-gradient(800px 200px at 50% 0, rgba(212,175,55,.08), transparent 60%) #fff; }
+
+E) Show the exact DIFF (unified) for the edited file(s) and the final first 30 lines of the Early Access component after edits.
+
+F) Verification checklist (do these and report):
+   - Print the route file path for "/early-access" and the component file path you edited — they must match.
+   - Confirm there is no class with pt-24/pt-32/mt-32 remaining in this component.
+   - Confirm the button now has classes "bg-[linear-gradient(...#D4AF37...)]" and is wrapped in the rounded box container.
+   - Confirm the section wrapper includes "pt-8 sm:pt-16" and the page content is visible without scrolling on a 390×844 viewport.
+
+Do not touch any other pages, components, or routes. Do not rename anything. If the file I asked to edit is not found, stop and show me the router mapping and the nearest match without making changes.

@@ -188,13 +188,13 @@ function EarlyAccessForm() {
         </div>
       </nav>
 
-      <main className="pt-24 pb-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-2xl mx-auto">
-          <div className="mx-auto max-w-4xl px-6 pt-12 pb-4 reveal">
-            <h1 className="h1-premium text-center">
+      <main className="pt-8 sm:pt-16 pb-12 px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-xl px-4">
+          <div className="text-center mb-6">
+            <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-center">
               Request <span className="text-gold">Early Access</span>
             </h1>
-            <p className="subcopy text-center">
+            <p className="mt-3 text-base sm:text-lg text-neutral-700 text-center">
               Join the exclusive waitlist for premium EV charging
             </p>
           </div>
@@ -257,13 +257,17 @@ function EarlyAccessForm() {
               />
             </div>
 
-            <button
-              type="submit"
-              className="btn-primary w-full md:w-auto touch-tap"
-            >
-              Request Early Access
-            </button>
-            <p className="subcopy mt-3 text-center">No spam. Cancel anytime. Your data is secure.</p>
+            <div className="mt-6 rounded-2xl p-3 bg-white/70 border border-[#D4AF37]/40 shadow-[0_8px_28px_rgba(0,0,0,0.08)]">
+              <button 
+                type="submit" 
+                className="w-full rounded-xl px-5 py-3.5 font-semibold text-black
+                  bg-[linear-gradient(180deg,#F5D36B_0%,#D4AF37_60%,#B89022_100%)]
+                  shadow-[0_10px_26px_rgba(212,175,55,.45)] transition-transform duration-150 hover:-translate-y-0.5"
+              >
+                Request Early Access
+              </button>
+              <p className="mt-2 text-xs text-neutral-600 text-center">No spam. 60-second signup.</p>
+            </div>
           </form>
         </div>
       </main>

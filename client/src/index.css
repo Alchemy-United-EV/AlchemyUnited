@@ -458,3 +458,6 @@ input:focus, select:focus, textarea:focus {
 /* fix accidental extra margins in these blocks */
 .au-section { padding: 1.25rem 0; }
 @media (min-width:640px){ .au-section { padding: 2rem 0; } }
+
+/* early-access mobile polish */
+.ea-card { background: radial-gradient(800px 200px at 50% 0, rgba(212,175,55,.08), transparent 60%) #fff; }

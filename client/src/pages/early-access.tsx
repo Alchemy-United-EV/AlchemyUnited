@@ -39,7 +39,7 @@ export default function EarlyAccess() {
         <div></div>
       </nav>
 
-      <main className="pt-24 pb-12 px-4 sm:px-6 lg:px-8">
+      <main className="pt-32 pb-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl sm:text-5xl font-black text-white mb-4 font-display">
@@ -105,13 +105,18 @@ export default function EarlyAccess() {
               />
             </div>
 
-            <Button
-              type="submit"
-              size="lg"
-              className="w-full bg-gold hover:bg-gold/90 text-black font-bold py-4 rounded-full text-lg transition-all duration-300 transform hover:scale-105 font-display"
-            >
-              Request Early Access
-            </Button>
+            <div className="pt-4">
+              <Button
+                type="submit"
+                size="lg"
+                className="w-full bg-gradient-to-r from-[#F5D36B] via-[#D4AF37] to-[#B89022] hover:from-[#FFE066] hover:via-[#E6C766] hover:to-[#C4A332] text-black font-black py-6 rounded-2xl text-xl shadow-[0_8px_32px_rgba(212,175,55,0.4)] hover:shadow-[0_12px_40px_rgba(212,175,55,0.6)] transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] border-2 border-[#D4AF37] font-display"
+              >
+                🚀 Request Early Access
+              </Button>
+              <p className="text-center text-white/60 text-sm mt-4 font-medium">
+                No spam. Cancel anytime. Your data is secure.
+              </p>
+            </div>
           </form>
         </div>
       </main>

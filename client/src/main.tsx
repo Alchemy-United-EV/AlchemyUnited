@@ -362,6 +362,15 @@ function HomeComponent() {
       {/* Hero Section */}
       <main>
         <div className="relative overflow-hidden bg-[radial-gradient(1200px_600px_at_50%_-10%,#ffffff_0%,#f5f6f8_55%,#f1f2f4_100%)]">
+          {/* Hero Background Image */}
+          <div className="absolute inset-0 z-0">
+            <img 
+              src="/attached_assets/Attachment_1755190035061.jpeg" 
+              alt="Premium EV Charging Station"
+              className="w-full h-full object-cover opacity-20 mix-blend-overlay"
+            />
+          </div>
+          
           <div className="relative z-10 max-w-6xl mx-auto px-6 py-20 text-center">
             <div className="fade-in">
               <div className="badge mb-4">⚡ PREMIUM NETWORK</div>
@@ -388,6 +397,18 @@ function HomeComponent() {
                   Become a Host
                 </button>
               </div>
+            </div>
+          </div>
+          
+          {/* Hero Image as Feature Element */}
+          <div className="relative z-10 max-w-6xl mx-auto px-6 pb-12 fade-in">
+            <div className="relative rounded-2xl overflow-hidden shadow-[var(--shadow-xl)] hover-lift">
+              <img 
+                src="/attached_assets/Attachment_1755190035061.jpeg" 
+                alt="Premium EV Charging Technology"
+                className="w-full h-64 md:h-96 object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
             </div>
           </div>
         </div>

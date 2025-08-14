@@ -338,8 +338,8 @@ function HomeComponent() {
       <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur border-b border-[var(--border)]">
         <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16">
           <img 
-            src="/alchemy-voltstream-logo.png" 
-            alt="Alchemy Voltstream"
+            src="/assets/au-logo.png" 
+            alt="Alchemy United Premium EV Charging Network"
             className="h-8 w-auto"
           />
           <div className="flex gap-4">
@@ -669,8 +669,8 @@ function HostApplicationForm() {
         <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16">
           <a href="/">
             <img 
-              src="/alchemy-voltstream-logo.png" 
-              alt="Alchemy Voltstream"
+              src="/assets/au-logo.png" 
+              alt="Alchemy United Premium EV Charging Network"
               className="h-8 w-auto"
             />
           </a>

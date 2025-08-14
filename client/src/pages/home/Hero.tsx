@@ -9,18 +9,7 @@ export default function Hero() {
         <div className="absolute inset-0 bg-[radial-gradient(60%_40%_at_50%_0%,rgba(212,175,55,0.12),transparent_70%)]" />
       </div>
 
-      <div className="relative mx-auto max-w-6xl px-6 py-12 sm:py-16">
-        {/* Main centered logo */}
-        <img
-          src="/assets/au-logo.png"
-          alt="Alchemy United"
-          className="mx-auto mb-6 h-40 w-auto object-contain drop-shadow-lg mix-blend-multiply"
-          style={{ filter: 'brightness(1.1) contrast(1.2)' }}
-          width={200}
-          height={200}
-          onError={(e) => ((e.currentTarget.style.display = 'none'))}
-        />
-
+      <div className="relative mx-auto max-w-6xl px-6 py-8 sm:py-12">
         {/* Category pill */}
         <div className="mx-auto w-fit rounded-full border border-yellow-500/30 bg-white/80 px-4 py-2 text-sm font-semibold text-neutral-700 shadow-sm backdrop-blur">
           ⚡ EV CHARGING

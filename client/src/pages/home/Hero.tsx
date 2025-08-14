@@ -65,13 +65,14 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Wing Logo - positioned at bottom of hero */}
+      {/* Wing Logo - positioned in specified area */}
       <div 
         id="wing-logo"
-        className="absolute left-1/2 z-0 pointer-events-none will-change-transform will-change-opacity"
+        className="absolute z-0 pointer-events-none will-change-transform will-change-opacity"
         style={{
-          bottom: 'clamp(56px, 6vh, 96px)',
-          transform: 'translate(-50%, var(--y, 0))',
+          top: '50%',
+          right: '10%',
+          transform: 'translate(0, calc(-50% + var(--y, 0)))',
           opacity: 'var(--fade, 0)'
         }}
         aria-hidden="true"

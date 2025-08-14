@@ -432,18 +432,17 @@ function HostApplicationForm() {
       </nav>
 
       {/* Form Content */}
-      <main className="pt-8 pb-12">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl px-6 pt-12 pb-4 fade-in">
-            <h1 className="text-4xl md:text-5xl font-extrabold leading-tight text-gray-900 text-center">Become a Host Partner</h1>
-            <p className="text-lg md:text-xl text-gray-600 text-center max-w-3xl mx-auto mt-4">
-              Join our premium EV charging network and generate revenue while providing exceptional service to EV drivers.
-            </p>
-          </div>
+      <main className="pt-8 sm:pt-16 mx-auto max-w-2xl px-4 pb-12">
+        <div className="text-center mb-6">
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-neutral-900">Become a Host Partner</h1>
+          <p className="mt-3 text-base sm:text-lg text-neutral-700">
+            Join our premium EV charging network and generate revenue while providing exceptional service to EV drivers.
+          </p>
+        </div>
 
-          <form onSubmit={handleSubmit} className="card p-6 md:p-8 mt-6 fade-in">
-            {/* Business Information */}
-            <div className="mb-8">
+        <form onSubmit={handleSubmit} className="card p-6 md:p-8 mt-6 fade-in">
+          {/* Business Information */}
+          <div className="mb-8">
               <h2 className="text-2xl font-semibold text-gray-900 mb-6">Business Information</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -713,18 +712,22 @@ function HostApplicationForm() {
               </div>
             </div>
 
-            {/* Submit Button */}
-            <div className="text-center">
-              <button
-                type="submit"
-                className="btn-primary w-full md:w-auto touch-tap"
-              >
-                Submit Host Application
-              </button>
-              <p className="subcopy mt-3 text-center">Your information is secure. We'll contact you within 2-3 business days.</p>
-            </div>
-          </form>
-        </div>
+          {/* Submit Button */}
+          <div className="mt-6 rounded-2xl p-3 bg-white/70 border border-[#D4AF37]/40 shadow-[0_8px_28px_rgba(0,0,0,0.08)]">
+            <button 
+              type="submit" 
+              className="w-full rounded-xl px-5 py-3.5 font-semibold text-black
+                         bg-[linear-gradient(180deg,#F5D36B_0%,#D4AF37_60%,#B89022_100%)]
+                         shadow-[0_10px_26px_rgba(212,175,55,.45)]
+                         transition-transform duration-150 hover:-translate-y-0.5"
+            >
+              Submit Host Application
+            </button>
+            <p className="mt-2 text-xs text-neutral-600 text-center">
+              Your information is secure. We reply within 2–3 business days.
+            </p>
+          </div>
+        </form>
       </main>
     </div>
   );

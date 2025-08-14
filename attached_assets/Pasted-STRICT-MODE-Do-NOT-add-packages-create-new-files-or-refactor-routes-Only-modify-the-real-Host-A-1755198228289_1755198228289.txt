@@ -1,0 +1,58 @@
+STRICT MODE — Do NOT add packages, create new files, or refactor routes. Only modify the real Host Application page file and (optionally) index.css. Keep changes minimal and reversible.
+
+Target page: /host-application
+
+Objectives (mobile first):
+1) Content must appear without extra scrolling when visiting /host-application (no blank space above the header).
+2) The "Submit Host Application" button must be highly prominent (gold gradient, large touch target, boxed wrapper, reassurance text).
+3) Do not affect any other routes, forms, analytics, or API handlers.
+
+A) Identify the ACTUAL component rendered at /host-application
+   - Search the repo for (case-insensitive): "host-application", "HostApplication", "Submit Host Application", "<form"
+   - List all candidate files with full paths.
+   - OPEN the top candidate and paste the first 50 lines and the export line to show the component name.
+   - Prove the router import for path "/host-application" by showing the import line from App.tsx (or router file) and the matched component path.
+
+B) Snapshot before edits:
+   - Print the current main title text (h1) and the current submit button text exactly as in the DOM.
+
+C) Make ONLY these focused edits in the confirmed Host Application file:
+   1. Section spacing (remove initial scroll gap)
+      - Ensure the outermost section/container includes: className="pt-8 sm:pt-16 mx-auto max-w-2xl px-4"
+      - Remove or reduce any "pt-24", "pt-28", "pt-32", "mt-28/32" found at the top of this page to "pt-8" or none.
+      - Decorative/logo elements ABOVE the title should be "hidden sm:block" (mobile hides it) or constrained with "max-h-20".
+   2. Title + description rhythm
+      - h1: className="text-3xl sm:text-4xl font-extrabold tracking-tight text-neutral-900"
+      - helper/intro paragraph under h1: className="mt-3 text-base sm:text-lg text-neutral-700"
+   3. Premium CTA wrap for the submit button (keep type='submit')
+      - Wrap the submit button in this container placed directly below the form fields (or at the form’s end):
+        <div className="mt-6 rounded-2xl p-3 bg-white/70 border border-[#D4AF37]/40 shadow-[0_8px_28px_rgba(0,0,0,0.08)]">
+          <button type="submit"
+            className="w-full rounded-xl px-5 py-3.5 font-semibold text-black
+                       bg-[linear-gradient(180deg,#F5D36B_0%,#D4AF37_60%,#B89022_100%)]
+                       shadow-[0_10px_26px_rgba(212,175,55,.45)]
+                       transition-transform duration-150 hover:-translate-y-0.5">
+            Submit Host Application
+          </button>
+          <p className="mt-2 text-xs text-neutral-600 text-center">
+            Your information is secure. We reply within 2–3 business days.
+          </p>
+        </div>
+   4. Inputs/areas (optional style-only adjustments, no logic change):
+      - Each field group: "mt-4"
+      - Inputs/textareas ensure: "rounded-xl border-neutral-300 focus:border-[#D4AF37] focus:ring-[#D4AF37]/30"
+
+D) OPTIONAL (only if file exists) — append to END of client/src/index.css (do not create files):
+/* host-application mobile polish */
+.ha-card { background: radial-gradient(800px 200px at 50% 0, rgba(212,175,55,.08), transparent 60%) #fff; }
+
+E) Show the exact UNIFIED DIFF for every file you modified and also print the first 25 lines of the Host Application component AFTER edits so I can verify spacing classes.
+
+F) Verification checklist (report results explicitly):
+   - Router path "/host-application" → component file path == the file you edited (print both paths).
+   - No "pt-24/pt-28/pt-32/mt-32" remain at the top of this component.
+   - The submit button now has the gold gradient classes and is wrapped in the rounded box container with reassurance text.
+   - Outer wrapper includes "pt-8 sm:pt-16 mx-auto max-w-2xl px-4".
+   - On a 390×844 viewport the page shows content without scrolling and the CTA is fully visible.
+
+Do NOT modify other pages, components, APIs, or analytics. If the host file isn’t found, STOP and show the router mapping + nearest match; make no changes until confirmed.

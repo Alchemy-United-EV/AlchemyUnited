@@ -461,3 +461,6 @@ input:focus, select:focus, textarea:focus {
 
 /* early-access mobile polish */
 .ea-card { background: radial-gradient(800px 200px at 50% 0, rgba(212,175,55,.08), transparent 60%) #fff; }
+
+/* host-application mobile polish */
+.ha-card { background: radial-gradient(800px 200px at 50% 0, rgba(212,175,55,.08), transparent 60%) #fff; }

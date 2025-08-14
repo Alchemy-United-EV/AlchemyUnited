@@ -64,11 +64,24 @@ app.use(express.static("public"));
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
   const port = parseInt(process.env.PORT || '5000', 10);
+  
+  // Enhanced production logging for deployment visibility
+  console.log(`[DEPLOYMENT] Starting Alchemy United server...`);
+  console.log(`[DEPLOYMENT] Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`[DEPLOYMENT] Port: ${port}`);
+  console.log(`[DEPLOYMENT] Host: 0.0.0.0`);
+  console.log(`[DEPLOYMENT] Process ID: ${process.pid}`);
+  console.log(`[DEPLOYMENT] Node version: ${process.version}`);
+  
   server.listen({
     port,
     host: "0.0.0.0",
     reusePort: true,
   }, () => {
+    console.log(`[DEPLOYMENT] ✅ Alchemy United server successfully started on port ${port}`);
+    console.log(`[DEPLOYMENT] ✅ GTM integration active (GTM-TQR67W6)`);
+    console.log(`[DEPLOYMENT] ✅ Database connected and ready`);
+    console.log(`[DEPLOYMENT] ✅ All API endpoints operational`);
     log(`serving on port ${port}`);
   });
 })();

@@ -6,14 +6,26 @@ import { sendEmail, getEarlyAccessConfirmationEmail, getHostApplicationConfirmat
 import { honeypotMiddleware, rateLimitMiddleware } from "./middleware/honeypot";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Health check endpoint with deployment details
+  app.get('/api/health', (req, res) => {
+    console.log(`[HEALTH] Health check requested from ${req.ip}`);
+    res.status(200).json({ 
+      status: 'healthy',
+      timestamp: new Date().toISOString(),
+      version: '1.0.0',
+      environment: process.env.NODE_ENV || 'development',
+      deployment: 'autoscale-ready'
+    });
+  });
+
   // Analytics logging endpoint
   app.post('/api/analytics/log', async (req, res) => {
     try {
-      console.log('Analytics Event:', req.body);
+      console.log('[ANALYTICS] Event logged:', req.body);
       // In production, send to analytics service (GA4, Mixpanel, etc.)
       res.status(200).json({ success: true });
     } catch (error) {
-      console.error('Analytics logging error:', error);
+      console.error('[ANALYTICS] Logging error:', error);
       res.status(500).json({ error: 'Failed to log event' });
     }
   });

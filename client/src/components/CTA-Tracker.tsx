@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+// Removed useNavigate to avoid router context issues
 
 interface CTATrackerProps {
   children: React.ReactNode;
@@ -20,7 +20,7 @@ export const CTATracker: React.FC<CTATrackerProps> = ({
   href,
   onClick,
 }) => {
-  const navigate = useNavigate();
+  // Use window.location instead of navigate to avoid router context issues
   
   const handleClick = async (e?: React.MouseEvent) => {
     if (e) {

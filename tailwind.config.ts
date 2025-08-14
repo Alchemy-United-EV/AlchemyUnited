@@ -67,6 +67,9 @@ export default {
           ring: "var(--sidebar-ring)",
         },
       },
+      backgroundImage: {
+        'gold-gradient': 'linear-gradient(90deg, #FFD700, #D4AF37, #B8860B)',
+      },
       keyframes: {
         "accordion-down": {
           from: {

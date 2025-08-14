@@ -1,0 +1,92 @@
+You are in SAFETY MODE. Do NOT create new folders. Only modify these files:
+- client/index.html
+- client/src/index.css
+- client/src/pages/home/Hero.tsx
+
+Goal: 
+1) Style the H1 “Alchemy United” like the AU wings logo — italic luxury serif, black-to-gold metallic gradient, subtle outline/glow, stacked two-line text.
+2) Add the AU wings logo as a faint centered background behind the hero section, scaled large and softly blended so it does not overpower text/buttons.
+
+---
+
+1) Edit client/index.html
+   - Inside <head> add these font links (before closing </head>):
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Playfair+Display:ital,wght@1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+2) Edit client/src/index.css
+   - Append the following at the end of the file:
+
+     /* --- Metallic brand title utilities --- */
+     .brand-title {
+       font-family: "Cinzel Decorative","Playfair Display",serif;
+       font-style: italic;
+       letter-spacing: -0.02em;
+     }
+     .metallic-gold {
+       background: linear-gradient(180deg,#1a1a1a 0%, #202020 20%, #E6C766 45%, #D4AF37 60%, #8B6B1F 78%, #FFE9A6 92%, #3a2e12 100%);
+       -webkit-background-clip: text;
+       background-clip: text;
+       color: transparent;
+     }
+     .metallic-outline {
+       -webkit-text-stroke: 1px rgba(0,0,0,0.25);
+     }
+     .metallic-glow {
+       text-shadow:
+         0 1px 0 rgba(255,255,255,0.35),
+         0 2px 2px rgba(0,0,0,0.18),
+         0 6px 12px rgba(212,175,55,0.25);
+     }
+     .brand-tight { line-height: 0.88; }
+
+     @media (min-width: 360px) { .brand-xxl { font-size: 56px; } }
+     @media (min-width: 420px) { .brand-xxl { font-size: 64px; } }
+     @media (min-width: 640px) { .brand-xxl { font-size: 80px; } }
+     @media (min-width: 768px) { .brand-xxl { font-size: 96px; } }
+     @media (min-width: 1024px){ .brand-xxl { font-size: 112px;} }
+
+     /* --- Hero section background with AU wings --- */
+     .hero-with-wings {
+       position: relative;
+       overflow: hidden;
+     }
+     .hero-with-wings::before {
+       content: "";
+       position: absolute;
+       inset: 0;
+       background: url("/images/au-wings.png") center/contain no-repeat;
+       opacity: 0.08; /* adjust visibility */
+       z-index: 0;
+     }
+     .hero-content {
+       position: relative;
+       z-index: 1;
+     }
+
+3) Place your AU wings logo file at: client/public/images/au-wings.png  
+   (If the file name differs, update the CSS URL accordingly.)
+
+4) Edit client/src/pages/home/Hero.tsx
+   - Wrap the existing hero section container div in `className="hero-with-wings"`.
+   - Wrap all hero content inside another div with `className="hero-content"`.
+   - Replace the current H1 with:
+
+     <h1
+       className="
+         brand-title brand-xxl brand-tight metallic-gold metallic-outline metallic-glow
+         mx-auto max-w-[20ch] text-center
+       "
+     >
+       <span className="block">Alchemy</span>
+       <span className="block">United</span>
+     </h1>
+
+   - Keep all existing paragraph text, buttons, and section structure intact.
+
+5) Acceptance criteria:
+   - H1 shows luxury serif italic with gold metallic finish, stacked two-line format.
+   - AU wings image appears large, faint, and centered behind hero section.
+   - Buttons and text remain fully readable, positioned above the background.
+   - No layout shifts, no new folders beyond `/public/images/`.

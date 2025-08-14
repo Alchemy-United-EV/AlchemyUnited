@@ -387,3 +387,50 @@ input:focus, select:focus, textarea:focus {
   .fade-in{ animation:none; opacity:1; transform:none; }
   .hover-lift:hover{ transform:none !important; }
 }
+
+/* --- Metallic brand title utilities --- */
+.brand-title {
+  font-family: "Cinzel Decorative","Playfair Display",serif;
+  font-style: italic;
+  letter-spacing: -0.02em;
+}
+.metallic-gold {
+  background: linear-gradient(180deg,#1a1a1a 0%, #202020 20%, #E6C766 45%, #D4AF37 60%, #8B6B1F 78%, #FFE9A6 92%, #3a2e12 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.metallic-outline {
+  -webkit-text-stroke: 1px rgba(0,0,0,0.25);
+}
+.metallic-glow {
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.35),
+    0 2px 2px rgba(0,0,0,0.18),
+    0 6px 12px rgba(212,175,55,0.25);
+}
+.brand-tight { line-height: 0.88; }
+
+@media (min-width: 360px) { .brand-xxl { font-size: 56px; } }
+@media (min-width: 420px) { .brand-xxl { font-size: 64px; } }
+@media (min-width: 640px) { .brand-xxl { font-size: 80px; } }
+@media (min-width: 768px) { .brand-xxl { font-size: 96px; } }
+@media (min-width: 1024px){ .brand-xxl { font-size: 112px;} }
+
+/* --- Hero section background with AU wings --- */
+.hero-with-wings {
+  position: relative;
+  overflow: hidden;
+}
+.hero-with-wings::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/assets/wing-logo.png") center/contain no-repeat;
+  opacity: 0.08; /* adjust visibility */
+  z-index: 0;
+}
+.hero-content {
+  position: relative;
+  z-index: 1;
+}

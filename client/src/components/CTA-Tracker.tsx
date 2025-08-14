@@ -64,7 +64,8 @@ export const CTATracker: React.FC<CTATrackerProps> = ({
     
     // Navigate to href if provided
     if (href) {
-      navigate(href);
+      // Use window.location.href since CTATracker may be used outside router context
+      window.location.href = href;
     }
   };
 

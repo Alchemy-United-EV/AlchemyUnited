@@ -1,19 +1,7 @@
 import React from "react";
 
-function TestHome() {
-  return <div style={{padding: 20}}>Home - No routing, no context</div>;
-}
-
-function TestEarlyAccess() {
-  return <div style={{padding: 20}}>Early Access - No routing, no context</div>;
-}
-
+// This file is no longer used as the main app component
+// Routing is now handled in main.tsx
 export default function App() {
-  const path = window.location.pathname;
-  
-  if (path === '/early-access') {
-    return <TestEarlyAccess />;
-  }
-  
-  return <TestHome />;
+  return <div>Legacy App component - should not be rendered</div>;
 }

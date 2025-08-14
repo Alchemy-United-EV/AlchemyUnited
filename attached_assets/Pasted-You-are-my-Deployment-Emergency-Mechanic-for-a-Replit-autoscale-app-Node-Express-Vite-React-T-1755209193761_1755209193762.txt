@@ -1,0 +1,95 @@
+You are my “Deployment Emergency Mechanic” for a Replit autoscale app (Node/Express + Vite/React + TypeScript).
+
+GOAL
+Fix the autoscale deployment refusal and surface the exact reason in logs WITHOUT changing any UI/UX or removing GTM. Only touch build/deploy/server plumbing. Keep all visuals and analytics intact.
+
+HARD RULES
+- Do NOT modify UI, styles, copy, components, or GTM (container GTM-TQR67W6).
+- Only change .replit, package.json scripts, server files, and minimal logging.
+- Any debug code must be safe in production and *can be removed later*.
+
+A) VERIFY & STANDARDIZE BUILD/RUN
+1) Ensure .replit has exactly:
+   [deployment]
+   deploymentTarget = "autoscale"
+   build = ["npm","run","build"]
+   run   = ["npm","run","start"]
+
+2) Ensure package.json scripts are:
+   "build": "vite build && esbuild server/index.ts --bundle --platform=node --format=cjs --outfile=dist/index.js",
+   "start": "NODE_ENV=production node dist/index.js"
+   • Use --format=cjs to prevent ESM/CJS mismatches in autoscale.
+
+3) Run a fresh build. After build, print:
+   - Node version (node -v)
+   - Existence + size of dist/index.js
+   - Location + size of Vite client build (e.g., client/dist or dist/client). If outDir isn’t default, detect it.
+
+B) SERVER HARDENING (NO UI CHANGES)
+Open server code and implement the following without renaming files:
+
+1) FIRST route: JSON Health
+   Place FIRST:
+   app.set('trust proxy', 1);
+   app.get('/api/health', (req, res) => {
+     console.log(`[DEPLOYMENT] Health check from ${req.ip || 'unknown'}`);
+     res.status(200).json({
+       status: 'healthy',
+       timestamp: new Date().toISOString(),
+       uptime: process.uptime(),
+       environment: process.env.NODE_ENV || 'development',
+       port: process.env.PORT || '5000'
+     });
+   });
+   This route MUST be registered before any SPA fallback so Vite doesn’t intercept.
+
+2) API logging (only /api)
+   app.use('/api', (req, res, next) => {
+     console.log(`[DEPLOYMENT] ${req.method} ${req.path} from ${req.ip || 'unknown'}`);
+     next();
+   });
+
+3) Static serving + SPA fallback
+   • Serve the client build directory detected in A(3) as static.
+   • SPA fallback only for non-/api requests, sending index.html.
+   • Do not crash if the client folder isn’t present (log a warning once).
+
+4) Listen
+   const PORT = process.env.PORT || 5000;
+   app.listen(PORT, '0.0.0.0', () => {
+     console.log(`[DEPLOYMENT] Server started on port ${PORT}`);
+     console.log(`[DEPLOYMENT] Build timestamp: ${new Date().toISOString()}`);
+   });
+
+5) Crash surfaced (temporary)
+   process.on('unhandledRejection', (r) => console.error('[DEPLOYMENT][unhandledRejection]', r));
+   process.on('uncaughtException',  (e) => console.error('[DEPLOYMENT][uncaughtException]', e));
+
+C) SMOKE TEST IN WORKSPACE
+- Start locally and curl http://localhost:${PORT}/api/health
+- Ensure status 200 JSON prints.
+- Confirm the three log lines appear:
+  [DEPLOYMENT] Server started on port …
+  [DEPLOYMENT] Build timestamp: …
+  [DEPLOYMENT] Health check from …
+
+D) REDEPLOY + WHERE TO LOOK
+- Trigger autoscale deploy.
+- Tell me: the **exact deployed health URL** (https://<app-url>/api/health).
+- In Replit: Deployments → <this deployment> → Logs tab.
+- If logs show empty, remind me to open /api/health once (autoscale logs show during active requests).
+
+E) IF DEPLOY STILL REFUSES
+- Print the exact error cause you observe (stack trace or platform message) and the file/line.
+- Apply the minimal fix (e.g., ESM/CJS mismatch, wrong outDir, missing dist/index.js, missing 0.0.0.0 bind, PORT not used, SPA intercepting /api).
+- Rebuild and redeploy.
+
+DELIVERABLES
+1) What changed + why (file + brief diff summary).
+2) Confirmed locations of:
+   - dist/index.js (server)
+   - client build folder (static)
+3) The deployed health URL to click.
+4) The 3–4 expected log lines I should see after the first request.
+
+DO NOT touch any UI code, styles, copy, assets, or GTM. Keep the current site exactly as-is.

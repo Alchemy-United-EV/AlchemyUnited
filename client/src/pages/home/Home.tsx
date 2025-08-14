@@ -7,7 +7,7 @@ import FooterCTA from './FooterCTA';
 
 export default function Home() {
   const [logoOpacity, setLogoOpacity] = useState(1);
-  const showSocialProof = false; // Toggle to true to enable social proof section
+  const showSocialProof = true; // ENABLED
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,7 +48,7 @@ export default function Home() {
 
       <Hero />
       <Features />
-      {showSocialProof && <SocialProof />}
+      {showSocialProof && <SocialProof showLogos={true} />}
       <CTA />
       <FooterCTA />
     </div>

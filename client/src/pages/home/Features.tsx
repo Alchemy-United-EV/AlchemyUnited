@@ -1,116 +1,94 @@
-import { useState } from 'react';
+import React, {useState} from "react";
+
+type Pair = {
+  id: string;
+  problemTitle: string;
+  problemText: string;
+  solutionTitle: string;
+  solutionText: string;
+};
+
+const pairs: Pair[] = [
+  {
+    id: "p1",
+    problemTitle: "Unreliable public chargers",
+    problemText:
+      "Hosts and drivers can't trust availability or uptime. Trips get re-routed, time is wasted.",
+    solutionTitle: "Guaranteed reservations",
+    solutionText:
+      "Premium chargers with bookable time slots and 99.9% uptime SLAs keep trips on schedule."
+  },
+  {
+    id: "p2",
+    problemTitle: "Slow charge speeds",
+    problemText:
+      "Legacy equipment and power limits cause long dwell times and poor throughput.",
+    solutionTitle: "High-power hardware",
+    solutionText:
+      "Modern DC equipment with real-time power management for fast, predictable sessions."
+  },
+  {
+    id: "p3",
+    problemTitle: "Poor host economics",
+    problemText:
+      "Utilization is inconsistent and fees are opaque, so ROI is unclear for site owners.",
+    solutionTitle: "Aligned incentives",
+    solutionText:
+      "Transparent revenue share, dynamic pricing, and demand shaping maximize host earnings."
+  }
+];
 
 export default function Features() {
-  const [flippedCards, setFlippedCards] = useState<number[]>([]);
+  const [flipped, setFlipped] = useState<Record<string, boolean>>({});
 
-  const toggleCard = (index: number) => {
-    setFlippedCards(prev => 
-      prev.includes(index) 
-        ? prev.filter(i => i !== index)
-        : [...prev, index]
-    );
-  };
-
-  const problemSolutionPairs = [
-    {
-      problem: { icon: '⏰', title: 'No Reservation System', desc: 'Drive to stations only to find them occupied or broken. 78% success rate means wasted trips and time.' },
-      solution: { icon: '📅', title: 'Guaranteed Reservations', desc: 'Book your charging slot in advance with guaranteed availability and premium locations' }
-    },
-    {
-      problem: { icon: '⚡', title: 'Unreliable Stations', desc: '22% of charging attempts fail due to broken equipment, network issues, or payment system failures' },
-      solution: { icon: '🔧', title: '99.9% Uptime Guarantee', desc: 'AI-powered maintenance and 24/7 monitoring ensure stations work when you need them' }
-    },
-    {
-      problem: { icon: '💰', title: 'Wild West Pricing', desc: 'Unpredictable costs ranging $11-$50 for full charge with hidden fees and confusing billing' },
-      solution: { icon: '💎', title: 'Transparent Premium Pricing', desc: 'Clear, consistent rates with no hidden fees. Premium service at honest prices' }
-    },
-    {
-      problem: { icon: '🏢', title: 'Property Host Headaches', desc: 'Vandalism, theft, maintenance costs, and liability concerns make hosting charging stations risky' },
-      solution: { icon: '🛡️', title: 'Full Host Protection', desc: 'We handle insurance, security, maintenance, and operations while you earn passive income' }
-    }
-  ];
+  const toggle = (id: string) =>
+    setFlipped(prev => ({ ...prev, [id]: !prev[id] }));
 
   return (
-    <section className="py-20 bg-gray-50 px-6">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl sm:text-6xl font-black mb-6 text-black leading-tight">
-            Solving Real EV Problems
-          </h2>
-          <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-            We've identified the core issues plaguing today's EV charging experience and built solutions that actually work.
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {problemSolutionPairs.map((pair, index) => (
-            <div key={index} className="group h-80">
-              <div 
-                className={`relative w-full h-full transition-transform duration-700 transform-style-preserve-3d cursor-pointer ${
-                  flippedCards.includes(index) ? 'rotate-y-180' : ''
-                }`}
-                onClick={() => toggleCard(index)}
+    <section aria-labelledby="features-heading" className="mx-auto max-w-6xl px-4 py-12">
+      <h2 id="features-heading" className="text-2xl font-bold mb-6">EV Pain Points → Solutions</h2>
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {pairs.map(pair => {
+          const isFlipped = !!flipped[pair.id];
+          return (
+            <div key={pair.id} className="group perspective">
+              <button
+                type="button"
+                onClick={() => toggle(pair.id)}
+                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(pair.id); }}}
+                aria-pressed={isFlipped}
+                aria-label={isFlipped ? "Show problem" : "Show solution"}
+                className="relative w-full h-56 focus:outline-none"
               >
-                {/* Problem Side (Front) */}
-                <div className="absolute inset-0 w-full h-full bg-red-50 border border-red-200 rounded-xl p-6 backface-hidden shadow-lg hover:shadow-xl transition-shadow">
-                  <div className="flex flex-col h-full">
-                    <div className="text-4xl mb-4">{pair.problem.icon}</div>
-                    <h3 className="text-xl font-bold text-red-800 mb-4">{pair.problem.title}</h3>
-                    <p className="text-red-700 flex-1 text-sm leading-relaxed">
-                      {pair.problem.desc}
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <picture>
-                          <source srcSet="/assets/webp/AE141A66-A440-499B-8889-41BABE3F729E_1754506144500.webp" type="image/webp" />
-                          <img 
-                            src="/assets/AE141A66-A440-499B-8889-41BABE3F729E_1754506144500.png" 
-                            alt="AU"
-                            className="h-6 w-auto"
-                            width="24"
-                            height="24"
-                            loading="lazy"
-                          />
-                        </picture>
-                        <span className="text-sm text-yellow-600 font-medium">The Alchemy Way</span>
-                      </div>
-                      <span className="text-xs text-gray-500">Tap ↻ for problem</span>
-                    </div>
+                <div className={`preserve-3d duration-500 ease-out relative w-full h-full ${isFlipped ? "rotate-y-180" : ""}`}>
+                  {/* Problem side (front) */}
+                  <div className="absolute inset-0 backface-hidden rounded-lg p-4 border shadow-sm bg-red-50">
+                    <p className="text-sm font-semibold text-red-700 uppercase tracking-wide">Problem</p>
+                    <h3 className="mt-1 font-semibold">{pair.problemTitle}</h3>
+                    <p className="mt-2 text-sm text-red-900/80">{pair.problemText}</p>
+                    <p className="absolute bottom-3 right-4 text-xs text-red-700">Tap ↻ for solution</p>
+                  </div>
+                  {/* Solution side (back) */}
+                  <div className="absolute inset-0 backface-hidden rotate-y-180 rounded-lg p-4 border shadow-sm bg-green-50">
+                    <p className="text-sm font-semibold text-green-700 uppercase tracking-wide">Solution</p>
+                    <h3 className="mt-1 font-semibold">{pair.solutionTitle}</h3>
+                    <p className="mt-2 text-sm text-green-900/80">{pair.solutionText}</p>
+                    <p className="absolute bottom-3 right-4 text-xs text-green-700">Tap ↻ for problem</p>
                   </div>
                 </div>
-
-                {/* Solution Side (Back) */}
-                <div className="absolute inset-0 w-full h-full bg-green-50 border border-green-200 rounded-xl p-6 backface-hidden rotate-y-180 shadow-lg">
-                  <div className="flex flex-col h-full">
-                    <div className="text-4xl mb-4">{pair.solution.icon}</div>
-                    <h3 className="text-xl font-bold text-green-800 mb-4">{pair.solution.title}</h3>
-                    <p className="text-green-700 flex-1 text-sm leading-relaxed">
-                      {pair.solution.desc}
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <picture>
-                          <source srcSet="/assets/webp/AE141A66-A440-499B-8889-41BABE3F729E_1754506144500.webp" type="image/webp" />
-                          <img 
-                            src="/assets/AE141A66-A440-499B-8889-41BABE3F729E_1754506144500.png" 
-                            alt="AU"
-                            className="h-6 w-auto"
-                            width="24"
-                            height="24"
-                            loading="lazy"
-                          />
-                        </picture>
-                        <span className="text-sm text-yellow-600 font-medium">Alchemy Solution</span>
-                      </div>
-                      <span className="text-xs text-gray-500">Tap ↻ for problem</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              </button>
             </div>
-          ))}
-        </div>
+          );
+        })}
       </div>
+
+      {/* Minimal CSS utilities for 3D flip (scoped) */}
+      <style>{`
+        .perspective { perspective: 1000px; }
+        .preserve-3d { transform-style: preserve-3d; }
+        .backface-hidden { -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+      `}</style>
     </section>
   );
 }

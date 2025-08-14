@@ -1,0 +1,314 @@
+Goal: 
+- Fix the flip-card feature on the Home page.
+- Enable and populate SocialProof (testimonials + partner logo placeholders).
+- Add Schema.org LocalBusiness JSON-LD to index.html.
+- Build + verify everything.
+
+Context you already have:
+- Home is modular (client/src/pages/home/).
+- SocialProof.tsx exists but showSocialProof is currently false.
+- Placeholder content: 4 testimonials + 6 partner logos (text boxes ok).
+- Previously created SeoLocalBusiness.tsx is unused.
+
+Plan:
+1) Fix the flip feature in client/src/pages/home/Features.tsx
+2) Ensure SocialProof is rendered and populated; set showSocialProof = true in Home.tsx
+3) Add LocalBusiness JSON-LD to index.html <head>
+4) Build + verify UI and console
+
+----------------------------------------------------------------
+STEP 1 — Fix flip feature (self-contained, CSS transform + state)
+----------------------------------------------------------------
+Open client/src/pages/home/Features.tsx and replace its contents with the version below. 
+Requirements:
+- Each card flips independently on click/tap.
+- Red side = “Problem”, Green side = “Solution”.
+- Instruction text: 
+  - problem side shows “Tap ↻ for solution”
+  - solution side shows “Tap ↻ for problem”
+- Accessible: buttons with aria-pressed + keyboard support.
+
+<WRITE FILE>
+client/src/pages/home/Features.tsx
+----------------------------------
+import React, {useState} from "react";
+
+type Pair = {
+  id: string;
+  problemTitle: string;
+  problemText: string;
+  solutionTitle: string;
+  solutionText: string;
+};
+
+const pairs: Pair[] = [
+  {
+    id: "p1",
+    problemTitle: "Unreliable public chargers",
+    problemText:
+      "Hosts and drivers can’t trust availability or uptime. Trips get re-routed, time is wasted.",
+    solutionTitle: "Guaranteed reservations",
+    solutionText:
+      "Premium chargers with bookable time slots and 99.9% uptime SLAs keep trips on schedule."
+  },
+  {
+    id: "p2",
+    problemTitle: "Slow charge speeds",
+    problemText:
+      "Legacy equipment and power limits cause long dwell times and poor throughput.",
+    solutionTitle: "High-power hardware",
+    solutionText:
+      "Modern DC equipment with real-time power management for fast, predictable sessions."
+  },
+  {
+    id: "p3",
+    problemTitle: "Poor host economics",
+    problemText:
+      "Utilization is inconsistent and fees are opaque, so ROI is unclear for site owners.",
+    solutionTitle: "Aligned incentives",
+    solutionText:
+      "Transparent revenue share, dynamic pricing, and demand shaping maximize host earnings."
+  }
+];
+
+export default function Features() {
+  const [flipped, setFlipped] = useState<Record<string, boolean>>({});
+
+  const toggle = (id: string) =>
+    setFlipped(prev => ({ ...prev, [id]: !prev[id] }));
+
+  return (
+    <section aria-labelledby="features-heading" className="mx-auto max-w-6xl px-4 py-12">
+      <h2 id="features-heading" className="text-2xl font-bold mb-6">EV Pain Points → Solutions</h2>
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {pairs.map(pair => {
+          const isFlipped = !!flipped[pair.id];
+          return (
+            <div key={pair.id} className="group perspective">
+              <button
+                type="button"
+                onClick={() => toggle(pair.id)}
+                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(pair.id); }}}
+                aria-pressed={isFlipped}
+                aria-label={isFlipped ? "Show problem" : "Show solution"}
+                className="relative w-full h-56 focus:outline-none"
+              >
+                <div className={`preserve-3d duration-500 ease-out relative w-full h-full ${isFlipped ? "rotate-y-180" : ""}`}>
+                  {/* Problem side (front) */}
+                  <div className="absolute inset-0 backface-hidden rounded-lg p-4 border shadow-sm bg-red-50">
+                    <p className="text-sm font-semibold text-red-700 uppercase tracking-wide">Problem</p>
+                    <h3 className="mt-1 font-semibold">{pair.problemTitle}</h3>
+                    <p className="mt-2 text-sm text-red-900/80">{pair.problemText}</p>
+                    <p className="absolute bottom-3 right-4 text-xs text-red-700">Tap ↻ for solution</p>
+                  </div>
+                  {/* Solution side (back) */}
+                  <div className="absolute inset-0 backface-hidden rotate-y-180 rounded-lg p-4 border shadow-sm bg-green-50">
+                    <p className="text-sm font-semibold text-green-700 uppercase tracking-wide">Solution</p>
+                    <h3 className="mt-1 font-semibold">{pair.solutionTitle}</h3>
+                    <p className="mt-2 text-sm text-green-900/80">{pair.solutionText}</p>
+                    <p className="absolute bottom-3 right-4 text-xs text-green-700">Tap ↻ for problem</p>
+                  </div>
+                </div>
+              </button>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Minimal CSS utilities for 3D flip (scoped) */}
+      <style>{`
+        .perspective { perspective: 1000px; }
+        .preserve-3d { transform-style: preserve-3d; }
+        .backface-hidden { -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+      `}</style>
+    </section>
+  );
+}
+----------------------------------
+</WRITE FILE>
+
+Note: This does not rely on framer-motion (which was removed). It uses CSS 3D transforms and is fully accessible.
+
+----------------------------------------------------------------
+STEP 2 — Show Social Proof with placeholders
+----------------------------------------------------------------
+A) Ensure the SocialProof component renders on Home and is enabled.
+
+Open client/src/pages/home/Home.tsx and:
+- Ensure `showSocialProof` defaults to TRUE.
+- Render `<SocialProof />` under Features.
+
+If Home.tsx already exists, update it to the version below (keeping your existing Hero/CTA/footer imports).
+
+<EDIT FILE>
+client/src/pages/home/Home.tsx
+------------------------------
+import React from "react";
+import Hero from "./Hero";
+import Features from "./Features";
+import CTA from "./CTA";
+import FooterCTA from "./FooterCTA";
+import SocialProof from "@/components/SocialProof";
+
+export default function Home() {
+  const showSocialProof = true; // ENABLED
+  return (
+    <>
+      <Hero />
+      <Features />
+      {showSocialProof && <SocialProof showLogos={true} />}
+      <CTA />
+      <FooterCTA />
+    </>
+  );
+}
+------------------------------
+</EDIT FILE>
+
+B) Populate placeholders inside SocialProof.tsx if empty. Create or replace with the following implementation (responsive, accessible; uses text boxes for logos):
+
+<WRITE FILE>
+client/src/components/SocialProof.tsx
+-------------------------------------
+import React from "react";
+
+type Testimonial = {
+  name: string;
+  location: string;
+  role: string;
+  quote: string;
+};
+
+const testimonials: Testimonial[] = [
+  {
+    name: "Sarah Chen",
+    location: "San Francisco, CA",
+    role: "Model S Owner",
+    quote:
+      "I finally trust my route planning again. Guaranteed slots are a game changer."
+  },
+  {
+    name: "Michael Rodriguez",
+    location: "Austin, TX",
+    role: "Host Partner",
+    quote:
+      "Clear revenue share and predictable demand made it easy to greenlight our site."
+  },
+  {
+    name: "Jennifer Walsh",
+    location: "Seattle, WA",
+    role: "Lucid Air Driver",
+    quote:
+      "Charging is as smooth as the drive—fast, available, and premium."
+  },
+  {
+    name: "David Kim",
+    location: "Los Angeles, CA",
+    role: "BMW iX Owner",
+    quote:
+      "No more guesswork. The uptime and reservation system just work."
+  }
+];
+
+const partnerNames = [
+  "Mercedes-Benz",
+  "Tesla Network",
+  "BMW Charging",
+  "Audi e-tron",
+  "Lucid Motors",
+  "Rivian"
+];
+
+export default function SocialProof({ showLogos = true }: { showLogos?: boolean }) {
+  return (
+    <section aria-labelledby="social-proof-heading" className="mx-auto max-w-6xl px-4 py-12">
+      <h2 id="social-proof-heading" className="text-2xl font-bold mb-6">Trusted by drivers and hosts</h2>
+
+      {/* Testimonials */}
+      <ul className="grid gap-6 md:grid-cols-2">
+        {testimonials.map((t, i) => (
+          <li key={i} className="rounded-lg border bg-white p-5 shadow-sm">
+            <p className="text-sm text-slate-700">“{t.quote}”</p>
+            <div className="mt-4 text-sm">
+              <span className="font-semibold">{t.name}</span>
+              <span className="mx-2 text-slate-400">•</span>
+              <span className="text-slate-600">{t.location}</span>
+              <div className="text-slate-500">{t.role}</div>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      {/* Partner logos (placeholder boxes) */}
+      {showLogos && (
+        <>
+          <h3 className="mt-10 mb-4 text-sm font-semibold uppercase tracking-wide text-slate-600">
+            Partner Networks (placeholders)
+          </h3>
+          <div role="list" className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+            {partnerNames.map((name) => (
+              <div
+                key={name}
+                role="listitem"
+                className="h-12 rounded-md border bg-slate-50 grid place-items-center text-xs text-slate-600"
+                aria-label={`${name} (placeholder)`}
+                title={name}
+              >
+                {name}
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+    </section>
+  );
+}
+-------------------------------------
+</WRITE FILE>
+
+----------------------------------------------------------------
+STEP 3 — Add Schema.org LocalBusiness JSON-LD
+----------------------------------------------------------------
+Open index.html and add the following script tag inside <head> (keep existing content). 
+If there is already a JSON-LD block, replace it with this one.
+
+<EDIT FILE>
+index.html  (inject into <head>)
+--------------------------------
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Alchemy United",
+  "url": "https://example.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "123 Innovation Drive",
+    "addressLocality": "Electric City",
+    "addressRegion": "CA",
+    "postalCode": "90210",
+    "addressCountry": "US"
+  },
+  "telephone": "+1-800-ALCHEMY",
+  "email": "contact@alchemyunited.com",
+  "openingHours": "Mo-Su 00:00-23:59"
+}
+</script>
+--------------------------------
+</EDIT FILE>
+
+----------------------------------------------------------------
+STEP 4 — Build & Verify
+----------------------------------------------------------------
+- Run: npm run build
+- Start dev server (or preview) and verify:
+  1) On / (home), the red/green cards flip on click/tap and via Enter/Space when focused.
+  2) Testimonials (4) and partner logo placeholders (6) are visible.
+  3) No console errors. Lighthouse/DevTools show reduced layout shift.
+  4) View-source/head contains the JSON-LD block.
+
+If everything passes, commit with message:
+"Fix home flip cards; enable & populate SocialProof; add LocalBusiness JSON-LD."
+
+Provide a short summary of changed files and screenshots of the working flip and social proof sections.

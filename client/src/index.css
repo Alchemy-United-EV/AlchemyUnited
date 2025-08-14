@@ -285,19 +285,45 @@
 }
 
 :root{
-  --gold:#D4AF37; --gold-light:#FFD700; --gold-dark:#B8860B;
-  --bg:#ffffff; --ink:#0B0B0C; --muted:#6B7280;
-  --shadow-elev-1: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  --shadow-elev-2: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-elev-3: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --bg-page:#fafafa;--bg-surface:#ffffff;--bg-muted:#f3f4f6;
+  --text-strong:#111827;--text-body:#374151;--text-muted:#6b7280;
+  --gold:#D4AF37;--gold-600:#c79d19;--gold-200:#f6e7b3;
+  --border:#e5e7eb;--r-lg:16px;--r-xl:20px;--r-2xl:28px;
+  --t-fast:150ms;--t-med:250ms;--t-slow:450ms;
+  --shadow-lg: 0 20px 35px -15px rgba(17,24,39,.12);
+  --ring-gold: 0 0 0 4px rgba(212,175,55,.25);
 }
-html,body{ background:#ffffff; color:var(--ink); }
+body{background:var(--bg-page);color:var(--text-body);}
 .bg-gold-gradient{ background:linear-gradient(90deg,var(--gold-light),var(--gold),var(--gold-dark)); }
 .text-gold{ color:var(--gold); }
 .border-gold{ border-color:var(--gold); }
-.btn-primary{ @apply inline-flex items-center justify-center rounded-xl px-6 py-3 font-semibold text-black bg-gold shadow-elev-1 hover:shadow-elev-2 transition duration-200 hover:-translate-y-0.5 active:translate-y-0 hover:bg-gold-light; }
-.btn-secondary{ @apply inline-flex items-center justify-center rounded-xl px-6 py-3 font-semibold border border-gold text-gold hover:bg-gold/10 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-elev-1; }
-.card{ @apply rounded-2xl bg-white/90 backdrop-blur-sm shadow-elev-1 ring-1 ring-black/5 hover:shadow-elev-2 transition-all duration-300; }
+.btn-gold{
+  @apply inline-flex items-center justify-center font-semibold rounded-2xl px-6 py-3 transition-all duration-200 focus:outline-none focus-visible:ring-2;
+  background: linear-gradient(180deg, var(--gold), #f1c93b);
+  color:#111827;
+  box-shadow: 0 8px 20px -6px rgba(212,175,55,.45);
+}
+.btn-gold:hover{ transform:translateY(-1px); box-shadow:0 14px 28px -10px rgba(212,175,55,.55); }
+.btn-gold:active{ transform:translateY(0); box-shadow:0 8px 18px -8px rgba(212,175,55,.45); }
+.btn-gold-ghost{
+  @apply inline-flex items-center justify-center font-semibold rounded-2xl px-6 py-3 transition-all duration-200 border;
+  border-color: var(--gold);
+  color:#111827; background:transparent;
+}
+.btn-gold-ghost:hover{ background:rgba(212,175,55,.08); box-shadow:0 8px 18px -8px rgba(212,175,55,.25); }
+
+.card{
+  @apply rounded-2xl border bg-white;
+  border-color:var(--border);
+  box-shadow: var(--shadow-lg);
+}
+
+.badge{
+  @apply inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full;
+  background: linear-gradient(180deg,#fff,#f8fafc);
+  border:1px solid var(--border);
+  color: var(--text-strong);
+}
 .kicker{ @apply text-[12px] tracking-[0.22em] font-semibold text-gold; }
 .h1-premium{ @apply text-4xl md:text-6xl font-extrabold leading-tight; }
 .subcopy{ @apply text-lg md:text-xl text-gray-600; }
@@ -325,9 +351,28 @@ input:focus,select:focus{ ring:2px; ring-color:var(--gold); border-color:var(--g
 .shadow-elev-1{ box-shadow:var(--shadow-elev-1); }
 .shadow-elev-2{ box-shadow:var(--shadow-elev-2); }
 .shadow-elev-3{ box-shadow:var(--shadow-elev-3); }
+
+/* Form Input Styling */
+input[type="text"], input[type="email"], input[type="tel"], input[type="url"], input[type="password"], input[type="number"], select, textarea {
+  @apply rounded-xl border border-[#e5e7eb] bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400;
+  transition: border-color 150ms, box-shadow 150ms;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: var(--ring-gold);
+}
 ::-webkit-scrollbar{ width:10px; height:10px; }
 ::-webkit-scrollbar-thumb{ background:linear-gradient(180deg,var(--gold),var(--gold-dark)); border-radius:8px; }
+@media (prefers-reduced-motion:no-preference){
+  .fade-in{animation:fadeIn var(--t-slow) ease forwards;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .hover-lift{transition:transform var(--t-med), box-shadow var(--t-med)}
+  .hover-lift:hover{transform:translateY(-2px); box-shadow:var(--shadow-lg)}
+}
 @media (prefers-reduced-motion: reduce){
   .hover\:-translate-y-0\.5:hover{ transform:none !important; }
   .reveal{ transition:none; transform:none; opacity:1; }
+  .fade-in{ animation:none; opacity:1; transform:none; }
+  .hover-lift:hover{ transform:none !important; }
 }

@@ -1,0 +1,171 @@
+You are operating on an existing Vite + React + TypeScript + Tailwind project that is already working (forms, routing, SEO/OG tags, analytics). Perform a visual and UX upgrade ONLY. Be surgical and reversible.
+
+NON-NEGOTIABLE CONSTRAINTS
+1) Do not create or delete files or folders. Do not rename anything. Modify only existing files.
+2) Do not change any routes, server code, endpoints, or form logic. Do not touch fetch/axios calls.
+3) Do not remove any meta/OG/Twitter/JSON-LD tags. Preserve SEO exactly.
+4) If a target file I mention doesn’t exist, SKIP it and tell me which ones were skipped—do NOT create them.
+5) If Tailwind is not used somewhere, use minimal inline classes or existing CSS variables—no new libraries.
+6) Keep accessibility (WCAG) intact: color contrast, focus-visible, prefers-reduced-motion.
+
+GOAL
+Reproduce the “premium dopamine” look we liked (black + gold hero) but restyle the site to a **bright, clean white UI with soft gray backgrounds** and **gold accents** across ALL pages including the **admin dashboard**, with tasteful motion (hover/tap/scroll) and zero regressions. This is purely presentational.
+
+GLOBAL THEME (use tokens; declare where appropriate)
+- Backgrounds:
+  --bg-page: #fafafa
+  --bg-surface: #ffffff
+  --bg-muted: #f3f4f6 (Tailwind gray-100)
+- Text:
+  --text-strong: #111827 (gray-900)
+  --text-body: #374151 (gray-700)
+  --text-muted: #6b7280 (gray-500)
+- Gold brand:
+  --gold: #D4AF37
+  --gold-600: #c79d19
+  --gold-200: #f6e7b3
+  --ring-gold: 0 0 0 4px rgba(212,175,55,.25)
+- Neutrals:
+  --border: #e5e7eb
+  --shadow-lg: 0 20px 35px -15px rgba(17,24,39,.12)
+- Radii:
+  --r-lg: 16px; --r-xl: 20px; --r-2xl: 28px
+- Motion durations:
+  --t-fast: 150ms; --t-med: 250ms; --t-slow: 450ms
+
+Where to place tokens:
+- If you have src/index.css or tailwind globals, add the :root variables there. If not, put them at the top of the main global stylesheet that already exists. Do not create a new file. Example block to paste into the existing global CSS (at end of file if unsure):
+
+:root{
+  --bg-page:#fafafa;--bg-surface:#ffffff;--bg-muted:#f3f4f6;
+  --text-strong:#111827;--text-body:#374151;--text-muted:#6b7280;
+  --gold:#D4AF37;--gold-600:#c79d19;--gold-200:#f6e7b3;
+  --border:#e5e7eb;--r-lg:16px;--r-xl:20px;--r-2xl:28px;
+  --t-fast:150ms;--t-med:250ms;--t-slow:450ms;
+}
+
+body{background:var(--bg-page);color:var(--text-body);}
+
+UTILITY CLASSES TO REUSE (add to existing global CSS under a comment, or translate to Tailwind @apply where you already keep utilities; do not create new files)
+.btn-gold{
+  @apply inline-flex items-center justify-center font-semibold rounded-2xl px-6 py-3 transition-all duration-200 focus:outline-none focus-visible:ring-2;
+  background: linear-gradient(180deg, var(--gold), #f1c93b);
+  color:#111827;
+  box-shadow: 0 8px 20px -6px rgba(212,175,55,.45);
+}
+.btn-gold:hover{ transform:translateY(-1px); box-shadow:0 14px 28px -10px rgba(212,175,55,.55); }
+.btn-gold:active{ transform:translateY(0); box-shadow:0 8px 18px -8px rgba(212,175,55,.45); }
+.btn-gold-ghost{
+  @apply inline-flex items-center justify-center font-semibold rounded-2xl px-6 py-3 transition-all duration-200 border;
+  border-color: var(--gold);
+  color:#111827; background:transparent;
+}
+.btn-gold-ghost:hover{ background:rgba(212,175,55,.08); box-shadow:0 8px 18px -8px rgba(212,175,55,.25); }
+
+.card{
+  @apply rounded-2xl border bg-white;
+  border-color:var(--border);
+  box-shadow: var(--shadow-lg);
+}
+
+.badge{
+  @apply inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full;
+  background: linear-gradient(180deg,#fff,#f8fafc);
+  border:1px solid var(--border);
+  color: var(--text-strong);
+}
+
+SOFT WHITE THEME APPLIED (edit existing components)
+1) HERO (client/src/pages/home/Hero.tsx or equivalent)
+- Section wrapper: replace dark gradient with clean vignette:
+  className="relative overflow-hidden bg-[radial-gradient(1200px_600px_at_50%_-10%,#ffffff_0%,#f5f6f8_55%,#f1f2f4_100%)]"
+- Inner container: "relative z-10 max-w-6xl mx-auto px-6 py-20 text-center"
+- Eyebrow pill: use .badge + gold icon if present; text in var(--text-muted)
+- H1: text-gray-900; emphasize key words with text-[var(--gold)]
+- Subcopy: text-gray-600 max-w-2xl mx-auto mt-4
+- CTA row: "mt-8 flex flex-col sm:flex-row gap-3 justify-center"
+  Primary: className="btn-gold"
+  Secondary: className="btn-gold-ghost"
+
+2) FEATURES / PARTNERS / TESTIMONIALS (existing sections)
+- Wrap each card with className="card p-6 hover:translate-y-[-2px] transition-transform duration-200 will-change-transform"
+- Section background: use "bg-[linear-gradient(180deg,#ffffff_0%,#fafafa_100%)]"
+- Section headings: "text-3xl md:text-4xl font-extrabold text-gray-900"
+- Small label chips: className="badge mb-2"
+
+3) PROBLEMS ↔ SOLUTIONS INTERACTION (already present)
+- Keep logic intact; only style:
+  Problem card: className="card p-6 border-red-100"
+  Solution card: className="card p-6 border-emerald-100"
+- Tap/hover scale: add "transition-transform duration-150 hover:scale-[1.01] active:scale-[0.99]"
+
+4) FOOTER CTA STRIP
+- Full-width container with soft gold glow:
+  className="relative isolate overflow-hidden rounded-2xl mx-6 my-12 px-6 py-10 text-center bg-white shadow-[0_30px_60px_-30px_rgba(212,175,55,.35)] border border-[var(--border)]"
+- Primary button .btn-gold; Secondary .btn-gold-ghost
+
+5) ADMIN DASHBOARD (do not change data logic)
+- Page background: same white/gray gradient as hero but subdued:
+  className="min-h-screen bg-[linear-gradient(180deg,#ffffff_0%,#f7f7f8_100%)]"
+- Top bar: className="sticky top-0 z-40 backdrop-blur bg-white/70 border-b"
+- Cards/tables:
+  className="card p-5"
+  Table headers: className="text-xs font-semibold uppercase text-gray-500 tracking-wider"
+  Row hover: "hover:bg-gray-50 transition-colors"
+- Primary admin actions: .btn-gold; secondary: .btn-gold-ghost
+- Filters/search chips: .badge with subtle shadow
+
+MOTION & MICRO-INTERACTIONS (safe, no layout thrash)
+- Add to global CSS:
+
+@media (prefers-reduced-motion:no-preference){
+  .fade-in{animation:fadeIn var(--t-slow) ease forwards;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .hover-lift{transition:transform var(--t-med), box-shadow var(--t-med)}
+  .hover-lift:hover{transform:translateY(-2px); box-shadow:var(--shadow-lg)}
+}
+
+- Use on hero content blocks and cards: className="fade-in" and "hover-lift".
+
+SCROLL DECOR (no parallax libs; keep lightweight)
+- If the “wing” image exists, keep it aria-hidden and behind content. On scroll up to 160px: reduce opacity to .15 and translateY(18px). Use requestAnimationFrame and passive listeners only. If no wing asset exists, SKIP.
+
+FORMS & BUTTONS (no logic changes)
+- Inputs: className="rounded-xl border border-[var(--border)] bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] focus-visible:ring-offset-0"
+- Submit: .btn-gold w-full sm:w-auto
+- Keep error text in text-red-600; success in text-emerald-600.
+
+HEADER / NAV (if present)
+- White surface with subtle bottom border: "sticky top-0 z-50 bg-white/80 backdrop-blur border-b"
+- Active link underline with gold: "underline decoration-[var(--gold)] underline-offset-4"
+
+DO NOT TOUCH THESE
+- router setup, routes list, lazy imports
+- API URLs, fetch/axios code
+- analytics/UTM tracker
+- meta/SEO tags, sitemap, robots
+
+ACCEPTANCE TESTS (run and confirm)
+1) All routes render (/, /early-access, /host-application, /thank-you, admin paths). No blank pages, no hook errors.
+2) Lighthouse: Performance ≥ 90, Accessibility ≥ 95, SEO ≥ 100, Best Practices ≥ 95.
+3) Buttons have visible focus rings and meet contrast.
+4) View on mobile width 375px and 430px: hero, cards, and CTAs look polished; no overflow.
+5) Admin dashboard uses the same white/gold theme; cards and tables match site style.
+6) No new files were created. Provide a short diff summary of files actually touched.
+
+IMPLEMENTATION ORDER
+- Update/global CSS tokens + utilities (single file).
+- Update hero section classes.
+- Update cards/sections/testimonials/partners classes.
+- Update forms/buttons to use .btn-gold / .btn-gold-ghost and input styles.
+- Update admin dashboard wrappers, cards, and actions.
+- (Optional) Add the tiny scroll fade for wing if asset + refs already exist; otherwise skip gracefully.
+
+OUTPUT
+Reply with:
+- ✅ “Theme applied” checklist against Acceptance Tests.
+- A bullet list of edited files with exact line ranges changed (approximate OK).
+- Notes for any skipped files/sections because they didn’t exist (no file creation).
+- 3–5 screenshots description strings (areas I should verify manually).
+
+Remember: no file/folder creation, no logic/route changes, no SEO changes—visual layer only.

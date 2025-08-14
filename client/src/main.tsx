@@ -368,7 +368,7 @@ function HomeComponent() {
           {/* Logo watermark behind content */}
           <div className="absolute inset-0 flex items-center justify-center z-0">
             <img 
-              src="/assets/au-logo.png" 
+              src="/assets/header-logo.jpeg" 
               alt=""
               className="w-96 h-auto opacity-20 pointer-events-none"
               aria-hidden="true"

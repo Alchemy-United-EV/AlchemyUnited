@@ -2,31 +2,26 @@ import { CTATracker } from '@/components/CTA-Tracker';
 
 export default function FooterCTA() {
   return (
-    <section className="bg-black py-16 px-6">
-      <div className="max-w-4xl mx-auto text-center reveal">
-        <picture>
-          <source srcSet="/assets/webp/AE141A66-A440-499B-8889-41BABE3F729E_1754506144500.webp" type="image/webp" />
-          <img 
-            src="/assets/AE141A66-A440-499B-8889-41BABE3F729E_1754506144500.png" 
-            alt="Alchemy Network - Premium EV Charging Network Logo"
-            className="h-10 w-auto mx-auto mb-6 filter brightness-125"
-            width="40"
-            height="40"
-            loading="lazy"
-          />
-        </picture>
-        
-        <h2 className="text-3xl font-bold text-white mb-8">
-          Ready for Fast, Reliable EV Charging?
-        </h2>
-        
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+    <section className="au-section au-dark">
+      <div className="au-container au-stack">
+        <span className="au-eyebrow">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" fill="currentColor"/></svg>
+          Premium Network
+        </span>
+
+        <h2 className="au-h1">Ready for Fast, Reliable EV Charging?</h2>
+
+        <p className="max-w-[48ch] opacity-90">
+          Experience guaranteed availability across our curated premium stations.
+        </p>
+
+        <div className="au-row">
           <CTATracker
             cta="footer-primary"
             section="footer"
             variant="primary"
             href="/early-access"
-            className="btn-primary touch-tap"
+            className="btn-au btn-au--gold"
           >
             Get Early Access
           </CTATracker>
@@ -35,16 +30,10 @@ export default function FooterCTA() {
             section="footer"
             variant="secondary"
             href="/host-application"
-            className="btn-secondary text-gold border-gold hover:bg-gold/10 touch-tap"
+            className="btn-au btn-au--outline"
           >
             Become a Host
           </CTATracker>
-        </div>
-        
-        <div className="border-t border-gray-800 pt-8">
-          <p className="text-white/60 text-sm">
-            © 2024 Alchemy Network. All rights reserved. | Premium EV charging network delivering reliable EV charging and profitable hosting solutions.
-          </p>
         </div>
       </div>
     </section>

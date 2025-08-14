@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'wouter';
 
 interface CTATrackerProps {
   children: React.ReactNode;
@@ -19,7 +20,12 @@ export const CTATracker: React.FC<CTATrackerProps> = ({
   href,
   onClick,
 }) => {
-  const handleClick = async () => {
+  const [, navigate] = useLocation();
+  
+  const handleClick = async (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+    }
     // Track CTA click
     try {
       const urlParams = new URLSearchParams(window.location.search);
@@ -55,25 +61,16 @@ export const CTATracker: React.FC<CTATrackerProps> = ({
     if (onClick) {
       onClick();
     }
+    
+    // Navigate to href if provided
+    if (href) {
+      navigate(href);
+    }
   };
-
-  if (href) {
-    return (
-      <a
-        href={href}
-        className={className}
-        data-cta={cta}
-        data-cta-section={section}
-        data-cta-variant={variant}
-        onClick={handleClick}
-      >
-        {children}
-      </a>
-    );
-  }
 
   return (
     <button
+      type="button"
       className={className}
       data-cta={cta}
       data-cta-section={section}

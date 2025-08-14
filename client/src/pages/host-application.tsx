@@ -37,6 +37,7 @@ const hostApplicationSchema = z.object({
 type HostApplicationForm = z.infer<typeof hostApplicationSchema>;
 
 export default function HostApplication() {
+  console.log('[route] host-application page rendering');
   const [, navigate] = useLocation();
 
   // Set SEO meta tags for Host Application page

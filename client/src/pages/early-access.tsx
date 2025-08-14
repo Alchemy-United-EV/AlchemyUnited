@@ -29,6 +29,7 @@ const earlyAccessSchema = z.object({
 type EarlyAccessForm = z.infer<typeof earlyAccessSchema>;
 
 export default function EarlyAccess() {
+  console.log('[route] early-access page rendering');
   const [, navigate] = useLocation();
 
   // Set SEO meta tags and structured data for Early Access page

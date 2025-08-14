@@ -1,0 +1,24 @@
+Objective: Fix SPA navigation that leads to blank pages when clicking “Get Early Access” and “Become a Host”.
+Hard constraints (do not violate):
+	1.	Do not create or rename any files or folders.
+	2.	Do not install or remove packages.
+	3.	Make the smallest possible edits; show each diff before applying.
+	4.	If a change is risky, ask first.
+	5.	Keep dev and prod behavior separate (Vite handles routing in dev; server fallback only in prod).
+
+Diagnosis plan (execute in order, show findings in the chat):
+	1.	Reproduce: run in dev, click both CTAs. Capture browser console errors and the Network panel result for the click (document vs XHR).
+	2.	Open these files and confirm implementations:
+	•	client/src/main.tsx (or index.tsx) – verify <Router> from wouter wraps the app and that <Route> entries exist for /, /early-access, /host-application, /thank-you.
+	•	client/src/pages/home/Hero.tsx and client/src/components/CTA-Tracker.tsx – CTAs must use client-side navigation via useLocation() from wouter (setLocation('/path')) or <Link href="/path">. No window.location full reloads.
+	•	client/src/pages/early-access.tsx, host-application.tsx, thank-you.tsx – confirm each exports default component that returns JSX (not null) and renders without runtime errors.
+	3.	Server config: server/routes.ts – ensure the “catch-all send index.html” only runs in production. In dev, don’t intercept—Vite must handle routes.
+	4.	Quick programmatic checks (no new deps):
+	•	Insert temporary console.log('[route] early-access') etc. at the top of each page component; open DevTools console and click CTAs to confirm the pages actually render. Remove logs after verifying.
+	5.	If misconfigurations are found, propose the small diff(s) from the snippets below, show the before/after, then apply.
+
+Success criteria (stop when all pass and report):
+	•	Clicking Get Early Access and Become a Host does not full-reload and renders the correct page (no blank screen).
+	•	Submitting both forms fetch()es the correct API and navigates to /thank-you on 2xx.
+	•	Dev: no server SPA fallback intercepting routes. Prod: catch-all fallback serving client/dist/index.html.
+	•	No new files, no new packages, no unrelated edits. Provide the final list of lines changed.

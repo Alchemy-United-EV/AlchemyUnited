@@ -20,16 +20,16 @@ app.use((req, res, next) => {
   res.on("finish", () => {
     const duration = Date.now() - start;
     if (path.startsWith("/api")) {
-      let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
-      if (capturedJsonResponse) {
+      let logLine = `[DEPLOYMENT] ${req.method} ${path} ${res.statusCode} in ${duration}ms`;
+      if (capturedJsonResponse && path !== "/api/health") {
         logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
       }
 
-      if (logLine.length > 80) {
-        logLine = logLine.slice(0, 79) + "…";
+      if (logLine.length > 120) {
+        logLine = logLine.slice(0, 119) + "…";
       }
 
-      log(logLine);
+      console.log(logLine);
     }
   });
 
@@ -72,6 +72,8 @@ app.use(express.static("public"));
   console.log(`[DEPLOYMENT] Host: 0.0.0.0`);
   console.log(`[DEPLOYMENT] Process ID: ${process.pid}`);
   console.log(`[DEPLOYMENT] Node version: ${process.version}`);
+  console.log(`[DEPLOYMENT] Build timestamp: ${new Date().toISOString()}`);
+  console.log(`[DEPLOYMENT] Build timestamp: ${new Date().toISOString()}`);
   
   server.listen({
     port,

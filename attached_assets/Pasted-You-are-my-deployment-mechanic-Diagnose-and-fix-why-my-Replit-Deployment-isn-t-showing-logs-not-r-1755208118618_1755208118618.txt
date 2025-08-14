@@ -1,0 +1,59 @@
+You are my deployment mechanic. Diagnose and fix why my Replit Deployment isn't showing logs / not responding sometimes.
+
+Goals:
+1) Make the app production-ready on Replit Autoscale (or Always-On if needed).
+2) Ensure logs appear during requests and at boot.
+3) Provide a health endpoint and a simple smoke test.
+4) Do NOT alter the approved UI.
+
+Tasks (do all, show diffs):
+
+A) Detect stack
+- Tell me if this is Node (Express/Fastify), Next.js, Vite/React, or purely static.
+- Read package.json scripts and current Deploy config. Summarize what runs in production.
+
+B) Port & host sanity
+- Ensure the server binds to process.env.PORT and host "0.0.0.0".
+- If any hardcoded port/localhost is found, replace with env-safe values.
+
+C) Start command hardening
+- In package.json, set:
+  "start": "node server.js"
+  (or for Next.js: "start": "next start -p $PORT -H 0.0.0.0"
+   for Vite SSR: "start": "node dist/server/entry.mjs"
+   for static Vite/CRA: ensure build and static serve via a tiny Node server or Replit static deploy target)
+- Remove any dev-only flags from the production start command.
+
+D) Health endpoint
+- Add GET /api/health that returns { status: "ok", uptime: process.uptime(), timestamp: new Date().toISOString() }.
+- Place it in the running server file (e.g., server.js). If the app is purely static, add a minimal Node server that serves the built files and this endpoint.
+
+E) Deployment logs
+- Add boot logs with a clear prefix:
+  console.log("[DEPLOYMENT] App starting", { env: process.env.NODE_ENV, port: process.env.PORT });
+  console.error("[DEPLOYMENT][ERROR]", err)
+- Ensure any request logs print on each request (brief, not noisy). Prefix with [DEPLOYMENT].
+
+F) Timers / background tasks
+- Remove or guard any setInterval/setTimeout jobs in production unless absolutely required. Explain any you keep.
+
+G) Build config
+- For Vite/CRA: ensure "build" script creates production assets; configure deployment to serve the correct output folder (Vite: "dist").
+- For Next.js: ensure "build" then "start". If using Image Optimization/file uploads, document any required env vars.
+
+H) Replit Deploy config
+- Verify deploy target is correct (Autoscale OK).
+- Confirm health check path is /api/health with 200 status.
+- Confirm "Expose port" or "HTTP" is configured.
+- Share exact deploy settings used.
+
+I) Smoke test
+- After changes, run a local request to /api/health and root path to confirm 200 responses.
+- Paste the test outputs so I can see them.
+- Tell me where to see logs in Replit (Deployments → my deployment → Logs tab). Clarify that Autoscale logs show during active requests.
+
+Deliverables:
+- A concise summary of what was wrong and what you fixed.
+- File diffs (paths + lines) for package.json, server file(s), and any deploy config.
+- Short “Rollback notes” (how to undo).
+- Do not modify UI files.

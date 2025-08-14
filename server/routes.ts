@@ -6,15 +6,17 @@ import { sendEmail, getEarlyAccessConfirmationEmail, getHostApplicationConfirmat
 import { honeypotMiddleware, rateLimitMiddleware } from "./middleware/honeypot";
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Health check endpoint with deployment details
+  // Health check endpoint with deployment details - MUST BE FIRST
   app.get('/api/health', (req, res) => {
-    console.log(`[HEALTH] Health check requested from ${req.ip}`);
+    console.log(`[DEPLOYMENT] Health check from ${req.ip || 'unknown'}`);
     res.status(200).json({ 
       status: 'healthy',
+      uptime: process.uptime(),
       timestamp: new Date().toISOString(),
       version: '1.0.0',
       environment: process.env.NODE_ENV || 'development',
-      deployment: 'autoscale-ready'
+      deployment: 'autoscale-ready',
+      port: process.env.PORT || '5000'
     });
   });
 
@@ -28,6 +30,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.error('[ANALYTICS] Logging error:', error);
       res.status(500).json({ error: 'Failed to log event' });
     }
+  });
+
+  // Request logging for all API routes
+  app.use('/api', (req, res, next) => {
+    console.log(`[DEPLOYMENT] ${req.method} ${req.path} from ${req.ip || 'unknown'}`);
+    next();
   });
 
   // Early Access Applications API with spam protection

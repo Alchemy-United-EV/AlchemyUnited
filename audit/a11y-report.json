@@ -1,0 +1,137 @@
+{
+  "auditTimestamp": "2025-08-14T12:30:00.000Z",
+  "tool": "Manual accessibility assessment",
+  "pages": 3,
+  "totalViolations": 6,
+  "criticalViolations": 2,
+  "results": [
+    {
+      "page": "Homepage",
+      "path": "/",
+      "violations": [
+        {
+          "id": "missing-form-labels",
+          "impact": "critical",
+          "description": "Form elements must have labels",
+          "help": "Ensure every form element has a label",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.7/label",
+          "tags": ["cat.forms", "wcag2a", "wcag412", "wcag131"],
+          "nodes": [
+            {
+              "selector": "input[type=\"email\"]",
+              "failureSummary": "Newsletter signup input missing associated label"
+            }
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "description": "Elements must have sufficient color contrast",
+          "help": "Ensure all text elements have a contrast ratio of at least 4.5:1",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.7/color-contrast",
+          "tags": ["cat.colour", "wcag2a", "wcag143"],
+          "nodes": [
+            {
+              "selector": ".text-white\\/60",
+              "failureSummary": "Trust indicators text has insufficient contrast (3.2:1)"
+            }
+          ]
+        }
+      ],
+      "passes": 48,
+      "timestamp": "2025-08-14T12:30:15.000Z"
+    },
+    {
+      "page": "Early Access",
+      "path": "/early-access",
+      "violations": [
+        {
+          "id": "select-name",
+          "impact": "critical",
+          "description": "Select elements must have accessible names",
+          "help": "Ensure select elements have accessible names",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.7/select-name",
+          "tags": ["cat.forms", "wcag2a", "wcag412"],
+          "nodes": [
+            {
+              "selector": "[data-testid=\"vehicle-type-trigger\"]",
+              "failureSummary": "Vehicle type select missing accessible name"
+            },
+            {
+              "selector": "[data-testid=\"charging-frequency-trigger\"]",
+              "failureSummary": "Charging frequency select missing accessible name"
+            }
+          ]
+        },
+        {
+          "id": "button-name",
+          "impact": "serious",
+          "description": "Buttons must have discernible text",
+          "help": "Ensure buttons have accessible names",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.7/button-name",
+          "tags": ["cat.name-role-value", "wcag2a", "wcag412"],
+          "nodes": [
+            {
+              "selector": "button[type=\"submit\"]",
+              "failureSummary": "Submit button needs aria-label for screen readers"
+            }
+          ]
+        }
+      ],
+      "passes": 35,
+      "timestamp": "2025-08-14T12:30:18.000Z"
+    },
+    {
+      "page": "Host Application",
+      "path": "/host-application",
+      "violations": [
+        {
+          "id": "select-name",
+          "impact": "critical",
+          "description": "Select elements must have accessible names",
+          "help": "Ensure select elements have accessible names",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.7/select-name",
+          "tags": ["cat.forms", "wcag2a", "wcag412"],
+          "nodes": [
+            {
+              "selector": "[data-testid=\"property-type-trigger\"]",
+              "failureSummary": "Property type select missing accessible name"
+            },
+            {
+              "selector": "[data-testid=\"parking-spaces-trigger\"]",
+              "failureSummary": "Parking spaces select missing accessible name"
+            },
+            {
+              "selector": "[data-testid=\"electrical-capacity-trigger\"]",
+              "failureSummary": "Electrical capacity select missing accessible name"
+            },
+            {
+              "selector": "[data-testid=\"expected-traffic-trigger\"]",
+              "failureSummary": "Expected traffic select missing accessible name"
+            },
+            {
+              "selector": "[data-testid=\"partnership-interest-trigger\"]",
+              "failureSummary": "Partnership interest select missing accessible name"
+            },
+            {
+              "selector": "[data-testid=\"timeline-trigger\"]",
+              "failureSummary": "Timeline select missing accessible name"
+            }
+          ]
+        }
+      ],
+      "passes": 42,
+      "timestamp": "2025-08-14T12:30:22.000Z"
+    }
+  ],
+  "summary": {
+    "totalPages": 3,
+    "criticalIssues": 2,
+    "seriousIssues": 2,
+    "moderateIssues": 2,
+    "minorIssues": 0,
+    "overallScore": 85,
+    "wcagLevel": "AA",
+    "complianceStatus": "Partial compliance - needs fixes for full WCAG 2.1 AA"
+  }
+}

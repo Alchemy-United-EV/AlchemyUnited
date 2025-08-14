@@ -1,0 +1,131 @@
+{
+  "pages": [
+    {
+      "page": "homepage",
+      "path": "/",
+      "seo": {
+        "title": "Alchemy - Plug Into the Future | Premium EV Charging Solutions",
+        "titleLength": 62,
+        "metaDescription": "Revolutionary EV charging technology engineered for precision, efficiency, and the future of electric mobility. Join the movement with Alchemy's innovative charging solutions.",
+        "metaDescriptionLength": 175,
+        "h1Count": 0,
+        "h1Text": "",
+        "h2Count": 0,
+        "ogTitle": "Alchemy - Plug Into the Future | Premium EV Charging Solutions",
+        "ogDescription": "Revolutionary EV charging technology engineered for precision, efficiency, and the future of electric mobility.",
+        "htmlLang": "en",
+        "jsonLdCount": 0,
+        "jsonLdPresent": false
+      },
+      "ctas": [],
+      "images": [],
+      "timestamp": "2025-08-14T12:30:22.622Z"
+    },
+    {
+      "page": "early-access",
+      "path": "/early-access",
+      "seo": {
+        "title": "Alchemy - Plug Into the Future | Premium EV Charging Solutions",
+        "titleLength": 62,
+        "metaDescription": "Revolutionary EV charging technology engineered for precision, efficiency, and the future of electric mobility. Join the movement with Alchemy's innovative charging solutions.",
+        "metaDescriptionLength": 175,
+        "h1Count": 0,
+        "h1Text": "",
+        "h2Count": 0,
+        "ogTitle": "Alchemy - Plug Into the Future | Premium EV Charging Solutions",
+        "ogDescription": "Revolutionary EV charging technology engineered for precision, efficiency, and the future of electric mobility.",
+        "htmlLang": "en",
+        "jsonLdCount": 0,
+        "jsonLdPresent": false
+      },
+      "ctas": [],
+      "images": [],
+      "timestamp": "2025-08-14T12:30:22.634Z"
+    },
+    {
+      "page": "host-application",
+      "path": "/host-application",
+      "seo": {
+        "title": "Alchemy - Plug Into the Future | Premium EV Charging Solutions",
+        "titleLength": 62,
+        "metaDescription": "Revolutionary EV charging technology engineered for precision, efficiency, and the future of electric mobility. Join the movement with Alchemy's innovative charging solutions.",
+        "metaDescriptionLength": 175,
+        "h1Count": 0,
+        "h1Text": "",
+        "h2Count": 0,
+        "ogTitle": "Alchemy - Plug Into the Future | Premium EV Charging Solutions",
+        "ogDescription": "Revolutionary EV charging technology engineered for precision, efficiency, and the future of electric mobility.",
+        "htmlLang": "en",
+        "jsonLdCount": 0,
+        "jsonLdPresent": false
+      },
+      "ctas": [],
+      "images": [],
+      "timestamp": "2025-08-14T12:30:22.666Z"
+    }
+  ],
+  "ctas": [],
+  "seo_issues": [
+    {
+      "page": "/",
+      "issue": "Title length 62 chars (should be 40-60)",
+      "severity": "warning"
+    },
+    {
+      "page": "/",
+      "issue": "Meta description 175 chars (should be 140-160)",
+      "severity": "warning"
+    },
+    {
+      "page": "/",
+      "issue": "Missing canonical link",
+      "severity": "warning"
+    },
+    {
+      "page": "/",
+      "issue": "Found 0 H1 tags (should be 1)",
+      "severity": "warning"
+    },
+    {
+      "page": "/early-access",
+      "issue": "Title length 62 chars (should be 40-60)",
+      "severity": "warning"
+    },
+    {
+      "page": "/early-access",
+      "issue": "Meta description 175 chars (should be 140-160)",
+      "severity": "warning"
+    },
+    {
+      "page": "/early-access",
+      "issue": "Missing canonical link",
+      "severity": "warning"
+    },
+    {
+      "page": "/early-access",
+      "issue": "Found 0 H1 tags (should be 1)",
+      "severity": "warning"
+    },
+    {
+      "page": "/host-application",
+      "issue": "Title length 62 chars (should be 40-60)",
+      "severity": "warning"
+    },
+    {
+      "page": "/host-application",
+      "issue": "Meta description 175 chars (should be 140-160)",
+      "severity": "warning"
+    },
+    {
+      "page": "/host-application",
+      "issue": "Missing canonical link",
+      "severity": "warning"
+    },
+    {
+      "page": "/host-application",
+      "issue": "Found 0 H1 tags (should be 1)",
+      "severity": "warning"
+    }
+  ],
+  "accessibility_issues": []
+}

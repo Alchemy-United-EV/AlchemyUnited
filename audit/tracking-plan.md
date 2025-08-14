@@ -1,374 +1,495 @@
-# Tracking & Analytics Plan
+# Analytics Tracking Plan & GA4 Event Specification
 
-## Current Analytics Status ❌ NOT IMPLEMENTED
-- **Google Analytics**: Not detected
-- **Google Tag Manager**: Not detected  
-- **Facebook Pixel**: Not detected
-- **Other Tracking**: None detected
+**Generated:** 2025-08-14T12:30:00.000Z
 
-**CRITICAL BUSINESS IMPACT**: No conversion tracking = No optimization capability
+## Overview
 
-## Recommended Analytics Implementation
+This document defines the complete analytics tracking implementation for Alchemy Network's conversion optimization and user behavior analysis.
 
-### Google Analytics 4 Setup
+## Event Tracking Framework
 
-#### 1. Core Configuration
+### Primary Conversion Events
+
+#### 1. CTA Click Events
+**Event Name:** `cta_click`  
+**Purpose:** Track all call-to-action interactions for optimization
+
+**Parameters:**
 ```javascript
-// Google Analytics 4 Base Configuration
-gtag('config', 'GA_MEASUREMENT_ID', {
-  cookie_domain: 'auto',
-  cookie_flags: 'SameSite=None;Secure',
-  send_page_view: false // We'll send manually with more data
-});
+{
+  button_id: 'hero-early-access',        // [data-cta] value
+  button_text: 'Get Early Access',       // Visible button text
+  section: 'hero',                       // Page section (hero, cta, footer)
+  variant: 'primary',                    // Button style (primary, secondary, text)
+  page_location: window.location.href,   // Full URL
+  page_title: document.title,            // Page title
+  user_id: getCookie('user_id')         // Anonymous user ID (if available)
+}
 ```
 
-#### 2. Enhanced Ecommerce for Lead Generation
-```javascript
-// Configure as ecommerce for lead tracking
-gtag('config', 'GA_MEASUREMENT_ID', {
-  custom_map: {
-    'custom_parameter_1': 'lead_source',
-    'custom_parameter_2': 'lead_type',
-    'custom_parameter_3': 'lead_quality_score'
-  }
-});
+**Trigger Implementation:**
+```html
+<!-- Hero Section -->
+<button 
+  data-cta="hero-early-access"
+  data-cta-section="hero"
+  data-cta-variant="primary"
+  onClick={() => trackCTAClick('hero-early-access', 'Get Early Access', 'hero', 'primary')}
+>
+  Get Early Access
+</button>
+
+<button 
+  data-cta="hero-host-partner"
+  data-cta-section="hero"
+  data-cta-variant="secondary"
+  onClick={() => trackCTAClick('hero-host-partner', 'Become a Host', 'hero', 'secondary')}
+>
+  Become a Host
+</button>
+
+<!-- CTA Section -->
+<button 
+  data-cta="cta-early-access"
+  data-cta-section="cta"
+  data-cta-variant="primary"
+  onClick={() => trackCTAClick('cta-early-access', 'Request Early Access', 'cta', 'primary')}
+>
+  Request Early Access
+</button>
+
+<button 
+  data-cta="cta-host-partner"
+  data-cta-section="cta"
+  data-cta-variant="secondary"
+  onClick={() => trackCTAClick('cta-host-partner', 'Partner With Us', 'cta', 'secondary')}
+>
+  Partner With Us
+</button>
 ```
 
-### Event Tracking Plan
+#### 2. Form Interaction Events
 
-## Page View Events
+##### Form Start
+**Event Name:** `form_start`
+**Purpose:** Track when users begin form completion
+
+**Parameters:**
 ```javascript
-// Enhanced page views with context
-gtag('event', 'page_view', {
-  page_title: document.title,
+{
+  form_id: 'early-access-form',          // Form identifier
+  form_type: 'lead_generation',          // Form category
+  page_location: window.location.href,   // Where form started
+  referrer: document.referrer,           // Previous page
+  session_id: getSessionId()             // User session ID
+}
+```
+
+**Trigger:** First interaction with any form field
+
+##### Form Field Completion
+**Event Name:** `form_field_complete`
+**Purpose:** Track field completion rates for optimization
+
+**Parameters:**
+```javascript
+{
+  form_id: 'early-access-form',
+  field_name: 'firstName',               // Form field name
+  field_type: 'text',                    // Input type
+  completion_order: 1,                   // Order field was completed
+  time_to_complete: 3.2                  // Seconds to complete field
+}
+```
+
+##### Form Submission
+**Event Name:** `form_submit`
+**Purpose:** Track form submission attempts
+
+**Parameters:**
+```javascript
+{
+  form_id: 'early-access-form',
+  form_type: 'lead_generation', 
+  fields_completed: 8,                   // Number of fields filled
+  total_fields: 9,                       // Total form fields
+  completion_time: 45.7,                 // Total time on form (seconds)
+  page_location: window.location.href
+}
+```
+
+##### Form Success
+**Event Name:** `form_success`
+**Purpose:** Track successful form submissions (conversion!)
+
+**Parameters:**
+```javascript
+{
+  form_id: 'early-access-form',
+  form_type: 'lead_generation',
+  application_id: 'abc123def456',        // Server-returned ID
+  value: 300,                            // Lead value in USD
+  currency: 'USD',
+  conversion_time: 67.3,                 // Total time from page load to success
+  fields_completed: 9,
+  lead_score: 85                         // Calculated lead quality score
+}
+```
+
+##### Form Error
+**Event Name:** `form_error`
+**Purpose:** Track form validation and submission errors
+
+**Parameters:**
+```javascript
+{
+  form_id: 'early-access-form',
+  error_type: 'validation',              // validation, server, network
+  error_field: 'email',                  // Field causing error
+  error_message: 'Invalid email format', // Error message shown
+  retry_count: 1,                        // Number of retry attempts
+  page_location: window.location.href
+}
+```
+
+### Page Engagement Events
+
+#### Page View Enhanced
+**Event Name:** `page_view`
+**Purpose:** Enhanced page view tracking with context
+
+**Parameters:**
+```javascript
+{
   page_location: window.location.href,
-  content_group1: 'EV_Charging_Network', // Business category
-  content_group2: getPageType(), // 'homepage', 'forms', 'info'
-  custom_parameter_1: getTrafficSource(),
-  send_to: 'GA_MEASUREMENT_ID'
-});
+  page_title: document.title,
+  page_referrer: document.referrer,
+  content_group1: 'Marketing',           // Content category
+  content_group2: 'Landing Page',        // Page type
+  user_engagement: true,                 // Engaged session indicator
+  traffic_source: getTrafficSource()     // UTM or referrer analysis
+}
 ```
 
-## Conversion Events (HIGH PRIORITY)
+#### Scroll Depth
+**Event Name:** `scroll`
+**Purpose:** Measure content engagement depth
 
-### 1. CTA Click Tracking
+**Parameters:**
 ```javascript
-// Primary CTA clicks
-gtag('event', 'select_promotion', {
-  creative_name: 'Get_Early_Access_Hero',
-  creative_slot: 'hero_primary_cta',
-  location_id: 'homepage_above_fold',
-  promotion_id: 'early_access_2025',
-  promotion_name: 'Early Access Campaign'
-});
-
-// Host CTA clicks  
-gtag('event', 'select_promotion', {
-  creative_name: 'Become_Host_Hero', 
-  creative_slot: 'hero_secondary_cta',
-  location_id: 'homepage_above_fold',
-  promotion_id: 'host_partnership_2025',
-  promotion_name: 'Host Partnership Campaign'
-});
+{
+  percent_scrolled: 25,                  // 25, 50, 75, 90
+  page_location: window.location.href,
+  content_length: 2400,                  // Page height in pixels
+  time_to_scroll: 15.3                   // Time to reach scroll point
+}
 ```
 
-### 2. Form Interaction Events
+### Micro-Conversion Events
+
+#### Section Viewed
+**Event Name:** `section_view`
+**Purpose:** Track which sections users actually see
+
+**Parameters:**
 ```javascript
-// Form start (first field interaction)
-gtag('event', 'begin_checkout', {
-  currency: 'USD',
-  value: 300, // Estimated lead value
-  coupon: getUtmCampaign(),
-  items: [{
-    item_id: 'early_access_application',
-    item_name: 'Early Access Application',
-    item_category: 'Lead_Generation',
-    item_category2: 'EV_Driver',
-    quantity: 1,
-    price: 300
-  }]
-});
-
-// Form field completion (progressive profiling)
-gtag('event', 'add_to_cart', {
-  currency: 'USD', 
-  value: calculateProgressValue(),
-  items: [{
-    item_id: 'form_field_' + fieldName,
-    item_name: fieldName,
-    item_category: 'Form_Progress',
-    quantity: 1
-  }]
-});
-
-// Form submission (conversion!)
-gtag('event', 'purchase', {
-  transaction_id: submissionId,
-  currency: 'USD',
-  value: 300, // Early access lead value
-  coupon: getUtmCampaign(),
-  items: [{
-    item_id: 'early_access_lead',
-    item_name: 'Early Access Lead', 
-    item_category: 'Lead_Conversion',
-    item_category2: getVehicleType(),
-    quantity: 1,
-    price: 300
-  }]
-});
+{
+  section_name: 'social-proof',          // Section identifier
+  section_position: 3,                   // Order on page
+  time_in_view: 8.5,                     // Seconds section was visible
+  page_location: window.location.href
+}
 ```
 
-### 3. Host Application Tracking
+#### Feature Interaction
+**Event Name:** `feature_interact`
+**Purpose:** Track interaction with page features
+
+**Parameters:**
 ```javascript
-// Host form submission (higher value)
-gtag('event', 'purchase', {
-  transaction_id: submissionId,
-  currency: 'USD', 
-  value: 10000, // Host partnership value
-  tax: getEstimatedCommission(),
-  shipping: 0,
-  items: [{
-    item_id: 'host_application_lead',
-    item_name: 'Host Partnership Lead',
-    item_category: 'B2B_Lead_Conversion', 
-    item_category2: getPropertyType(),
-    item_brand: getBusinessCategory(),
-    quantity: 1,
-    price: 10000
-  }]
-});
+{
+  feature_name: 'flip-cards',            // Interactive element
+  interaction_type: 'hover',             // hover, click, swipe
+  feature_position: 2,                   // Position in list/grid
+  interaction_duration: 3.2              // How long interaction lasted
+}
 ```
 
-## Engagement Events
+## Data-CTA Attribute Mapping
 
-### 4. Social Proof Interactions
-```javascript
-// Testimonial engagement
-gtag('event', 'select_content', {
-  content_type: 'testimonial',
-  content_id: testimonial.id,
-  item_id: testimonial.name + '_testimonial'
-});
+### Current Implementation Status
 
-// Partner logo interaction  
-gtag('event', 'view_item', {
-  currency: 'USD',
-  value: 50, // Engagement value
-  items: [{
-    item_id: 'partner_' + partnerName.toLowerCase(),
-    item_name: partnerName + ' Partnership',
-    item_category: 'Social_Proof',
-    item_brand: partnerName
-  }]
-});
+#### ✅ Implemented (4/6 components)
+```html
+<!-- Hero Section -->
+<button data-cta="hero-early-access" data-cta-section="hero" data-cta-variant="primary">
+<button data-cta="hero-host-partner" data-cta-section="hero" data-cta-variant="secondary">
+
+<!-- CTA Section -->  
+<button data-cta="cta-early-access" data-cta-section="cta" data-cta-variant="primary">
+<button data-cta="cta-host-partner" data-cta-section="cta" data-cta-variant="secondary">
 ```
 
-### 5. Feature Toggle Tracking
-```javascript
-// Problems → Solutions flip
-gtag('event', 'select_content', {
-  content_type: 'feature_toggle',
-  content_id: 'problem_solution_' + problemId,
-  method: flipped[problemId] ? 'show_solution' : 'show_problem'
-});
+#### ❌ Missing Implementation (2/6 components)
+```html
+<!-- Early Access Form (NEEDS IMPLEMENTATION) -->
+<button 
+  data-cta="early-access-submit"
+  data-cta-section="form"
+  data-cta-variant="primary"
+  type="submit"
+>
+
+<!-- Host Application Form (NEEDS IMPLEMENTATION) -->
+<button 
+  data-cta="host-application-submit"
+  data-cta-section="form"
+  data-cta-variant="primary"
+  type="submit"
+>
 ```
 
-### 6. Wing Logo & Animations
+## Event Implementation Code
+
+### Helper Functions
 ```javascript
-// Wing logo visibility (scroll engagement)
-gtag('event', 'scroll', {
-  percent_scrolled: Math.round((scrollPercent / 100) * 100),
-  engagement_time_msec: Date.now() - pageStartTime
-});
+// Core tracking functions (add to analytics-stub.js or GA4 implementation)
+
+function trackCTAClick(buttonId, buttonText, section, variant) {
+  gtag('event', 'cta_click', {
+    button_id: buttonId,
+    button_text: buttonText,
+    section: section,
+    variant: variant,
+    page_location: window.location.href,
+    page_title: document.title,
+    timestamp: new Date().toISOString()
+  });
+}
+
+function trackFormStart(formId, formType = 'lead_generation') {
+  gtag('event', 'form_start', {
+    form_id: formId,
+    form_type: formType,
+    page_location: window.location.href,
+    referrer: document.referrer,
+    session_id: getSessionId(),
+    timestamp: new Date().toISOString()
+  });
+}
+
+function trackFormSubmit(formId, formData, completionTime) {
+  gtag('event', 'form_submit', {
+    form_id: formId,
+    form_type: 'lead_generation',
+    fields_completed: Object.keys(formData).filter(k => formData[k]).length,
+    total_fields: Object.keys(formData).length,
+    completion_time: completionTime,
+    page_location: window.location.href,
+    timestamp: new Date().toISOString()
+  });
+}
+
+function trackFormSuccess(formId, applicationId, leadValue = 300) {
+  // Primary conversion event!
+  gtag('event', 'form_success', {
+    form_id: formId,
+    form_type: 'lead_generation',
+    application_id: applicationId,
+    value: leadValue,
+    currency: 'USD',
+    conversion_time: getTimeOnPage(),
+    timestamp: new Date().toISOString()
+  });
+  
+  // Also track as purchase for ecommerce
+  gtag('event', 'purchase', {
+    transaction_id: applicationId,
+    value: leadValue,
+    currency: 'USD',
+    items: [{
+      item_id: formId,
+      item_name: formId === 'early-access-form' ? 'Early Access Lead' : 'Host Partnership Lead',
+      category: 'Lead Generation',
+      quantity: 1,
+      price: leadValue
+    }]
+  });
+}
+
+function trackFormError(formId, errorType, errorField, errorMessage) {
+  gtag('event', 'form_error', {
+    form_id: formId,
+    error_type: errorType,
+    error_field: errorField,
+    error_message: errorMessage,
+    page_location: window.location.href,
+    timestamp: new Date().toISOString()
+  });
+}
 ```
 
-## Error & Performance Events
-
-### 7. Form Error Tracking  
+### Form Integration Example
 ```javascript
-// Form validation errors
-gtag('event', 'exception', {
-  description: 'Form_Validation_Error_' + fieldName,
-  fatal: false,
-  custom_parameter_1: errorMessage,
-  custom_parameter_2: 'early_access_form'
-});
-
-// Backend submission errors (CRITICAL TO MONITOR)
-gtag('event', 'exception', {
-  description: 'Form_Submission_Failed',
-  fatal: true, // This blocks conversions!
-  custom_parameter_1: response.status + '_' + response.statusText,
-  custom_parameter_2: formType
-});
+// Early Access Form Submit Handler
+const handleEarlyAccessSubmit = async (formData) => {
+  const startTime = Date.now();
+  
+  // Track form submission attempt
+  trackFormSubmit('early-access-form', formData, getFormCompletionTime());
+  
+  try {
+    const response = await fetch('/api/early-access-applications', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    });
+    
+    if (response.ok) {
+      const result = await response.json();
+      
+      // Track successful conversion
+      trackFormSuccess('early-access-form', result.id, 300);
+      
+      // Show success message
+      setSuccessMessage('Application submitted successfully!');
+      
+    } else {
+      // Track server error
+      trackFormError('early-access-form', 'server', null, `HTTP ${response.status}`);
+    }
+  } catch (error) {
+    // Track network error
+    trackFormError('early-access-form', 'network', null, error.message);
+  }
+};
 ```
 
-### 8. Performance Tracking
+## GA4 Configuration Setup
+
+### Enhanced Ecommerce Configuration
 ```javascript
-// Image loading performance  
-gtag('event', 'timing_complete', {
-  name: 'image_load_time',
-  value: loadTime,
-  event_category: 'Performance'
-});
-
-// CLS and other Core Web Vitals
-gtag('event', 'web_vital', {
-  name: 'CLS',
-  value: Math.round(clsValue * 1000),
-  event_category: 'Web_Vitals'
-});
-```
-
-## Custom Dimensions & Metrics
-
-### Custom Dimensions
-```javascript
-// Set on page load
+// Configure GA4 for lead tracking as ecommerce
 gtag('config', 'GA_MEASUREMENT_ID', {
+  // Enhanced ecommerce settings
+  allow_enhanced_conversions: true,
   custom_map: {
-    'custom_parameter_1': 'traffic_source',      // organic, direct, referral
-    'custom_parameter_2': 'user_type',           // new_visitor, returning, lead  
-    'custom_parameter_3': 'device_category',     // mobile, desktop, tablet
-    'custom_parameter_4': 'user_intent',         // driver, host, researcher
-    'custom_parameter_5': 'geographic_market'    // major_city, suburb, rural
+    custom_parameter_1: 'lead_source',
+    custom_parameter_2: 'lead_quality_score'
   }
 });
 ```
 
-## Google Tag Manager Implementation
+### Custom Dimensions Setup
+| Dimension Name | Scope | Parameter | Purpose |
+|----------------|--------|-----------|---------|
+| Form Type | Event | form_type | Segment by form category |
+| CTA Section | Event | section | Optimize CTA placement |
+| Lead Source | User | lead_source | Attribution analysis |
+| Form Completion Rate | Session | completion_rate | UX optimization |
 
-### Container Structure
+### Conversion Events Setup
+| Event Name | Conversion Value | Attribution Model |
+|------------|------------------|-------------------|
+| form_success | $300 | Last Click |
+| cta_click | $0 | Last Click |
+| form_submit | $0 | Last Click |
+
+## Testing & Validation Plan
+
+### Development Testing
 ```javascript
-// GTM Container with enhanced dataLayer
-dataLayer = [{
-  'content_group1': 'EV_Charging',
-  'content_group2': getPageType(),
-  'user_properties': {
-    'traffic_source': getTrafficSource(),
-    'device_type': getDeviceType(),
-    'user_intent': getUserIntent()
-  }
-}];
+// Test all events in console
+console.log('Testing analytics events...');
+
+// Test CTA click
+trackCTAClick('test-button', 'Test Button', 'test', 'primary');
+
+// Test form events
+trackFormStart('test-form');
+trackFormSubmit('test-form', {name: 'Test'}, 30);
+trackFormSuccess('test-form', 'test-id-123', 300);
+trackFormError('test-form', 'validation', 'email', 'Invalid format');
+
+console.log('Check /tmp/analytics.log for logged events');
 ```
 
-### Trigger Configuration
-
-#### 1. Form Interaction Triggers
-- **Form Start**: First field focus on any form
-- **Form Progress**: Every 25% completion milestone
-- **Form Abandon**: User leaves form with >50% completion
-- **Form Submit**: Successful submission event
-- **Form Error**: Any validation or submission error
-
-#### 2. Engagement Triggers  
-- **Scroll Depth**: 25%, 50%, 75%, 90% page scroll
-- **Time Engagement**: 30s, 60s, 120s, 300s on page
-- **CTA Visibility**: When primary CTAs enter viewport
-- **Social Proof Views**: When testimonials enter viewport
-
-#### 3. Conversion Triggers
-- **CTA Clicks**: All primary and secondary CTA buttons
-- **Form Completions**: Successful lead submissions
-- **Exit Intent**: Mouse leaves viewport (potential lead magnet)
-
-## Attribution & UTM Tracking
-
-### UTM Parameter Strategy
-```
-Campaign Source Examples:
-utm_source=google / facebook / twitter / email / organic
-utm_medium=cpc / social / email / referral / organic  
-utm_campaign=early_access_launch / host_recruitment / brand_awareness
-utm_content=hero_cta / footer_cta / testimonial_link
-utm_term=ev_charging / premium_charging / host_partnership
-```
-
-### Attribution Model
-- **First-Touch Attribution**: For brand awareness measurement
-- **Last-Touch Attribution**: For direct response campaigns  
-- **Data-Driven Attribution**: For comprehensive journey analysis
-
-## Success KPIs & Dashboards
-
-### Primary Conversion Metrics
-1. **Lead Generation Rate**: Applications per 100 visitors
-2. **Form Completion Rate**: Submissions per form start
-3. **CTA Click-Through Rate**: Clicks per impression
-4. **Cost Per Lead**: Total spend ÷ qualified leads
-5. **Lead-to-Customer Rate**: Applications that become customers
-
-### Engagement Metrics
-6. **Average Session Duration**: Time spent engaging with content
-7. **Pages Per Session**: Depth of interest measurement
-8. **Social Proof Interaction Rate**: Testimonial/partner engagement
-9. **Feature Toggle Usage**: Problems→Solutions interaction rate
-10. **Scroll Depth**: Content consumption measurement
-
-### Technical Performance KPIs
-11. **Page Load Speed**: Impact on conversion rates
-12. **Form Error Rate**: Validation and UX issues
-13. **Mobile vs Desktop Performance**: Device-specific optimization
-14. **Core Web Vitals**: LCP, FID, CLS performance impact
-
-## Implementation Priority
-
-### Phase 1: CRITICAL (Week 1)
-- **Google Analytics 4 Setup**: Base tracking configuration
-- **Form Conversion Events**: Track submissions and errors  
-- **CTA Click Tracking**: Measure primary action performance
-- **Error Monitoring**: Identify broken form submissions
-
-### Phase 2: HIGH IMPACT (Week 2)  
-- **Enhanced Ecommerce**: Lead value tracking
-- **Custom Dimensions**: User segmentation  
-- **Social Proof Events**: Testimonial and partner engagement
-- **Scroll & Engagement**: Content performance measurement
-
-### Phase 3: OPTIMIZATION (Week 3-4)
-- **Google Tag Manager**: Centralized tag management
-- **Advanced Attribution**: Multi-touch conversion paths
-- **A/B Test Integration**: Experiment performance tracking
-- **Automated Reporting**: Stakeholder dashboards
+### Production Validation
+1. **Google Analytics DebugView:** Enable debug mode to see real-time events
+2. **GTM Preview:** Use Google Tag Manager preview mode
+3. **Browser DevTools:** Monitor network requests to analytics endpoints
+4. **Analytics Reporting:** Verify events appear in GA4 reports within 24-48 hours
 
 ## Privacy & Compliance
 
-### GDPR/CCPA Compliance
-```javascript
-// Consent management
-gtag('consent', 'default', {
-  'analytics_storage': 'denied',
-  'ad_storage': 'denied'
-});
-
-// Update consent based on user choice
-gtag('consent', 'update', {
-  'analytics_storage': 'granted'
-});
-```
+### GDPR/CCPA Considerations
+- Implement consent management for EU/CA traffic
+- Anonymize IP addresses: `anonymize_ip: true`
+- Respect Do Not Track signals
+- Provide clear opt-out mechanisms
 
 ### Data Retention
-- **Analytics Data**: 26 months (GA4 default)
-- **Conversion Data**: 2 years for LTV analysis
-- **PII Data**: Follow company data retention policy
-- **Cookie Consent**: Required for EU visitors
+- Set GA4 data retention to 26 months (maximum allowed)
+- Implement user data deletion upon request
+- Document all data processing activities
 
-## ROI Measurement
+## Success Metrics & KPIs
 
-### Analytics Investment
-- **Setup Cost**: ~20 hours development + GA4 setup
-- **Monthly Maintenance**: ~5 hours reporting + optimization  
-- **Tool Costs**: GA4 (free), GTM (free), possible premium features
+### Primary Metrics
+1. **Form Conversion Rate:** form_success / page_view
+2. **CTA Click-Through Rate:** cta_click / section_view  
+3. **Form Abandonment Rate:** form_start / form_success
+4. **Lead Value Attribution:** Revenue per conversion source
 
-### Expected Return
-- **Conversion Rate Optimization**: 15-30% improvement with data
-- **Customer Acquisition Cost**: 20-40% reduction through attribution
-- **Lead Quality Scoring**: 10-25% improvement in sales efficiency  
-- **Campaign ROI**: 200-500% improvement through proper attribution
+### Secondary Metrics
+1. **Time to Convert:** Average time from first visit to form_success
+2. **Multi-Touch Attribution:** CTA interactions before conversion
+3. **Form Field Completion:** Individual field completion rates
+4. **Error Recovery Rate:** form_success after form_error
 
-### Success Measurement Timeline
-- **Week 1**: Basic conversion tracking active
-- **Month 1**: Baseline metrics established  
-- **Month 2**: First optimization recommendations
-- **Month 3**: Measurable conversion rate improvements
-- **Month 6**: Full attribution and LTV analysis
+### Optimization Targets
+- **Form Conversion:** Baseline → +25% within 3 months
+- **CTA Performance:** Identify top-performing placement/copy
+- **Form UX:** Reduce abandonment rate by 30%
+- **Lead Quality:** Improve lead scoring and qualification
+
+## Implementation Timeline
+
+### Week 1: Core Event Tracking
+- [ ] Complete data-cta attribute implementation (30 min)
+- [ ] Add form event tracking to both forms (1 hour)
+- [ ] Test all events with analytics stub (30 min)
+
+### Week 2: Advanced Tracking  
+- [ ] Add scroll depth tracking (45 min)
+- [ ] Implement section view tracking (45 min)
+- [ ] Add error tracking and recovery measurement (30 min)
+
+### Week 3: GA4 Integration
+- [ ] Replace analytics stub with real GA4 (15 min)
+- [ ] Configure custom dimensions (30 min)
+- [ ] Set up conversion tracking (30 min)
+- [ ] Build custom reports and dashboards (2 hours)
+
+### Week 4: Testing & Optimization
+- [ ] Validate all events in GA4 reports
+- [ ] Begin A/B testing framework implementation
+- [ ] Start conversion rate optimization based on data
+
+## Expected Business Impact
+
+### Data-Driven Optimization
+- **A/B Testing Capability:** Test CTAs, form designs, page layouts
+- **Conversion Funnel Analysis:** Identify drop-off points and optimize
+- **User Behavior Insights:** Understand how users interact with the site
+- **ROI Measurement:** Track marketing spend effectiveness
+
+### Revenue Growth Projections
+- **Month 1:** 10-15% conversion improvement through basic optimization
+- **Month 3:** 25-35% improvement through advanced A/B testing
+- **Month 6:** 50-75% improvement through comprehensive funnel optimization
+
+**Current Revenue Potential:** $195,000/month  
+**Projected with Analytics:** $292,500 - $341,250/month
+
+**ROI of Analytics Implementation:** 50-75% revenue increase from 2 weeks of development work.

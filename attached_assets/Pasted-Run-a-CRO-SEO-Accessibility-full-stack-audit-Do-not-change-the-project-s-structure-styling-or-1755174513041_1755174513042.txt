@@ -1,0 +1,44 @@
+Run a CRO + SEO + Accessibility full-stack audit. Do not change the project’s structure, styling, or brand. Do not delete or rename files. Only add audit artifacts and small, non-breaking fixes. Do not redeploy without my confirmation.
+
+Scope
+	1.	Pages to include: / (home), /early-access, /host-application (or existing equivalents you find).
+	2.	CTAs: audit every element with [data-cta], role="button", or anchor links that act like CTAs.
+	3.	Forms & APIs: Early Access and Host Application flows; analytics endpoint /api/analytics/log.
+
+What to run
+	•	Headless Lighthouse on each page (mobile config).
+	•	axe-core accessibility checks on each page.
+	•	Playwright user-journey tests that:
+	•	Load each page, assert no console errors.
+	•	Click every CTA (with [data-cta]), assert it is visible, enabled, navigates to a valid route or opens a form.
+	•	Complete and submit both forms with safe test data; expect 2xx (201 preferred) and capture response times.
+	•	Send 3 sample analytics events to /api/analytics/log and assert 2xx.
+	•	Technical SEO checks (static): one <h1> per page, <title> length (40–60 chars), meta description (140–160 chars), canonical <link>, Open Graph basics, lang on <html>, JSON-LD presence for organization/localBusiness if component exists, image alt on non-decorative images, robots.txt and sitemap.xml existence.
+
+Quick, non-breaking fixes to apply automatically (only if missing)
+	•	Add/repair: canonical link, meta description, <html lang="en">, type="button" on non-submit buttons, aria-label on icon-only controls, focus styles on interactive elements, alt="" on decorative images.
+	•	Do not modify layout, colors, copy, routes, or file/folder names.
+
+Outputs (create an /audit folder)
+	•	audit/summary.md – executive summary with key scores and top 10 fixes.
+	•	audit/pages-audit.md – discovered routes, status codes, and console error summary.
+	•	audit/cta-audit.md – table of all CTAs (selector/text, page, destination, result, time to interactive).
+	•	audit/forms-report.md – payloads used, validations hit, API responses, p95 response times.
+	•	audit/seo-report.md – per-page checklist (title, meta, canonical, OG, JSON-LD, headings, image alts).
+	•	audit/a11y-report.json – raw axe results, and audit/a11y-fixes.md with code snippets for each issue.
+	•	audit/lighthouse/ – HTML/JSON Lighthouse reports per page (mobile).
+	•	audit/tracking-plan.md – GA4/analytics events spec (names, params, triggers) mapping to [data-cta].
+	•	audit/fix-priorities.csv – columns: Area,Issue,Page/Selector,Impact(1-5),Effort(1-5),Owner,Snippet/Path.
+	•	audit/playwright/ – test scripts and recordings (if supported).
+
+Success criteria to report in audit/summary.md
+	•	All CTAs: clickable, correct destination, no broken links.
+	•	Forms: submit successfully with 2xx and server-validated fields; include measured response times.
+	•	SEO score target ≥ 90 (Lighthouse).
+	•	Accessibility score target ≥ 90; list remaining WCAG issues if any.
+	•	Performance (mobile) target ≥ 85; include LCP/CLS/TTI from Lighthouse.
+	•	Zero critical console errors across audited pages.
+
+Deliver at the end
+	•	Print a concise bullet summary: current scores, # of CTA issues, # of a11y violations, # of SEO gaps, slowest endpoint, and the top 5 fixes by ROI (Impact ÷ Effort).
+	•	Do not redeploy. Ask me to review the /audit artifacts and approve before making any further changes.

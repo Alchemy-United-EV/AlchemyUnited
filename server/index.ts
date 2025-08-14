@@ -3,6 +3,7 @@ import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
+app.set('trust proxy', 1);  // For correct req.ip in autoscale
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -72,7 +73,6 @@ app.use(express.static("public"));
   console.log(`[DEPLOYMENT] Host: 0.0.0.0`);
   console.log(`[DEPLOYMENT] Process ID: ${process.pid}`);
   console.log(`[DEPLOYMENT] Node version: ${process.version}`);
-  console.log(`[DEPLOYMENT] Build timestamp: ${new Date().toISOString()}`);
   console.log(`[DEPLOYMENT] Build timestamp: ${new Date().toISOString()}`);
   
   server.listen({

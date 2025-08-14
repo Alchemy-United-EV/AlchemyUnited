@@ -1,3 +1,8 @@
+Please make only the following changes (no new folders, no extra files):
+
+1) Open client/src/pages/home/Hero.tsx and REPLACE the component with this code:
+
+--- REPLACEMENT START ---
 import React from "react";
 import { Link } from "wouter";
 
@@ -53,3 +58,16 @@ export default function Hero() {
     </section>
   );
 }
+--- REPLACEMENT END ---
+
+2) Assets:
+- Save your provided logo (cropped exactly as the image you sent) to: client/public/assets/au-logo.png
+- Use transparent PNG if possible for clean edges.
+
+3) Do NOT change routes, forms, or other sections.
+
+After saving, redeploy and check mobile:
+- No tall white gap above
+- Logo is centered and scales correctly
+- Text is larger, easier to read
+- Background keeps a subtle gold glow for premium feel

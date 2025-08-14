@@ -1,0 +1,53 @@
+Goal: Transform the hero section into a premium, high-status look with larger, elegant typography, better background/logo integration, improved spacing, and luxury button styles. Keep logic, routing, and files intact — visual changes only.
+
+Edit: client/src/pages/home/Hero.tsx (and minimal updates to client/src/index.css if required).
+
+⸻
+
+Changes to Apply
+
+1. Background & Logo
+	•	Use the background image as a full-cover section background:
+bg-[url('/assets/hero-bg.jpg')] bg-cover bg-center bg-no-repeat relative
+	•	Apply a luxury overlay:
+absolute inset-0 bg-gradient-to-b from-white/85 via-white/70 to-white/40 on mobile,
+md:from-white/70 md:via-white/50 md:to-white/30 on desktop.
+	•	Position the logo watermark behind content at ~20–30% opacity, centered, scaled so it doesn’t crowd the text.
+
+2. Typography
+	•	Badge (“PREMIUM NETWORK”):
+inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/90 px-4 py-1.5 text-xs font-semibold text-gray-700 uppercase tracking-wide shadow-sm
+	•	H1:
+	•	Gold text segments use text-[#D4AF37] (or Tailwind color token if already set).
+	•	Size: text-5xl md:text-7xl font-bold tracking-tight leading-tight.
+	•	Subheadline:
+mt-5 text-lg md:text-2xl text-gray-700 max-w-3xl mx-auto leading-relaxed
+
+3. Spacing & Layout
+	•	Section padding: py-24 md:py-32
+	•	Content container: max-w-5xl mx-auto text-center px-6
+	•	Add space-y-6 between badge, heading, subheadline, and CTAs.
+
+4. CTAs
+	•	Primary (solid gold):
+inline-flex items-center justify-center rounded-full px-8 py-4 bg-[#D4AF37] text-black font-semibold text-lg tracking-wide shadow-[0_6px_20px_rgba(212,175,55,0.45)] hover:brightness-110 active:translate-y-[1px] transition
+	•	Secondary (outlined gold with glass):
+inline-flex items-center justify-center rounded-full px-8 py-4 border-2 border-[#D4AF37] text-[#D4AF37] text-lg font-semibold bg-white/20 backdrop-blur-sm hover:bg-[#D4AF37]/10 transition
+	•	Button container: mt-10 flex flex-col sm:flex-row gap-5 sm:justify-center
+
+5. Visual Polish
+	•	Slight fade-up animation on load for badge, heading, subheadline, and buttons using Tailwind animate-[fadeInUp_0.6s_ease-out] (define keyframes in index.css if missing).
+	•	Maintain WCAG contrast compliance.
+
+⸻
+
+Strict Rules
+	•	No new routes or files.
+	•	Only edit hero section & minimal utility classes.
+	•	Do not alter form or business logic.
+	•	Keep existing responsive behavior, just improve visuals.
+
+Deliverables
+	1.	Full updated JSX/CSS for Hero with changes above.
+	2.	Confirm no layout shifts break mobile/desktop preview.
+	3.	Confirm all golds match brand tone #D4AF37.

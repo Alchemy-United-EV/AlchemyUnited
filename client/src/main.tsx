@@ -361,50 +361,61 @@ function HomeComponent() {
 
       {/* Hero Section */}
       <main>
-        <div className="relative overflow-hidden bg-[url('/assets/hero-image.jpeg')] bg-cover bg-center py-20 md:py-28">
-          {/* Overlay for contrast */}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/70 via-white/50 to-white/30"></div>
+        <div className="relative overflow-hidden bg-[url('/assets/hero-bg.jpg')] bg-cover bg-center bg-no-repeat py-24 md:py-32">
+          {/* Luxury overlay - stronger on mobile, lighter on desktop */}
+          <div className="absolute inset-0 bg-gradient-to-b from-white/85 via-white/70 to-white/40 md:from-white/70 md:via-white/50 md:to-white/30"></div>
           
-          <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
-            <div className="fade-in">
-              <div className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/80 px-4 py-1.5 text-xs font-medium text-gray-700 shadow-sm mb-4">
+          {/* Logo watermark behind content */}
+          <div className="absolute inset-0 flex items-center justify-center z-0">
+            <img 
+              src="/assets/au-logo.png" 
+              alt=""
+              className="w-96 h-auto opacity-20 pointer-events-none"
+              aria-hidden="true"
+            />
+          </div>
+
+          <div className="relative z-10 max-w-5xl mx-auto text-center px-6 space-y-6">
+            {/* Premium Network Badge */}
+            <div className="animate-[fadeInUp_0.6s_ease-out]">
+              <div className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/90 px-4 py-1.5 text-xs font-semibold text-gray-700 uppercase tracking-wide shadow-sm">
                 ⚡ PREMIUM NETWORK
               </div>
-              <h1 className="text-5xl md:text-6xl font-extrabold leading-tight tracking-tight text-gray-900">
+            </div>
+            
+            {/* Main Heading */}
+            <div className="animate-[fadeInUp_0.6s_ease-out_0.1s_both]">
+              <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-tight">
                 <span className="block">Premium</span>
                 <span className="block text-[#D4AF37]">EV Charging</span>
                 <span className="block">Network</span>
               </h1>
-              <p className="text-lg md:text-xl text-gray-900 max-w-2xl md:max-w-3xl mx-auto mt-3 leading-relaxed font-semibold drop-shadow-sm">
+            </div>
+            
+            {/* Subheadline */}
+            <div className="animate-[fadeInUp_0.6s_ease-out_0.2s_both]">
+              <p className="mt-5 text-lg md:text-2xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
                 Experience the future of electric vehicle charging with our luxury network. 
                 Reliable, fast, and premium locations for discerning EV drivers.
               </p>
-              <div className="mt-8 md:mt-10 flex flex-col sm:flex-row gap-4 sm:justify-center">
+            </div>
+            
+            {/* CTA Buttons */}
+            <div className="animate-[fadeInUp_0.6s_ease-out_0.3s_both]">
+              <div className="mt-10 flex flex-col sm:flex-row gap-5 sm:justify-center">
                 <button
                   onClick={() => window.location.href = '/early-access'}
-                  className="inline-flex items-center justify-center rounded-2xl px-7 py-4 bg-[#D4AF37] text-black font-semibold tracking-wide shadow-[0_8px_24px_rgba(212,175,55,0.35)] hover:brightness-105 active:translate-y-[1px] transition"
+                  className="inline-flex items-center justify-center rounded-full px-8 py-4 bg-[#D4AF37] text-black font-semibold text-lg tracking-wide shadow-[0_6px_20px_rgba(212,175,55,0.45)] hover:brightness-110 active:translate-y-[1px] transition"
                 >
                   Get Early Access
                 </button>
                 <button
                   onClick={() => window.location.href = '/host-application'}
-                  className="inline-flex items-center justify-center rounded-2xl px-7 py-4 border border-[#D4AF37] text-[#D4AF37]/95 bg-white/10 backdrop-blur-sm hover:bg-[#D4AF37]/10 transition"
+                  className="inline-flex items-center justify-center rounded-full px-8 py-4 border-2 border-[#D4AF37] text-[#D4AF37] text-lg font-semibold bg-white/20 backdrop-blur-sm hover:bg-[#D4AF37]/10 transition"
                 >
                   Become a Host
                 </button>
               </div>
-            </div>
-          </div>
-          
-          {/* Full Hero Image at Bottom */}
-          <div className="relative z-10 max-w-6xl mx-auto px-6 mt-12 fade-in">
-            <div className="relative rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.15)] hover-lift">
-              <img 
-                src="/assets/hero-image.jpeg" 
-                alt="Premium EV Charging Technology"
-                className="w-full h-64 md:h-96 object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
             </div>
           </div>
         </div>

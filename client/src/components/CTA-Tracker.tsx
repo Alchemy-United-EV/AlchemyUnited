@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation } from 'wouter';
+import { useNavigate } from 'react-router-dom';
 
 interface CTATrackerProps {
   children: React.ReactNode;
@@ -20,7 +20,7 @@ export const CTATracker: React.FC<CTATrackerProps> = ({
   href,
   onClick,
 }) => {
-  const [, navigate] = useLocation();
+  const navigate = useNavigate();
   
   const handleClick = async (e?: React.MouseEvent) => {
     if (e) {

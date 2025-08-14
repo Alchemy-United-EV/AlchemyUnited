@@ -12,11 +12,56 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Playfair+Display:ital,wght@1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <!-- BEGIN GTM (AlchemyUnited) -->
+    <script>
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-TQR67W6');
+      console.info('[GTM] GTM-TQR67W6 loaded');
+    </script>
+    <!-- END GTM (AlchemyUnited) -->
   </head>
   <body>
+    <!-- BEGIN GTM (AlchemyUnited) noscript -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TQR67W6"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- END GTM (AlchemyUnited) noscript -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
     <script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js"></script>
+    <!-- BEGIN GTM (AlchemyUnited) CTA bridge -->
+    <script>
+      (function(){
+        if (!window.dataLayer) window.dataLayer = [];
+        function pushEvent(name, detail){
+          try { window.dataLayer.push({ event: name, ...detail }); } catch(e){}
+        }
+        function byId(id){ return document.getElementById(id); }
+
+        // Try a few known IDs/texts without changing UI.
+        function wire(id, fallbackText, eventName){
+          var el = byId(id);
+          if (!el) {
+            // Try to find by button text if ID is missing
+            var btns = Array.from(document.querySelectorAll('button, a[role="button"], a'));
+            el = btns.find(b => (b.textContent||'').trim().toLowerCase() === fallbackText);
+          }
+          if (el && !el.__gtm_wired){
+            el.addEventListener('click', function(){
+              pushEvent(eventName, { label: (el.textContent||'').trim() });
+            }, { passive: true });
+            el.__gtm_wired = true;
+          }
+        }
+
+        // Map your two primary CTAs (non-breaking: only listens)
+        wire('get-early-access', 'get early access', 'cta_click');
+        wire('become-a-host',   'become a host',   'cta_click');
+      })();
+    </script>
+    <!-- END GTM (AlchemyUnited) CTA bridge -->
   </body>
 </html>

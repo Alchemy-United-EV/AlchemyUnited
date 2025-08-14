@@ -1,0 +1,85 @@
+Task: Add Google Tag Manager (GTM) to my React/Vite app WITHOUT changing visual UI or breaking build. Use container ID: GTM-TQR67W6. Make it safe, idempotent (no duplicates), and reversible.
+
+Rules:
+- Do not alter styling, components, or layout classes.
+- Only touch the minimal bootstrapping surface (index.html or the app’s HTML template).
+- If index.html path differs, detect it and use the correct one. Common locations:
+  - ./index.html
+  - client/index.html
+  - apps/web/index.html
+- If (and only if) the app has no HTML template (rare), inject via a tiny bootstrap in main.tsx/main.jsx using document.head/body insertion, otherwise prefer HTML edit.
+- Add code in a way that a 2nd run won’t duplicate the snippet (guard comments + existence checks).
+
+Implementation:
+
+1) Insert the official GTM HEAD snippet just before </head> with clear guard comments.
+   Place this EXACT block (update only if not present):
+
+   <!-- BEGIN GTM (AlchemyUnited) -->
+   <script>
+     (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+     })(window,document,'script','dataLayer','GTM-TQR67W6');
+   </script>
+   <!-- END GTM (AlchemyUnited) -->
+
+2) Insert the official GTM BODY noscript right after the opening <body> (first child). Use the same guards:
+
+   <!-- BEGIN GTM (AlchemyUnited) noscript -->
+   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TQR67W6"
+   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+   <!-- END GTM (AlchemyUnited) noscript -->
+
+3) Add a tiny, safe event bridge for CTA clicks (no UI changes). Append this <script> at the end of <body>, guarded, only if not already present. It listens for 2 common buttons if they exist and pushes a dataLayer event; otherwise it’s inert.
+
+   <!-- BEGIN GTM (AlchemyUnited) CTA bridge -->
+   <script>
+     (function(){
+       if (!window.dataLayer) window.dataLayer = [];
+       function pushEvent(name, detail){
+         try { window.dataLayer.push({ event: name, ...detail }); } catch(e){}
+       }
+       function byId(id){ return document.getElementById(id); }
+
+       // Try a few known IDs/texts without changing UI.
+       function wire(id, fallbackText, eventName){
+         var el = byId(id);
+         if (!el) {
+           // Try to find by button text if ID is missing
+           var btns = Array.from(document.querySelectorAll('button, a[role="button"], a'));
+           el = btns.find(b => (b.textContent||'').trim().toLowerCase() === fallbackText);
+         }
+         if (el && !el.__gtm_wired){
+           el.addEventListener('click', function(){
+             pushEvent(eventName, { label: (el.textContent||'').trim() });
+           }, { passive: true });
+           el.__gtm_wired = true;
+         }
+       }
+
+       // Map your two primary CTAs (non-breaking: only listens)
+       wire('get-early-access', 'get early access', 'cta_click');
+       wire('become-a-host',   'become a host',   'cta_click');
+     })();
+   </script>
+   <!-- END GTM (AlchemyUnited) CTA bridge -->
+
+4) Idempotency & safety:
+   - Before inserting, scan the target HTML for "BEGIN GTM (AlchemyUnited)" comments. If present, make no changes.
+   - Keep file formatting intact; do not reorder existing tags.
+   - Do not modify any React components or CSS.
+
+5) Verification (do not remove UI):
+   - After save, rebuild/restart if required by the environment.
+   - Open the site; no visual changes should occur.
+   - Optional: log a one-time console notice so I know it’s wired:
+     Add: console.info('[GTM] GTM-TQR67W6 loaded'); right after the HEAD script (inside the same script tag is fine).
+
+6) Output:
+   - Print which file you edited (absolute path).
+   - Confirm "HEAD snippet inserted", "BODY noscript inserted", and "CTA bridge added" (or "already present" if found).
+   - Do NOT change any other files.
+
+Proceed.

@@ -363,7 +363,7 @@ function HomeComponent() {
       <main>
         <div className="relative overflow-hidden bg-[url('/assets/hero-image.jpeg')] bg-cover bg-center py-20 md:py-28">
           {/* Overlay for contrast */}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/70 via-white/40 to-transparent md:from-white/60 md:via-white/30"></div>
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/90 via-white/75 to-white/60"></div>
           
           <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
             <div className="fade-in">

@@ -10,6 +10,7 @@ import { z } from "zod";
 import { Link } from "wouter";
 import { ArrowLeft, CheckCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { StructuredData, earlyAccessPageSchema } from "@/components/StructuredData";
 
 const earlyAccessSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -26,18 +27,29 @@ const earlyAccessSchema = z.object({
 type EarlyAccessForm = z.infer<typeof earlyAccessSchema>;
 
 export default function EarlyAccess() {
-  // Set SEO meta tags for Early Access page
+  // Set SEO meta tags and structured data for Early Access page
   React.useEffect(() => {
-    document.title = "Request Early Access - Alchemy United Premium EV Charging Network";
+    document.title = "Request Early Access - Alchemy Network Premium EV Charging";
     
     let metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Get early access to Alchemy United\'s exclusive luxury EV charging network. Be among the first to experience premium fast charging with guaranteed reservations and 99.9% uptime.');
+      metaDescription.setAttribute('content', 'Get early access to Alchemy Network\'s exclusive luxury EV charging network. Be among the first to experience premium fast charging with guaranteed reservations and 99.9% uptime.');
     }
 
     let ogTitle = document.querySelector('meta[property="og:title"]');
     if (ogTitle) {
-      ogTitle.setAttribute('content', 'Request Early Access - Alchemy United Premium EV Charging Network');
+      ogTitle.setAttribute('content', 'Request Early Access - Alchemy Network Premium EV Charging');
+    }
+
+    // Add canonical URL
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) {
+      canonical.setAttribute('href', 'https://alchemy-united.replit.app/early-access');
+    } else {
+      const link = document.createElement('link');
+      link.rel = 'canonical';
+      link.href = 'https://alchemy-united.replit.app/early-access';
+      document.head.appendChild(link);
     }
   }, []);
   const [submitted, setSubmitted] = useState(false);
@@ -120,7 +132,9 @@ export default function EarlyAccess() {
   }
 
   return (
-    <div className="min-h-screen bg-black">
+    <>
+      <StructuredData data={earlyAccessPageSchema} />
+      <div className="min-h-screen bg-black">
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 sm:p-8">
         <Link href="/">
@@ -303,5 +317,6 @@ export default function EarlyAccess() {
         </div>
       </div>
     </div>
+    </>
   );
 }

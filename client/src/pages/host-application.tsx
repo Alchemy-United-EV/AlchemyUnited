@@ -11,6 +11,7 @@ import { z } from "zod";
 import { Link } from "wouter";
 import { ArrowLeft, CheckCircle, Building, DollarSign, Shield, Zap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { StructuredData, hostPageSchema } from "@/components/StructuredData";
 
 const hostApplicationSchema = z.object({
   businessName: z.string().min(2, "Business name is required"),

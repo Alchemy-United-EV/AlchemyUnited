@@ -1,0 +1,54 @@
+Goal (visual only): Make the home hero look premium/clean: larger typography, perfect background image (no gaps), better spacing, and luxury gold buttons. Do NOT alter routing, logic, or create/delete files.
+
+Scope: Edit client/src/pages/home/Hero.tsx only. If absolutely needed, you may tweak utility classes in client/src/index.css (but do not add new files).
+
+Design directives
+	1.	Typography & hierarchy
+	•	H1: heavier and larger. Target mobile text-5xl, md text-6xl, tight leading leading-tight, add slight tracking tracking-tight.
+	•	Gold words in H1: use brand gold [#D4AF37] (or existing token), keep weight consistent.
+	•	Subheadline: increase size one step (e.g., text-lg md:text-xl), comfortable line height leading-relaxed, and max width: max-w-2xl md:max-w-3xl mx-auto.
+	•	CTA text: font-semibold tracking-wide.
+	2.	Background image (no gaps)
+	•	Ensure hero wrapper uses full bleed and the image never leaves bands:
+relative overflow-hidden bg-[url('/assets/hero-bg.jpg')] bg-cover bg-center
+	•	Add subtle overlay to improve contrast: an absolutely positioned overlay div with
+pointer-events-none absolute inset-0 bg-gradient-to-b from-white/70 via-white/40 to-transparent md:from-white/60 md:via-white/30
+	•	If an inline <img> is currently used, remove it and apply the background to the section instead. No new assets.
+	3.	Spacing
+	•	Section padding: py-20 md:py-28.
+	•	Reduce space between H1 and subheadline: mt-3.
+	•	Increase space before CTAs: mt-8 md:mt-10.
+	4.	CTAs (luxury gold)
+	•	Primary button (solid gold):
+inline-flex items-center justify-center rounded-2xl px-7 py-4 bg-[#D4AF37] text-black font-semibold tracking-wide shadow-[0_8px_24px_rgba(212,175,55,0.35)] hover:brightness-105 active:translate-y-[1px] transition
+	•	Secondary button (gold outline + subtle glass):
+inline-flex items-center justify-center rounded-2xl px-7 py-4 border border-[#D4AF37] text-[#D4AF37]/95 bg-white/10 backdrop-blur-sm hover:bg-[#D4AF37]/10 transition
+	•	CTA row container: mt-8 flex flex-col sm:flex-row gap-4 sm:justify-center
+	5.	Badge (PREMIUM NETWORK)
+	•	Make it cleaner and smaller:
+inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/80 px-4 py-1.5 text-xs font-medium text-gray-700 shadow-sm
+	6.	Nav/logo (minor)
+	•	If the hero includes the small wing mark, ensure it’s centered and not crowding text. Max height 28–32px on mobile. No JS effects here.
+
+Accessibility
+	•	Maintain existing aria labels, aria-hidden on decorative elements, and contrast ≥ 4.5:1 for text over background (overlay helps).
+
+Strict constraints
+	•	Do NOT create or delete files.
+	•	Do NOT touch routes, forms, or any TS/JS logic.
+	•	Tailwind-only changes plus (optional) minimal CSS utility in index.css.
+	•	Keep all edits within the hero section.
+
+Deliverables
+	1.	Apply the className updates and overlay as described.
+	2.	Return a unified DIFF for client/src/pages/home/Hero.tsx.
+	3.	A short checklist confirming:
+	•	[ ] H1 scales to text-5xl md:text-6xl with leading-tight tracking-tight
+	•	[ ] Subheadline text-lg md:text-xl with max-w-3xl
+	•	[ ] Background uses bg-cover bg-center and no gaps on mobile/desktop
+	•	[ ] Overlay gradient present and text readable
+	•	[ ] CTA styles match specs (gold solid + gold outline)
+	•	[ ] No new files / no route or logic changes
+
+Rollback
+	•	If any non-visual test fails, revert the file and output the reason without creating anything else.

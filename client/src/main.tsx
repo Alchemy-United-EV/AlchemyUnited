@@ -361,54 +361,38 @@ function HomeComponent() {
 
       {/* Hero Section */}
       <main>
-        <div className="relative overflow-hidden bg-[radial-gradient(1200px_600px_at_50%_-10%,#ffffff_0%,#f5f6f8_55%,#f1f2f4_100%)]">
-          {/* Hero Background Image */}
-          <div className="absolute inset-0 z-0">
-            <img 
-              src="/assets/hero-image.jpeg" 
-              alt=""
-              className="w-full h-full object-cover opacity-20 mix-blend-overlay"
-            />
-          </div>
+        <div className="relative overflow-hidden bg-[url('/assets/hero-image.jpeg')] bg-cover bg-center py-20 md:py-28">
+          {/* Overlay for contrast */}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/70 via-white/40 to-transparent md:from-white/60 md:via-white/30"></div>
           
-          <div className="relative z-10 max-w-6xl mx-auto px-6 py-20 text-center">
+          <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
             <div className="fade-in">
-              <div className="badge mb-4">⚡ PREMIUM NETWORK</div>
-              <h1 className="text-4xl md:text-6xl font-extrabold leading-tight text-gray-900">
+              <div className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/80 px-4 py-1.5 text-xs font-medium text-gray-700 shadow-sm mb-4">
+                ⚡ PREMIUM NETWORK
+              </div>
+              <h1 className="text-5xl md:text-6xl font-extrabold leading-tight tracking-tight text-gray-900">
                 <span className="block">Premium</span>
-                <span className="block text-[var(--gold)]">EV Charging</span>
+                <span className="block text-[#D4AF37]">EV Charging</span>
                 <span className="block">Network</span>
               </h1>
-              <p className="text-gray-600 max-w-2xl mx-auto mt-4 text-lg md:text-xl">
+              <p className="text-lg md:text-xl text-gray-600 max-w-2xl md:max-w-3xl mx-auto mt-3 leading-relaxed">
                 Experience the future of electric vehicle charging with our luxury network. 
                 Reliable, fast, and premium locations for discerning EV drivers.
               </p>
-              <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+              <div className="mt-8 md:mt-10 flex flex-col sm:flex-row gap-4 sm:justify-center">
                 <button
                   onClick={() => window.location.href = '/early-access'}
-                  className="btn-gold"
+                  className="inline-flex items-center justify-center rounded-2xl px-7 py-4 bg-[#D4AF37] text-black font-semibold tracking-wide shadow-[0_8px_24px_rgba(212,175,55,0.35)] hover:brightness-105 active:translate-y-[1px] transition"
                 >
                   Get Early Access
                 </button>
                 <button
                   onClick={() => window.location.href = '/host-application'}
-                  className="btn-gold-ghost"
+                  className="inline-flex items-center justify-center rounded-2xl px-7 py-4 border border-[#D4AF37] text-[#D4AF37]/95 bg-white/10 backdrop-blur-sm hover:bg-[#D4AF37]/10 transition"
                 >
                   Become a Host
                 </button>
               </div>
-            </div>
-          </div>
-          
-          {/* Hero Image as Feature Element */}
-          <div className="relative z-10 max-w-6xl mx-auto px-6 pb-12 fade-in">
-            <div className="relative rounded-2xl overflow-hidden shadow-[var(--shadow-xl)] hover-lift">
-              <img 
-                src="/assets/hero-image.jpeg" 
-                alt="Premium EV Charging Technology"
-                className="w-full h-64 md:h-96 object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
             </div>
           </div>
         </div>

@@ -365,7 +365,7 @@ function HomeComponent() {
           {/* Hero Background Image */}
           <div className="absolute inset-0 z-0">
             <img 
-              src="/attached_assets/Attachment_1755190035061.jpeg" 
+              src="/assets/hero-image.jpeg" 
               alt=""
               className="w-full h-full object-cover opacity-20 mix-blend-overlay"
             />
@@ -404,7 +404,7 @@ function HomeComponent() {
           <div className="relative z-10 max-w-6xl mx-auto px-6 pb-12 fade-in">
             <div className="relative rounded-2xl overflow-hidden shadow-[var(--shadow-xl)] hover-lift">
               <img 
-                src="/attached_assets/Attachment_1755190035061.jpeg" 
+                src="/assets/hero-image.jpeg" 
                 alt="Premium EV Charging Technology"
                 className="w-full h-64 md:h-96 object-cover"
               />

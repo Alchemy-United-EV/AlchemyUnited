@@ -1,0 +1,101 @@
+Make the following design-only edits. Do not create new files. Do not change routing, forms, or server code.
+
+TARGET 1: client/src/pages/home/Hero.tsx
+Goal: “Alchemy United” = italic, metallic black→gold finish, premium spacing.
+
+A) Wrap the two words in spans and apply these exact Tailwind classes:
+
+For the big title wrapper:
+- className (outer h1): "text-center leading-tight tracking-tight mt-4"
+- Inside, render two <span> lines:
+
+1) “Alchemy” <span> classes:
+"block text-transparent italic font-extrabold 
+ bg-[linear-gradient(135deg,#111_0%,#2b2b2b_35%,#7f6a2a_55%,#d4af37_75%,#f4e3a1_100%)]
+ bg-clip-text drop-shadow-[0_1px_0_rgba(0,0,0,0.25)]
+ [text-shadow:0_1px_0_#000,0_2px_6px_rgba(0,0,0,0.25)]
+ text-6xl sm:text-7xl md:text-8xl"
+
+2) “United” <span> classes (same gradient, slightly stronger glow):
+"block text-transparent italic font-extrabold 
+ bg-[linear-gradient(135deg,#111_0%,#2b2b2b_35%,#7f6a2a_55%,#d4af37_75%,#f4e3a1_100%)]
+ bg-clip-text drop-shadow-[0_2px_0_rgba(0,0,0,0.3)]
+ [text-shadow:0_2px_0_#000,0_3px_10px_rgba(0,0,0,0.35)]
+ text-6xl sm:text-7xl md:text-8xl -mt-1"
+
+B) EV CHARGING pill (the small badge above title):
+Replace its classes with:
+"mx-auto inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/40
+ bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.08),rgba(255,255,255,0.9)_60%)]
+ px-5 py-2 text-sm font-semibold text-gray-800 shadow-sm"
+
+C) Subcopy paragraph under title:
+"mt-5 max-w-2xl mx-auto text-lg md:text-xl text-gray-700"
+
+D) Buttons block spacing:
+- Container: "mt-7 flex flex-col sm:flex-row gap-4 justify-center"
+- Primary button (gold): add "shadow-[0_8px_28px_rgba(212,175,55,0.25)] hover:-translate-y-0.5 duration-200"
+- Secondary button (outline): "border border-[#D4AF37]/60 bg-white hover:bg-yellow-50 duration-200"
+
+Do not alter any logic—only classes/structure per above.
+
+TARGET 2: client/src/pages/home/Problems.tsx  (if this file name differs, use the file that renders the “Problems / Solutions” section)
+Goal: Match the pill switch + premium cards from the screenshot. Design-only.
+
+A) Section heading area:
+- The “Problems / Solutions” pill switch container:
+"mx-auto mb-6 flex w-fit items-center gap-2 rounded-full 
+ bg-[linear-gradient(90deg,rgba(255,179,179,0.22),rgba(180,255,207,0.22))]
+ px-2 py-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)]"
+
+- Each pill button base classes:
+"px-4 py-1.5 text-sm font-semibold rounded-full transition-colors"
+
+- For the active pill:
+"bg-white shadow-sm text-gray-900"
+- For the inactive pill:
+"bg-transparent text-gray-600 hover:text-gray-800"
+
+B) Main heading line “We Solve Real EV Problems”:
+- Wrap “EV” in a gold class and “Problems” in a green class:
+Whole h2: "text-center text-3xl sm:text-4xl font-extrabold tracking-tight"
+Inside:
+  • “We Solve Real ” -> "text-gray-900"
+  • “EV” -> "text-[#D4AF37]"
+  • “ Problems” -> "text-emerald-600"
+
+C) Subheading paragraph:
+"className='mt-2 max-w-2xl mx-auto text-center text-gray-600'"
+
+D) Card styles (applies to both Problem and Solution cards):
+- Card wrapper:
+"rounded-3xl p-6 sm:p-7 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.06)]
+ ring-1 ring-black/5 hover:shadow-[0_16px_40px_rgba(0,0,0,0.10)] transition-shadow"
+
+- Header row (icon + label):
+"mb-3 flex items-center gap-2 text-sm font-bold tracking-wide"
+   • Problem label span: "text-rose-600"
+   • Solution label span: "text-emerald-600"
+
+- Card title:
+"className='text-2xl font-extrabold text-gray-900'"
+- Card copy:
+"className='mt-2 text-gray-700'"
+
+E) Problem card background tint:
+Add wrapper class:
+"bg-[linear-gradient(180deg,rgba(255,0,0,0.04),rgba(255,255,255,0)_60%)]"
+Solution card background tint:
+"bg-[linear-gradient(180deg,rgba(16,185,129,0.06),rgba(255,255,255,0)_60%)]"
+
+F) Little “Tap for solution / Tap for problem” chip:
+"inline-flex items-center gap-1 rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-600"
+
+G) Section bottom spacing:
+"mt-10 sm:mt-12 space-y-6"
+
+Keep all interactions exactly as-is; this is a purely visual refactor. Do NOT rename components or change state logic. Only swap/augment className strings as specified.
+
+AFTER YOU SAVE:
+- Rebuild the client. No server restart needed beyond your usual dev flow.
+- Confirm no new files were created.

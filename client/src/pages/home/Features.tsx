@@ -47,17 +47,17 @@ export default function Features() {
   return (
     <section aria-labelledby="features-heading" className="mx-auto max-w-6xl px-4 py-16">
       <div className="text-center mb-12">
-        <div className="kicker">
-          <span>Problems</span>
+        <div className="mx-auto mb-6 flex w-fit items-center gap-2 rounded-full bg-[linear-gradient(90deg,rgba(255,179,179,0.22),rgba(180,255,207,0.22))] px-2 py-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)]">
+          <span className="px-4 py-1.5 text-sm font-semibold rounded-full transition-colors bg-white shadow-sm text-gray-900">Problems</span>
           <div className="w-6 h-6 text-gold">🔄</div>
-          <span>Solutions</span>
+          <span className="px-4 py-1.5 text-sm font-semibold rounded-full transition-colors bg-transparent text-gray-600 hover:text-gray-800">Solutions</span>
         </div>
-        <h2 id="features-heading" className="h1-premium text-3xl md:text-4xl">
-          We Solve Real <span className="text-gold">EV Problems</span>
+        <h2 id="features-heading" className="text-center text-3xl sm:text-4xl font-extrabold tracking-tight">
+          <span className="text-gray-900">We Solve Real </span><span className="text-[#D4AF37]">EV</span><span className="text-emerald-600"> Problems</span>
         </h2>
-        <p className="text-gray-600 max-w-2xl mx-auto">Tap any card to see how we transform industry pain points into seamless experiences</p>
+        <p className="mt-2 max-w-2xl mx-auto text-center text-gray-600">Tap any card to see how we transform industry pain points into seamless experiences</p>
       </div>
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-10 sm:mt-12 space-y-6 sm:space-y-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-6">
         {pairs.map(pair => {
           const isFlipped = !!flipped[pair.id];
           return (
@@ -72,35 +72,35 @@ export default function Features() {
               >
                 <div className={`preserve-3d duration-700 ease-out relative w-full h-full ${isFlipped ? "rotate-y-180" : ""} hover:shadow-elev-2`}>
                   {/* Problem side (front) */}
-                  <div className="absolute inset-0 backface-hidden card p-6 bg-gradient-to-br from-red-50 to-red-100 border border-red-200">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
-                        <span className="text-white text-sm">⚠️</span>
+                  <div className="absolute inset-0 backface-hidden bg-[linear-gradient(180deg,rgba(255,0,0,0.04),rgba(255,255,255,0)_60%)]">
+                    <div className="rounded-3xl p-6 sm:p-7 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.06)] ring-1 ring-black/5 hover:shadow-[0_16px_40px_rgba(0,0,0,0.10)] transition-shadow h-full">
+                      <div className="mb-3 flex items-center gap-2 text-sm font-bold tracking-wide">
+                        <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
+                          <span className="text-white text-sm">⚠️</span>
+                        </div>
+                        <span className="text-rose-600">PROBLEM</span>
                       </div>
-                      <p className="text-sm font-bold text-red-700 uppercase tracking-wide">Problem</p>
-                    </div>
-                    <h3 className="text-xl font-bold text-red-800 mb-3 leading-tight">{pair.problemTitle}</h3>
-                    <p className="text-sm text-red-900/90 leading-relaxed mb-4">{pair.problemText}</p>
-                    <div className="absolute bottom-4 right-4 flex items-center gap-1 text-xs text-red-600 font-semibold bg-red-200/50 px-3 py-1.5 rounded-full">
-                      <span>Tap</span>
-                      <div className="w-4 h-4 animate-spin">🔄</div>
-                      <span>for solution</span>
+                      <h3 className="text-2xl font-extrabold text-gray-900">{pair.problemTitle}</h3>
+                      <p className="mt-2 text-gray-700">{pair.problemText}</p>
+                      <div className="absolute bottom-4 right-4 inline-flex items-center gap-1 rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-600">
+                        <span>Tap for solution</span>
+                      </div>
                     </div>
                   </div>
                   {/* Solution side (back) */}
-                  <div className="absolute inset-0 backface-hidden rotate-y-180 rounded-2xl p-6 shadow-lg bg-gradient-to-br from-green-50 to-green-100 hover:shadow-xl transition-all duration-300 border border-green-200">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                        <span className="text-white text-sm">✅</span>
+                  <div className="absolute inset-0 backface-hidden rotate-y-180 bg-[linear-gradient(180deg,rgba(16,185,129,0.06),rgba(255,255,255,0)_60%)]">
+                    <div className="rounded-3xl p-6 sm:p-7 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.06)] ring-1 ring-black/5 hover:shadow-[0_16px_40px_rgba(0,0,0,0.10)] transition-shadow h-full">
+                      <div className="mb-3 flex items-center gap-2 text-sm font-bold tracking-wide">
+                        <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                          <span className="text-white text-sm">✅</span>
+                        </div>
+                        <span className="text-emerald-600">SOLUTION</span>
                       </div>
-                      <p className="text-sm font-bold text-green-700 uppercase tracking-wide">Solution</p>
-                    </div>
-                    <h3 className="text-xl font-bold text-green-800 mb-3 leading-tight">{pair.solutionTitle}</h3>
-                    <p className="text-sm text-green-900/90 leading-relaxed mb-4">{pair.solutionText}</p>
-                    <div className="absolute bottom-4 right-4 flex items-center gap-1 text-xs text-green-600 font-semibold bg-green-200/50 px-3 py-1.5 rounded-full">
-                      <span>Tap</span>
-                      <div className="w-4 h-4 animate-spin">🔄</div>
-                      <span>for problem</span>
+                      <h3 className="text-2xl font-extrabold text-gray-900">{pair.solutionTitle}</h3>
+                      <p className="mt-2 text-gray-700">{pair.solutionText}</p>
+                      <div className="absolute bottom-4 right-4 inline-flex items-center gap-1 rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-600">
+                        <span>Tap for problem</span>
+                      </div>
                     </div>
                   </div>
                 </div>

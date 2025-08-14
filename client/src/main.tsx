@@ -2,6 +2,71 @@ import React, { useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 
+// FlipCard Component for Problems ↔ Solutions
+interface FlipCardProps {
+  id: string;
+  problemTitle: string;
+  problemText: string;
+  solutionTitle: string;
+  solutionText: string;
+}
+
+function FlipCard({ id, problemTitle, problemText, solutionTitle, solutionText }: FlipCardProps) {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  const toggle = () => setIsFlipped(!isFlipped);
+
+  return (
+    <div className="group perspective fade-in">
+      <button
+        type="button"
+        onClick={toggle}
+        onKeyDown={(e) => { 
+          if (e.key === "Enter" || e.key === " ") { 
+            e.preventDefault(); 
+            toggle(); 
+          }
+        }}
+        aria-pressed={isFlipped}
+        aria-label={isFlipped ? "Show problem" : "Show solution"}
+        className="relative w-full h-72 focus:outline-none transform hover:scale-[1.01] transition-transform duration-200 touch-tap"
+      >
+        <div className={`preserve-3d duration-700 ease-out relative w-full h-full ${isFlipped ? "rotate-y-180" : ""} hover:shadow-[var(--shadow-lg)]`}>
+          {/* Problem side (front) */}
+          <div className="absolute inset-0 backface-hidden card p-6 border-red-100 bg-gradient-to-br from-red-50 to-red-100">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
+                <span className="text-white text-sm">⚠️</span>
+              </div>
+              <p className="text-sm font-bold text-red-700 uppercase tracking-wide">Problem</p>
+            </div>
+            <h3 className="text-xl font-bold text-red-800 mb-3 leading-tight">{problemTitle}</h3>
+            <p className="text-sm text-red-900/90 leading-relaxed mb-4">{problemText}</p>
+            <div className="absolute bottom-4 right-4 flex items-center gap-1 text-xs text-red-600 font-semibold bg-red-200/50 px-3 py-1.5 rounded-full">
+              <span>Tap 🔄 for solution</span>
+            </div>
+          </div>
+          
+          {/* Solution side (back) */}
+          <div className="absolute inset-0 backface-hidden rotate-y-180 card p-6 border-emerald-100 bg-gradient-to-br from-emerald-50 to-emerald-100">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center">
+                <span className="text-white text-sm">✓</span>
+              </div>
+              <p className="text-sm font-bold text-emerald-700 uppercase tracking-wide">Solution</p>
+            </div>
+            <h3 className="text-xl font-bold text-emerald-800 mb-3 leading-tight">{solutionTitle}</h3>
+            <p className="text-sm text-emerald-900/90 leading-relaxed mb-4">{solutionText}</p>
+            <div className="absolute bottom-4 right-4 flex items-center gap-1 text-xs text-emerald-600 font-semibold bg-emerald-200/50 px-3 py-1.5 rounded-full">
+              <span>Tap 🔄 for problem</span>
+            </div>
+          </div>
+        </div>
+      </button>
+    </div>
+  );
+}
+
 // Minimal Early Access Form - No external dependencies causing React context issues
 function EarlyAccessForm() {
   const [formData, setFormData] = useState({
@@ -369,6 +434,139 @@ function HomeComponent() {
                   </p>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Problems ↔ Solutions Flip Cards */}
+        <div className="py-16 bg-[var(--bg-page)]">
+          <div className="mx-auto max-w-6xl px-4">
+            <div className="text-center mb-12 fade-in">
+              <div className="badge mb-2">Problems 🔄 Solutions</div>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900">
+                We Solve Real <span className="text-[var(--gold)]">EV Problems</span>
+              </h2>
+              <p className="text-gray-600 max-w-2xl mx-auto mt-4">Tap any card to see how we transform industry pain points into seamless experiences</p>
+            </div>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {[
+                {
+                  id: 'reliability',
+                  problemTitle: 'Slow charge speeds',
+                  problemText: 'Legacy equipment and power limits cause long dwell times and poor throughput.',
+                  solutionTitle: 'Guaranteed reservations',
+                  solutionText: 'Premium chargers with bookable time slots and 99.9% uptime SLAs keep trips on schedule.'
+                },
+                {
+                  id: 'pricing',
+                  problemTitle: 'Pricing chaos',
+                  problemText: 'Complex billing structures, hidden fees, and variable rates make costs unpredictable.',
+                  solutionTitle: 'Transparent pricing',
+                  solutionText: 'Simple per-kWh rates with no hidden fees or membership requirements.'
+                },
+                {
+                  id: 'security',
+                  problemTitle: 'Host security concerns',
+                  problemText: 'Property owners worry about liability, maintenance costs, and unvetted users.',
+                  solutionTitle: 'Vetted community',
+                  solutionText: 'Background-checked drivers, insurance coverage, and 24/7 monitoring protect host properties.'
+                }
+              ].map(pair => (
+                <FlipCard key={pair.id} {...pair} />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Social Proof - Testimonials */}
+        <div className="py-16 bg-[linear-gradient(180deg,#ffffff_0%,#fafafa_100%)]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12 fade-in">
+              <div className="badge mb-2">Trusted Network</div>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900">
+                Loved by <span className="text-[var(--gold)]">1,000+</span> Users
+              </h2>
+              <p className="text-gray-600 max-w-2xl mx-auto mt-4">Real stories from drivers and hosts in our network</p>
+            </div>
+            <div className="grid gap-8 md:grid-cols-3">
+              {[
+                {
+                  name: 'Sarah Chen',
+                  role: 'Model S Owner',
+                  location: 'San Francisco, CA',
+                  rating: 5,
+                  text: 'Finally found reliable EV charging with guaranteed availability. This premium EV charging network changed my road trip planning completely.'
+                },
+                {
+                  name: 'Michael Rodriguez',
+                  role: 'EV Host Partner',
+                  location: 'Austin, TX',
+                  rating: 5,
+                  text: 'The EV host revenue model is transparent and profitable. Fast charging demand keeps my site busy with excellent returns.'
+                },
+                {
+                  name: 'Jennifer Walsh',
+                  role: 'Tesla Owner',
+                  location: 'Denver, CO',
+                  rating: 5,
+                  text: 'Premium locations and guaranteed uptime make this my go-to charging network for business travel.'
+                }
+              ].map((testimonial, index) => (
+                <div key={index} className="card p-6 hover-lift fade-in">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-12 h-12 rounded-full bg-[var(--gold)] text-black font-bold flex items-center justify-center">
+                      {testimonial.name.charAt(0)}
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900">{testimonial.name}</h4>
+                      <p className="text-sm text-gray-600">{testimonial.location} • {testimonial.role}</p>
+                    </div>
+                  </div>
+                  <div className="flex mb-3">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <span key={i} className="text-[var(--gold)]">⭐</span>
+                    ))}
+                  </div>
+                  <p className="text-gray-700 italic">"{testimonial.text}"</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Partner Networks */}
+        <div className="py-16 bg-[var(--bg-page)]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12 fade-in">
+              <div className="badge mb-2">Trusted Partners</div>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900">
+                Integrated with <span className="text-[var(--gold)]">Leading Networks</span>
+              </h2>
+              <p className="text-gray-600 max-w-2xl mx-auto mt-4">Connect with the most trusted EV charging brands</p>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+              {[
+                { name: 'Mercedes-Benz', letter: 'M' },
+                { name: 'Tesla Network', letter: 'T' },
+                { name: 'BMW Charging', letter: 'B' },
+                { name: 'Audi e-tron', letter: 'A' },
+                { name: 'Lucid Motors', letter: 'L' },
+                { name: 'Rivian', letter: 'R' }
+              ].map((partner, index) => (
+                <div key={index} className="card p-4 text-center hover-lift fade-in">
+                  <div className="w-16 h-16 rounded-full bg-[var(--gold)] text-black font-bold flex items-center justify-center mx-auto mb-3 text-xl">
+                    {partner.letter}
+                  </div>
+                  <p className="text-sm font-medium text-gray-900">{partner.name}</p>
+                </div>
+              ))}
+            </div>
+            <div className="text-center mt-8 fade-in">
+              <p className="text-gray-600">
+                <span className="font-semibold text-gray-900">50+</span> charging networks • 
+                <span className="font-semibold text-gray-900"> 10,000+</span> stations • 
+                <span className="font-semibold text-gray-900"> 99.9%</span> uptime
+              </p>
             </div>
           </div>
         </div>

@@ -362,6 +362,12 @@ input:focus, select:focus, textarea:focus {
   border-color: var(--gold);
   box-shadow: var(--ring-gold);
 }
+
+/* 3D Flip Card Effects */
+.perspective { perspective: 1000px; }
+.preserve-3d { transform-style: preserve-3d; }
+.backface-hidden { backface-visibility: hidden; }
+.rotate-y-180 { transform: rotateY(180deg); }
 ::-webkit-scrollbar{ width:10px; height:10px; }
 ::-webkit-scrollbar-thumb{ background:linear-gradient(180deg,var(--gold),var(--gold-dark)); border-radius:8px; }
 @media (prefers-reduced-motion:no-preference){

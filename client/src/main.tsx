@@ -172,12 +172,27 @@ function HomeComponent() {
   useEffect(() => {
     console.log("[home] mounted successfully");
     document.title = "Alchemy Network | Premium EV Charging for Drivers & Hosts";
+    
+    // Scroll reveal animation
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-fadeInUp');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach((el) => {
+      observer.observe(el);
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
+      <nav className="backdrop-blur-md bg-white/70 supports-[backdrop-filter]:bg-white/50 border-b border-black/5">
         <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16">
           <img 
             src="/public/alchemy-voltstream-logo.png" 
@@ -187,13 +202,13 @@ function HomeComponent() {
           <div className="flex gap-4">
             <button
               onClick={() => window.location.href = '/early-access'}
-              className="text-gray-700 hover:text-gold transition-colors px-4 py-2"
+              className="hover:text-gold transition-colors px-4 py-2"
             >
               Get Early Access
             </button>
             <button
               onClick={() => window.location.href = '/host-application'}
-              className="bg-gold text-black px-6 py-2 rounded-full font-semibold hover:bg-gold/90 transition-colors"
+              className="btn-secondary touch-tap"
             >
               Become a Host
             </button>
@@ -206,34 +221,31 @@ function HomeComponent() {
         <div className="relative overflow-hidden bg-white">
           <div className="max-w-7xl mx-auto">
             <div className="relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
-              <div className="pt-10 mx-auto max-w-7xl px-4 sm:pt-12 sm:px-6 md:pt-16 lg:pt-20 lg:px-8 xl:pt-28">
+              <div className="pt-10 mx-auto max-w-7xl px-4 sm:pt-12 sm:px-6 md:pt-16 lg:pt-20 lg:px-8 xl:pt-28 reveal">
                 <div className="sm:text-center lg:text-left">
-                  <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+                  <div className="kicker mb-4">⚡ PREMIUM NETWORK</div>
+                  <h1 className="h1-premium">
                     <span className="block xl:inline">Premium</span>
                     <span className="block text-gold xl:inline"> EV Charging</span>
                     <span className="block xl:inline"> Network</span>
                   </h1>
-                  <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
+                  <p className="subcopy mt-4 max-w-2xl">
                     Experience the future of electric vehicle charging with our luxury network. 
                     Reliable, fast, and premium locations for discerning EV drivers.
                   </p>
-                  <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
-                    <div className="rounded-md shadow">
-                      <button
-                        onClick={() => window.location.href = '/early-access'}
-                        className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-black bg-gold hover:bg-gold/90 md:py-4 md:text-lg md:px-10"
-                      >
-                        Get Early Access
-                      </button>
-                    </div>
-                    <div className="mt-3 sm:mt-0 sm:ml-3">
-                      <button
-                        onClick={() => window.location.href = '/host-application'}
-                        className="w-full flex items-center justify-center px-8 py-3 border border-gold text-base font-medium rounded-md text-gold bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10"
-                      >
-                        Become a Host
-                      </button>
-                    </div>
+                  <div className="mt-8 flex flex-col sm:flex-row gap-3">
+                    <button
+                      onClick={() => window.location.href = '/early-access'}
+                      className="btn-primary touch-tap"
+                    >
+                      Get Early Access
+                    </button>
+                    <button
+                      onClick={() => window.location.href = '/host-application'}
+                      className="btn-secondary touch-tap"
+                    >
+                      Become a Host
+                    </button>
                   </div>
                 </div>
               </div>
@@ -242,43 +254,43 @@ function HomeComponent() {
         </div>
 
         {/* Features Section */}
-        <div className="py-12 bg-gray-50">
+        <div className="py-12 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="lg:text-center">
-              <h2 className="text-base text-gold font-semibold tracking-wide uppercase">Premium Network</h2>
-              <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+            <div className="lg:text-center reveal">
+              <div className="kicker">Premium Network</div>
+              <h2 className="h1-premium text-3xl md:text-4xl">
                 Why Choose Alchemy Network?
-              </p>
+              </h2>
             </div>
 
             <div className="mt-10">
               <div className="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10">
-                <div className="relative">
-                  <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-gold text-black">
+                <div className="card p-6 reveal">
+                  <div className="flex items-center justify-center h-12 w-12 rounded-md bg-gold text-black mb-4">
                     ⚡
                   </div>
-                  <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Ultra-Fast Charging</p>
-                  <p className="mt-2 ml-16 text-base text-gray-500">
+                  <h3 className="text-lg leading-6 font-medium text-gray-900 mb-2">Ultra-Fast Charging</h3>
+                  <p className="text-base text-gray-500">
                     State-of-the-art charging technology delivering up to 350kW power for rapid charging sessions.
                   </p>
                 </div>
 
-                <div className="relative">
-                  <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-gold text-black">
+                <div className="card p-6 reveal">
+                  <div className="flex items-center justify-center h-12 w-12 rounded-md bg-gold text-black mb-4">
                     🏆
                   </div>
-                  <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Premium Locations</p>
-                  <p className="mt-2 ml-16 text-base text-gray-500">
+                  <h3 className="text-lg leading-6 font-medium text-gray-900 mb-2">Premium Locations</h3>
+                  <p className="text-base text-gray-500">
                     Carefully curated charging stations at luxury hotels, premium shopping centers, and exclusive venues.
                   </p>
                 </div>
 
-                <div className="relative">
-                  <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-gold text-black">
+                <div className="card p-6 reveal">
+                  <div className="flex items-center justify-center h-12 w-12 rounded-md bg-gold text-black mb-4">
                     🔒
                   </div>
-                  <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Reliable Network</p>
-                  <p className="mt-2 ml-16 text-base text-gray-500">
+                  <h3 className="text-lg leading-6 font-medium text-gray-900 mb-2">Reliable Network</h3>
+                  <p className="text-base text-gray-500">
                     99.8% uptime guarantee with 24/7 customer support and real-time station monitoring.
                   </p>
                 </div>
@@ -288,8 +300,8 @@ function HomeComponent() {
         </div>
 
         {/* CTA Section */}
-        <div className="bg-gold">
-          <div className="max-w-2xl mx-auto text-center py-16 px-4 sm:py-20 sm:px-6 lg:px-8">
+        <div className="relative bg-gold-gradient text-black">
+          <div className="mx-auto max-w-5xl px-6 py-16 text-center reveal">
             <h2 className="text-3xl font-extrabold text-black sm:text-4xl">
               <span className="block">Ready to experience premium EV charging?</span>
             </h2>
@@ -298,7 +310,7 @@ function HomeComponent() {
             </p>
             <button
               onClick={() => window.location.href = '/early-access'}
-              className="mt-8 w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-gold bg-black hover:bg-gray-900 sm:w-auto"
+              className="btn-primary bg-black text-white hover:shadow-elev-2 touch-tap mt-8"
             >
               Get Early Access Today
             </button>

@@ -3,7 +3,6 @@ import { CheckCircle, ArrowRight, Home } from 'lucide-react';
 import { CTATracker } from '@/components/CTA-Tracker';
 
 export default function ThankYou() {
-  console.log('[route] thank-you page rendering');
   // Set SEO meta tags for Thank You page (noindex)
   useEffect(() => {
     document.title = "Thank You | Application Submitted - Alchemy Network";

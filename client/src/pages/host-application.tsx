@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -37,11 +37,10 @@ const hostApplicationSchema = z.object({
 type HostApplicationForm = z.infer<typeof hostApplicationSchema>;
 
 export default function HostApplication() {
-  console.log('[route] host-application page rendering');
   const [, navigate] = useLocation();
 
   // Set SEO meta tags for Host Application page
-  React.useEffect(() => {
+  useEffect(() => {
     document.title = "Become a Host Partner | Alchemy EV Charging Stations";
     document.documentElement.setAttribute('lang', 'en');
     

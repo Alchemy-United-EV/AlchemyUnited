@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -29,11 +29,10 @@ const earlyAccessSchema = z.object({
 type EarlyAccessForm = z.infer<typeof earlyAccessSchema>;
 
 export default function EarlyAccess() {
-  console.log('[route] early-access page rendering');
   const [, navigate] = useLocation();
 
   // Set SEO meta tags and structured data for Early Access page
-  React.useEffect(() => {
+  useEffect(() => {
     document.title = "Request Early Access | Alchemy Premium EV Charging Network";
     document.documentElement.setAttribute('lang', 'en');
     

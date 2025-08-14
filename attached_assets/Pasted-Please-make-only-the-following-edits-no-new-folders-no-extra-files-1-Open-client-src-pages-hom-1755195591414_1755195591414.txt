@@ -1,3 +1,8 @@
+Please make only the following edits (no new folders, no extra files):
+
+1) Open client/src/pages/home/Hero.tsx and REPLACE the component with the code below. This removes the bad inline photo, keeps the EV CHARGING pill, adds a small square crest (properly sized), and uses a soft watermark wing behind the title. Keep routes and CTA logic unchanged.
+
+--- REPLACEMENT START (Hero.tsx) ---
 import React from "react";
 import { Link } from "wouter";
 
@@ -10,7 +15,7 @@ export default function Hero() {
       </div>
 
       <div className="relative mx-auto max-w-6xl px-6 py-16 sm:py-20">
-        {/* small crest above pill (square image so it won't slice) */}
+        {/* small crest above pill (square image so it won’t slice) */}
         <img
           src="/assets/au-crest-square.png"
           alt="Alchemy United crest"
@@ -61,3 +66,16 @@ export default function Hero() {
     </section>
   );
 }
+--- REPLACEMENT END (Hero.tsx) ---
+
+2) Assets (no new folders):
+- Ensure the watermark file exists at: client/public/assets/wing-logo.png
+- Add or replace a **square** crest image at: client/public/assets/au-crest-square.png (recommend ~200×200, transparent PNG). If you only have /assets/alchemy-hero.jpg, DO NOT use it in the hero—keep only the crest + watermark above.
+
+3) Do NOT touch routing, forms, or other pages. Don’t create extra files. Just the single component swap + asset check.
+
+After saving, redeploy and verify on mobile:
+- No tall/sliced photo above the pill
+- “EV CHARGING” pill visible and centered
+- “Alchemy United” title with gold/black duo-tone
+- Soft wing watermark behind the title

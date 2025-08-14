@@ -102,7 +102,7 @@ export default function Features() {
                         </picture>
                         <span className="text-sm text-yellow-600 font-medium">Alchemy Solution</span>
                       </div>
-                      <span className="text-xs text-gray-500">Tap ↻ for solution</span>
+                      <span className="text-xs text-gray-500">Tap ↻ for problem</span>
                     </div>
                   </div>
                 </div>

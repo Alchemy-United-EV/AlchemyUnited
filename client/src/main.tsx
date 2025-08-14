@@ -306,6 +306,381 @@ function HomeComponent() {
   );
 }
 
+// Host Application Form Component
+function HostApplicationForm() {
+  const [formData, setFormData] = useState({
+    businessName: '',
+    contactFirstName: '',
+    contactLastName: '',
+    email: '',
+    phone: '',
+    propertyType: '',
+    propertyAddress: '',
+    parkingSpaces: '',
+    electricalCapacity: '',
+    expectedTraffic: '',
+    operatingHours: '',
+    currentAmenities: '',
+    partnershipInterest: '',
+    timeline: '',
+    additionalInfo: ''
+  });
+  const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    console.log("[host-application] mounted successfully");
+    document.title = "Host Application | Alchemy Premium EV Charging Network";
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Host application submitted:', formData);
+    
+    try {
+      const response = await fetch('/api/host-applications', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      
+      if (response.ok) {
+        setSubmitted(true);
+        window.location.href = '/thank-you';
+      } else {
+        const error = await response.json();
+        console.error('Host application submission error:', error);
+      }
+    } catch (error) {
+      console.error('Host application submission failed:', error);
+    }
+  };
+
+  if (submitted) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold mb-4 text-gold">Application Submitted!</h1>
+          <p className="text-xl mb-8">We'll contact you within 2-3 business days.</p>
+          <a href="/" className="bg-gold text-black px-6 py-3 rounded-full font-bold">Return Home</a>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-white">
+      {/* Navigation */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
+        <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16">
+          <a href="/">
+            <img 
+              src="/alchemy-voltstream-logo.png" 
+              alt="Alchemy Voltstream"
+              className="h-8 w-auto"
+            />
+          </a>
+          <a href="/" className="text-gray-700 hover:text-gold transition-colors">← Back to Home</a>
+        </div>
+      </nav>
+
+      {/* Form Content */}
+      <main className="pt-24 pb-12">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">Become a Host Partner</h1>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Join our premium EV charging network and generate revenue while providing exceptional service to EV drivers.
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="bg-white shadow-lg rounded-lg p-8">
+            {/* Business Information */}
+            <div className="mb-8">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Business Information</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Business Name *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.businessName}
+                    onChange={(e) => setFormData({...formData, businessName: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent"
+                    placeholder="Your Business Name"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Property Type *
+                  </label>
+                  <select
+                    required
+                    value={formData.propertyType}
+                    onChange={(e) => setFormData({...formData, propertyType: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent"
+                  >
+                    <option value="">Select Property Type</option>
+                    <option value="hotel">Hotel/Resort</option>
+                    <option value="retail">Retail/Shopping Center</option>
+                    <option value="restaurant">Restaurant/Dining</option>
+                    <option value="office">Office Building</option>
+                    <option value="parking">Parking Facility</option>
+                    <option value="residential">Residential Complex</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Contact Information */}
+            <div className="mb-8">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Contact Information</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    First Name *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.contactFirstName}
+                    onChange={(e) => setFormData({...formData, contactFirstName: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent"
+                    placeholder="Your First Name"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Last Name *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.contactLastName}
+                    onChange={(e) => setFormData({...formData, contactLastName: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent"
+                    placeholder="Your Last Name"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Email Address *
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent"
+                    placeholder="your@email.com"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Phone Number *
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    value={formData.phone}
+                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent"
+                    placeholder="(555) 123-4567"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Property Details */}
+            <div className="mb-8">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Property Details</h2>
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Property Address *
+                  </label>
+                  <textarea
+                    required
+                    value={formData.propertyAddress}
+                    onChange={(e) => setFormData({...formData, propertyAddress: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent"
+                    rows={3}
+                    placeholder="Full address of the property"
+                  />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Available Parking Spaces *
+                    </label>
+                    <select
+                      required
+                      value={formData.parkingSpaces}
+                      onChange={(e) => setFormData({...formData, parkingSpaces: e.target.value})}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent"
+                    >
+                      <option value="">Select Parking Spaces</option>
+                      <option value="2-5">2-5 spaces</option>
+                      <option value="6-10">6-10 spaces</option>
+                      <option value="11-20">11-20 spaces</option>
+                      <option value="21-50">21-50 spaces</option>
+                      <option value="50+">50+ spaces</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Electrical Capacity *
+                    </label>
+                    <select
+                      required
+                      value={formData.electricalCapacity}
+                      onChange={(e) => setFormData({...formData, electricalCapacity: e.target.value})}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent"
+                    >
+                      <option value="">Select Electrical Capacity</option>
+                      <option value="unknown">Not sure/Need assessment</option>
+                      <option value="sufficient">Sufficient for EV charging</option>
+                      <option value="upgrade-needed">May need upgrades</option>
+                      <option value="high-capacity">High capacity available</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Operations */}
+            <div className="mb-8">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Operations</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Expected Daily Traffic *
+                  </label>
+                  <select
+                    required
+                    value={formData.expectedTraffic}
+                    onChange={(e) => setFormData({...formData, expectedTraffic: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent"
+                  >
+                    <option value="">Select Traffic Level</option>
+                    <option value="low">Low (0-50 visitors/day)</option>
+                    <option value="medium">Medium (50-200 visitors/day)</option>
+                    <option value="high">High (200-500 visitors/day)</option>
+                    <option value="very-high">Very High (500+ visitors/day)</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Operating Hours *
+                  </label>
+                  <select
+                    required
+                    value={formData.operatingHours}
+                    onChange={(e) => setFormData({...formData, operatingHours: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent"
+                  >
+                    <option value="">Select Operating Hours</option>
+                    <option value="24/7">24/7</option>
+                    <option value="extended">Extended (6 AM - 11 PM)</option>
+                    <option value="business">Business Hours (9 AM - 6 PM)</option>
+                    <option value="retail">Retail Hours (10 AM - 9 PM)</option>
+                    <option value="custom">Custom Schedule</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Partnership Details */}
+            <div className="mb-8">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Partnership Interest</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Partnership Model Interest *
+                  </label>
+                  <select
+                    required
+                    value={formData.partnershipInterest}
+                    onChange={(e) => setFormData({...formData, partnershipInterest: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent"
+                  >
+                    <option value="">Select Partnership Model</option>
+                    <option value="revenue-share">Revenue sharing partnership</option>
+                    <option value="lease">Site lease agreement</option>
+                    <option value="purchase">Equipment purchase option</option>
+                    <option value="discuss">Open to discussion</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Implementation Timeline *
+                  </label>
+                  <select
+                    required
+                    value={formData.timeline}
+                    onChange={(e) => setFormData({...formData, timeline: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent"
+                  >
+                    <option value="">Select Timeline</option>
+                    <option value="asap">As soon as possible</option>
+                    <option value="1-3-months">1-3 months</option>
+                    <option value="3-6-months">3-6 months</option>
+                    <option value="6-12-months">6-12 months</option>
+                    <option value="12+-months">12+ months</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Additional Information */}
+            <div className="mb-8">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Additional Information</h2>
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Current Amenities
+                  </label>
+                  <textarea
+                    value={formData.currentAmenities}
+                    onChange={(e) => setFormData({...formData, currentAmenities: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent"
+                    rows={3}
+                    placeholder="Describe current amenities (WiFi, restrooms, food service, etc.)"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Additional Information
+                  </label>
+                  <textarea
+                    value={formData.additionalInfo}
+                    onChange={(e) => setFormData({...formData, additionalInfo: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent"
+                    rows={4}
+                    placeholder="Any additional information about your property or questions about the partnership"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <div className="text-center">
+              <button
+                type="submit"
+                className="bg-gold text-black px-12 py-4 rounded-lg text-lg font-semibold hover:bg-gold/90 transition-colors"
+              >
+                Submit Host Application
+              </button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+  );
+}
+
 // Simple routing based on pathname
 function App() {
   const path = window.location.pathname;
@@ -320,15 +695,8 @@ function App() {
     return <div>Redirecting...</div>;
   }
   
-  // Temporary stubs for other routes
   if (path === '/host-application') {
-    return <div className="min-h-screen bg-black text-white flex items-center justify-center">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Host Application</h1>
-        <p className="text-xl mb-8">Coming soon...</p>
-        <a href="/" className="bg-gold text-black px-6 py-3 rounded-full font-bold">Return Home</a>
-      </div>
-    </div>;
+    return <HostApplicationForm />;
   }
   
   if (path === '/thank-you') {

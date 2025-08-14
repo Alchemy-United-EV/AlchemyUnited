@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertEarlyAccessApplicationSchema, insertHostApplicationSchema } from "@shared/schema";
+import { sendEmail, getEarlyAccessConfirmationEmail, getHostApplicationConfirmationEmail } from './emailService';
 import { honeypotMiddleware, rateLimitMiddleware } from "./middleware/honeypot";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -22,6 +23,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const validatedData = insertEarlyAccessApplicationSchema.parse(req.body);
       const application = await storage.createEarlyAccessApplication(validatedData);
+      
+      // Send confirmation email
+      try {
+        const emailData = getEarlyAccessConfirmationEmail(validatedData.firstName, validatedData.email);
+        await sendEmail(emailData);
+        console.log(`Confirmation email sent to ${validatedData.email}`);
+      } catch (emailError) {
+        console.error('Failed to send confirmation email:', emailError);
+        // Don't fail the request if email fails
+      }
+      
       res.status(201).json(application);
     } catch (error) {
       console.error('Error creating early access application:', error);
@@ -71,6 +83,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const validatedData = insertHostApplicationSchema.parse(req.body);
       const application = await storage.createHostApplication(validatedData);
+      
+      // Send confirmation email
+      try {
+        const emailData = getHostApplicationConfirmationEmail(
+          validatedData.contactFirstName, 
+          validatedData.businessName, 
+          validatedData.email
+        );
+        await sendEmail(emailData);
+        console.log(`Host application confirmation email sent to ${validatedData.email}`);
+      } catch (emailError) {
+        console.error('Failed to send host confirmation email:', emailError);
+        // Don't fail the request if email fails
+      }
+      
       res.status(201).json(application);
     } catch (error) {
       console.error('Error creating host application:', error);

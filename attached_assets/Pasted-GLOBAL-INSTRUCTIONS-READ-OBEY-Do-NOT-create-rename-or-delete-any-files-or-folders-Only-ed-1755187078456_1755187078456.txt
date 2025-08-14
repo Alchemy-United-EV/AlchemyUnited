@@ -1,0 +1,158 @@
+GLOBAL INSTRUCTIONS — READ & OBEY
+• Do NOT create, rename, or delete any files or folders.
+• Only edit if the file exists. If a file is missing, STOP and report which one. 
+• Do NOT change JS/TS logic (routing, API, forms). UI classNames + small CSS only.
+• Goal: “Dopamine premium” look on every page (incl. Admin) with bright white #0 → gold accents,
+  soft motion, touch/scroll effects; keep accessibility + performance high.
+• Enforce “Hormozi standard”: clear headline, value stack bullets, visual proof row,
+  single dominant CTA, secondary safety CTA, risk-reversal note. Add the UI blocks ONLY if the
+  page already has a sensible spot (usually hero/top or section footer). Do not change copy text.
+
+──────────────────────────────────────────────────────────────────────────────
+1) THEME PRIMITIVES (Tailwind + CSS utilities)
+
+EDIT: tailwind.config.ts  (theme.extend only; keep existing content)
+- Add (or merge) these keys under theme.extend:
+  colors: {
+    gold: '#D4AF37',
+    'gold-light': '#FFD700',
+    'gold-dark': '#B8860B'
+  },
+  backgroundImage: {
+    'gold-gradient': 'linear-gradient(90deg,#FFD700,#D4AF37,#B8860B)'
+  },
+  boxShadow: {
+    'elev-1': '0 6px 18px rgba(212,175,55,.20)',
+    'elev-2': '0 10px 30px rgba(212,175,55,.25)'
+  }
+
+EDIT: client/src/index.css  (append to end; do not remove anything)
+:root{
+  --gold:#D4AF37; --gold-light:#FFD700; --gold-dark:#B8860B;
+  --bg:#ffffff; --ink:#0B0B0C; --muted:#6B7280;
+}
+html,body{ background:#ffffff; color:var(--ink); }
+.bg-gold-gradient{ background:linear-gradient(90deg,var(--gold-light),var(--gold),var(--gold-dark)); }
+.text-gold{ color:var(--gold); }
+.border-gold{ border-color:var(--gold); }
+.btn-primary{ @apply inline-flex items-center justify-center rounded-xl px-6 py-3 font-semibold text-black bg-gold shadow-elev-1 hover:shadow-elev-2 transition duration-200 hover:-translate-y-0.5 active:translate-y-0; }
+.btn-secondary{ @apply inline-flex items-center justify-center rounded-xl px-6 py-3 font-semibold border border-gold text-gold hover:bg-gold/10 transition-colors duration-200; }
+.card{ @apply rounded-2xl bg-white/90 backdrop-blur-sm shadow-elev-1 ring-1 ring-black/5; }
+.kicker{ @apply text-[12px] tracking-[0.22em] font-semibold text-gold; }
+.h1-premium{ @apply text-4xl md:text-6xl font-extrabold leading-tight; }
+.subcopy{ @apply text-lg md:text-xl text-gray-600; }
+.reveal{ opacity:0; transform:translateY(14px); transition:opacity .5s ease, transform .5s ease; }
+.reveal.in{ opacity:1; transform:none; }
+.touch-tap{ transition:transform .08s ease; }
+.touch-tap:active{ transform:scale(.98); }
+::-webkit-scrollbar{ width:10px; height:10px; }
+::-webkit-scrollbar-thumb{ background:linear-gradient(180deg,var(--gold),var(--gold-dark)); border-radius:8px; }
+@media (prefers-reduced-motion: reduce){
+  .hover\\:-translate-y-0\\.5:hover{ transform:none !important; }
+  .reveal{ transition:none; transform:none; opacity:1; }
+}
+
+──────────────────────────────────────────────────────────────────────────────
+2) LIGHTWEIGHT SCROLL REVEAL (no new files)
+
+If client/src/main.tsx exists, add ONE effect at the bottom of the file (or inside the root layout file),
+wrapped in a guard to avoid SSR issues. Do not alter existing renders:
+
+if (typeof window !== 'undefined') {
+  const show = () => {
+    document.querySelectorAll<HTMLElement>('.reveal').forEach(el => {
+      const r = el.getBoundingClientRect();
+      const enter = r.top < window.innerHeight * 0.9;
+      if (enter) el.classList.add('in');
+    });
+  };
+  ['scroll','resize','load'].forEach(ev=>window.addEventListener(ev, show, {passive:true}));
+  show();
+}
+
+──────────────────────────────────────────────────────────────────────────────
+3) APPLY PREMIUM UI ON EVERY PAGE (NO LOGIC CHANGES)
+
+For each of these files IF they exist, only adjust className strings on existing elements.
+Do not rename components, props, or handlers.
+
+A) Home hero — client/src/pages/home/Hero.tsx
+- Root section → "relative overflow-hidden bg-white text-ink"
+- Content wrapper → "relative z-10 mx-auto max-w-6xl px-6 py-16 md:py-24 reveal"
+- Eyebrow → add class "kicker"
+- H1 → replace heading class with "h1-premium"
+- Subcopy → replace with "subcopy mt-4 max-w-2xl"
+- Primary CTA → add class "btn-primary touch-tap"
+- Secondary CTA → add class "btn-secondary touch-tap"
+- Any stat/value/badge row wrapper → add "reveal" to each card; each card add "card p-6"
+
+B) Features section — client/src/pages/home/Features.tsx
+- Section title → "kicker"
+- H2 → "h1-premium text-3xl md:text-4xl"
+- Feature items container → ensure each feature wrapper has "card p-6 reveal"
+- Feature icon wrappers → add "text-gold"
+
+C) CTA/Footer section — client/src/pages/home/CTA.tsx or FooterCTA.tsx
+- Section wrapper → "relative bg-gold-gradient text-black"
+- Inner container → "mx-auto max-w-5xl px-6 py-16 text-center reveal"
+- Primary button → "btn-primary bg-black text-white hover:shadow-elev-2"
+- Secondary button → "btn-secondary border-black/30 text-black hover:bg-black/5"
+
+D) Forms — client/src/pages/early-access.tsx and client/src/pages/host-application.tsx
+- Page header wrapper → "mx-auto max-w-4xl px-6 pt-12 pb-4 reveal"
+- H1 → "h1-premium"
+- Form container → "card p-6 md:p-8 mt-6 reveal"
+- Inputs/selects keep existing logic; add wrapper "space-y-4"
+- Submit button → "btn-primary w-full md:w-auto touch-tap"
+- Add a small reassurance note below submit (existing node) → add class "subcopy mt-3 text-center"
+
+E) Thank-You — client/src/pages/thank-you.tsx
+- Center wrapper → "mx-auto max-w-3xl px-6 py-24 text-center reveal"
+- H1 → "h1-premium"
+- Continue/Home button → "btn-secondary touch-tap mt-6"
+
+F) Header/Nav (if exists, e.g., client/src/components/Header.tsx)
+- Bar → "backdrop-blur-md bg-white/70 supports-[backdrop-filter]:bg-white/50 border-b border-black/5"
+- Nav links → add "hover:text-gold transition-colors"
+- CTA in header → "btn-secondary"
+
+G) Admin (Dashboard, Tables, Cards) — common file names include:
+   client/src/pages/admin/index.tsx
+   client/src/pages/admin/Dashboard.tsx
+   client/src/pages/admin/*.tsx
+For each page that exists:
+- Page wrapper → "mx-auto max-w-7xl px-6 py-10 space-y-6"
+- Section cards (widgets) → "card p-5 reveal"
+- Tables → wrap table in "card p-0 overflow-hidden reveal"; add "bg-white" to thead; 
+  th/td add "px-4 py-3 border-b border-black/5"; highlight totals with "text-gold font-semibold"
+- Primary actions (Save/Run/Export) → "btn-primary touch-tap"
+- Secondary actions (Filter/Cancel) → "btn-secondary touch-tap"
+- Page title kicker → "kicker", H1 → "h1-premium text-3xl md:text-4xl"
+
+H) Global buttons/links that already exist in components:
+- Add "touch-tap" to clickable buttons/links for tactile feel.
+- Where a neutral container looks flat, add "card p-4 reveal".
+
+──────────────────────────────────────────────────────────────────────────────
+4) HORMOZI STANDARD — NON-COPY UI ENFORCEMENT (only style existing blocks)
+On each top section (hero or page header) IF the nodes already exist, apply classes:
+- Value stack list (bullets) wrapper → "mt-6 grid gap-3 md:grid-cols-2 reveal"
+- Proof row (logos, stars, or counts) → "mt-6 flex flex-wrap items-center gap-4 reveal"
+- Risk-reversal/safety note (e.g., “No spam… Cancel anytime”) → "subcopy mt-4 text-center md:text-left"
+- Make the **primary CTA visually dominant** (btn-primary) and keep **one** secondary CTA (btn-secondary).
+
+──────────────────────────────────────────────────────────────────────────────
+5) ACCESSIBILITY + PERFORMANCE CHECKS (do not auto-fix logic)
+- Ensure interactive elements with the new classes still have role/aria labels from before.
+- Confirm no console errors on "/", "/early-access", "/host-application", "/thank-you", and ANY "/admin/*".
+- Report back: (1) list of edited files, (2) pages previewed, (3) any remaining a11y or perf warnings.
+- Do NOT run production builds or add new deps. Keep current dev server.
+
+EXPECTED RESULT
+• Bright white surface with gold accents across all pages, including Admin.
+• Buttons feel “tappable” with tiny lift, cards softly elevated, sections fade-in on scroll.
+• No broken navigation or forms. Same routes, same data.
+• Each page visually supports: headline → value stack → proof → primary CTA → safety note.
+• Ready-to-launch visuals with your premium dopamine vibe.
+
+If ANY file listed above does not exist, STOP and tell me exactly which ones are missing, without creating them.

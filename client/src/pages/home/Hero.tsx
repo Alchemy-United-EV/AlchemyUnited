@@ -59,7 +59,7 @@ export default function Hero() {
   return (
     <section 
       ref={heroRef}
-      className="relative overflow-hidden h-screen bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center"
+      className="relative overflow-hidden bg-black text-white"
       id="hero-section"
     >
       {/* Animated background elements */}
@@ -83,35 +83,35 @@ export default function Hero() {
         aria-hidden="true"
       />
 
-      <div className="relative z-10 text-center text-white px-4 sm:px-6 max-w-5xl animate-fade-in">
+      <div className="relative z-10 mx-auto max-w-6xl px-6 py-16 md:py-24">
         <header>
           <div className="mb-8">
             <div ref={badgeRef}>
               <div className="inline-block p-1 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-2xl mb-6 animate-shimmer">
                 <div className="bg-black px-6 py-2 rounded-2xl">
-                  <span className="text-yellow-400 font-semibold text-sm tracking-wide">⚡ PREMIUM NETWORK</span>
+                  <span className="text-[#D4AF37] tracking-widest font-semibold">⚡ PREMIUM NETWORK</span>
                 </div>
               </div>
             </div>
           </div>
           
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black mb-6 leading-tight">
-            <span className="block text-white mb-2 animate-slide-up">Premium EV</span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 block animate-slide-up delay-200">Charging Network</span>
+          <h1 className="mt-3 text-5xl md:text-6xl font-extrabold leading-tight">
+            <span className="block text-white mb-2">Premium EV</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 block">Charging Network</span>
           </h1>
           
-          <p className="text-lg sm:text-xl font-light mb-8 max-w-3xl mx-auto leading-relaxed text-white/90 animate-slide-up delay-300">
+          <p className="mt-4 text-lg md:text-xl text-gray-300 max-w-2xl">
             Experience fast, reliable EV charging with guaranteed availability. Join our premium network for drivers and profitable hosting partners.
           </p>
         </header>
         
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up delay-500">
+        <div className="mt-8 flex flex-col sm:flex-row gap-3">
           <CTATracker 
             cta="hero-primary"
             section="hero" 
             variant="primary"
             href="/early-access"
-            className="group relative bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-300 hover:to-yellow-400 text-black font-bold py-4 px-8 rounded-2xl text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-yellow-400/25 w-full sm:w-auto text-center"
+            className="inline-flex items-center justify-center rounded-xl bg-[#D4AF37] px-6 py-3 font-semibold text-black shadow-md hover:shadow-lg transition-transform duration-200 hover:-translate-y-0.5"
           >
             <span className="relative z-10">Get Early Access</span>
             <div className="absolute inset-0 bg-gradient-to-r from-yellow-300 to-yellow-600 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-lg"></div>
@@ -121,7 +121,7 @@ export default function Hero() {
             section="hero"
             variant="secondary"
             href="/host-application"
-            className="group border-2 border-white/20 hover:border-yellow-400 bg-white/5 backdrop-blur-sm text-white hover:text-yellow-400 font-bold py-4 px-8 rounded-2xl text-lg transition-all duration-300 hover:bg-yellow-400/10 w-full sm:w-auto text-center"
+            className="inline-flex items-center justify-center rounded-xl border border-[#D4AF37]/60 px-6 py-3 font-semibold text-[#D4AF37] hover:bg-[#D4AF37]/10 transition-colors duration-200"
           >
             Become a Host
           </CTATracker>

@@ -214,14 +214,26 @@ function HomeComponent() {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
+          entry.target.classList.add('in');
           entry.target.classList.add('animate-fadeInUp');
         }
       });
     }, { threshold: 0.1 });
 
+    // Initialize all reveal elements
     document.querySelectorAll('.reveal').forEach((el) => {
       observer.observe(el);
     });
+
+    // Immediately show elements that are already in view
+    setTimeout(() => {
+      document.querySelectorAll('.reveal').forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          el.classList.add('in');
+        }
+      });
+    }, 100);
 
     // Optimized dopamine micro-interactions using event delegation
     const handleInteraction = (e: Event) => {

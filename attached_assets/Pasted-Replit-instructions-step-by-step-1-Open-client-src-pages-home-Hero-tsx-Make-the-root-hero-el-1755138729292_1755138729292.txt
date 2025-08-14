@@ -1,0 +1,36 @@
+Replit instructions (step-by-step)
+	1.	Open client/src/pages/home/Hero.tsx.
+	•	Make the root hero element position: relative (Tailwind: className="relative overflow-hidden").
+	•	Add three React refs: heroRef (section), badgeRef (wrapping the “Premium Network” pill), wingRef (the wing image).
+	2.	Wrap the “Premium Network” pill with a div that has ref={badgeRef}.
+	•	This is only a wrapper to measure the pill’s position. Do not change the pill markup.
+	3.	Insert the decorative wing image once, inside the hero, BEFORE the heading block.
+	•	Give it ref={wingRef}.
+	•	Styling requirements:
+	•	position: absolute; left: 50%; transform: translateX(-50%);
+	•	z-index: 0 (behind all content)
+	•	pointer-events: none; aria-hidden="true"; alt=""
+	•	Start opacity around 0.95 and small drop shadow.
+	4.	Place all other hero content (H1, paragraph, CTAs, feature bullets) in a container with higher stacking.
+	•	Wrap it in a div with className="relative z-10" so it always sits above the wing.
+	5.	Add a small effect in useEffect (inside Hero.tsx) to position and animate the wing.
+	•	On mount + resize: set the wing’s top to badge.bottom + 12px (12px gap below the pill).
+	•	Calculation: top = badge.getBoundingClientRect().bottom - hero.getBoundingClientRect().top + 12.
+	•	On scroll (first ~160px of page scroll):
+	•	Translate the wing down up to ~18px (translateY).
+	•	Slightly scale down (~4%).
+	•	Fade out opacity to ~15%.
+	•	Use passive: true for the scroll listener and remove both listeners on cleanup.
+	6.	Asset path.
+	•	Ensure the wing image points to your existing asset (e.g., /assets/wing-logo.png). Do not change the file.
+	7.	Tuning knobs (if it’s slightly off):
+	•	Gap under pill: change + 12 to + 4…20.
+	•	Scroll distance: change max from 160 to 120…220.
+	•	Movement strength: change 18px (translate) or 0.04 (scale).
+	•	Fade strength: change 0.85 (closer to 1 = more fade).
+	8.	Verify behavior.
+	•	On load: the wing sits directly under the “Premium Network” pill (in the red box area).
+	•	While scrolling the first ~160px: it gently drifts down and fades.
+	•	It never overlaps the pill/H1 because content uses z-10 and the wing uses z-0.
+
+That’s it—follow those 8 steps in Hero.tsx and the wing will land exactly under the pill with a tasteful fade/slide on scroll.

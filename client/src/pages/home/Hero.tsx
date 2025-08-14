@@ -1,6 +1,54 @@
+import { useRef, useEffect } from 'react';
+
 export default function Hero() {
+  const heroRef = useRef<HTMLElement>(null);
+  const badgeRef = useRef<HTMLDivElement>(null);
+  const wingRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const positionWing = () => {
+      if (!heroRef.current || !badgeRef.current || !wingRef.current) return;
+
+      const heroRect = heroRef.current.getBoundingClientRect();
+      const badgeRect = badgeRef.current.getBoundingClientRect();
+      
+      const topPosition = badgeRect.bottom - heroRect.top + 12;
+      wingRef.current.style.top = `${topPosition}px`;
+    };
+
+    const handleScroll = () => {
+      if (!wingRef.current) return;
+
+      const scrollY = window.scrollY;
+      const maxScroll = 160;
+      const progress = Math.min(scrollY / maxScroll, 1);
+
+      // Translate down, scale down, fade out
+      const translateY = progress * 18;
+      const scale = 1 - (progress * 0.04);
+      const opacity = 0.95 - (progress * 0.8); // Fade from 0.95 to 0.15
+
+      wingRef.current.style.transform = `translateX(-50%) translateY(${translateY}px) scale(${scale})`;
+      wingRef.current.style.opacity = opacity.toString();
+    };
+
+    // Initial positioning
+    positionWing();
+
+    // Add event listeners
+    window.addEventListener('resize', positionWing);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('resize', positionWing);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <section className="relative h-screen bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center overflow-hidden"
+    <section 
+      ref={heroRef}
+      className="relative h-screen bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center overflow-hidden"
       id="hero-section"
     >
       {/* Animated background elements */}
@@ -12,10 +60,33 @@ export default function Hero() {
       
       <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20 z-10"></div>
       
-      <div className="relative z-20 text-center text-white px-4 sm:px-6 max-w-5xl animate-fade-in">
+      {/* Wing Logo - positioned under Premium Network pill */}
+      <div 
+        ref={wingRef}
+        className="absolute left-1/2 z-0 pointer-events-none"
+        style={{
+          transform: 'translateX(-50%)',
+          opacity: 0.95,
+          filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))'
+        }}
+        aria-hidden="true"
+      >
+        <picture>
+          <source srcSet="/assets/webp/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.webp" type="image/webp" />
+          <img 
+            src="/assets/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.png" 
+            alt=""
+            className="h-10 w-auto filter brightness-125"
+            width="160"
+            height="40"
+          />
+        </picture>
+      </div>
+
+      <div className="relative z-10 text-center text-white px-4 sm:px-6 max-w-5xl animate-fade-in">
         <header>
           <div className="mb-8">
-            <div className="inline-block p-1 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-2xl mb-6 animate-shimmer">
+            <div ref={badgeRef} className="inline-block p-1 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-2xl mb-6 animate-shimmer">
               <div className="bg-black px-6 py-2 rounded-2xl">
                 <span className="text-yellow-400 font-semibold text-sm tracking-wide">⚡ PREMIUM NETWORK</span>
               </div>
@@ -63,30 +134,6 @@ export default function Hero() {
             <span>Premium Locations</span>
           </div>
         </div>
-      </div>
-
-      {/* Wing Logo - positioned in specified area */}
-      <div 
-        id="wing-logo"
-        className="absolute z-0 pointer-events-none will-change-transform will-change-opacity"
-        style={{
-          top: '50%',
-          right: '10%',
-          transform: 'translate(0, calc(-50% + var(--y, 0)))',
-          opacity: 'var(--fade, 0)'
-        }}
-        aria-hidden="true"
-      >
-        <picture>
-          <source srcSet="/assets/webp/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.webp" type="image/webp" />
-          <img 
-            src="/assets/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.png" 
-            alt=""
-            className="h-10 w-auto filter brightness-125"
-            width="160"
-            height="40"
-          />
-        </picture>
       </div>
     </section>
   );

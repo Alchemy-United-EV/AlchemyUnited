@@ -366,7 +366,7 @@ function HomeComponent() {
           <div className="absolute inset-0 z-0">
             <img 
               src="/attached_assets/Attachment_1755190035061.jpeg" 
-              alt="Premium EV Charging Station"
+              alt=""
               className="w-full h-full object-cover opacity-20 mix-blend-overlay"
             />
           </div>

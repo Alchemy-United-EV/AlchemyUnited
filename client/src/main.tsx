@@ -223,50 +223,35 @@ function HomeComponent() {
       observer.observe(el);
     });
 
-    // Dopamine micro-interactions
-    const addDopamineEffects = () => {
-      // Add haptic feedback to all interactive elements
-      document.querySelectorAll('button, a, input, select, [role="button"]').forEach((el) => {
-        // Remove existing listeners
-        el.removeEventListener('touchstart', handleTouchStart);
-        el.removeEventListener('mousedown', handleMouseDown);
-        el.removeEventListener('focus', handleFocus);
-        
-        // Add dopamine touch effects
-        el.addEventListener('touchstart', handleTouchStart, { passive: true });
-        el.addEventListener('mousedown', handleMouseDown);
-        el.addEventListener('focus', handleFocus);
-      });
+    // Optimized dopamine micro-interactions using event delegation
+    const handleInteraction = (e: Event) => {
+      const el = e.target as HTMLElement;
+      const isInteractive = el.matches('button, a, input, select, [role="button"]');
+      
+      if (!isInteractive) return;
+      
+      if (e.type === 'touchstart') {
+        el.classList.add('haptic-medium');
+        setTimeout(() => el.classList.remove('haptic-medium'), 200);
+      } else if (e.type === 'mousedown') {
+        el.classList.add('haptic-light');
+        setTimeout(() => el.classList.remove('haptic-light'), 100);
+      } else if (e.type === 'focus') {
+        el.style.outline = '2px solid var(--gold)';
+        el.style.outlineOffset = '2px';
+      }
     };
 
-    const handleTouchStart = (e: TouchEvent) => {
-      const el = e.currentTarget as HTMLElement;
-      el.classList.add('haptic-medium');
-      setTimeout(() => el.classList.remove('haptic-medium'), 200);
-    };
-
-    const handleMouseDown = (e: MouseEvent) => {
-      const el = e.currentTarget as HTMLElement;
-      el.classList.add('haptic-light');
-      setTimeout(() => el.classList.remove('haptic-light'), 100);
-    };
-
-    const handleFocus = (e: FocusEvent) => {
-      const el = e.currentTarget as HTMLElement;
-      el.style.outline = '2px solid var(--gold)';
-      el.style.outlineOffset = '2px';
-    };
-
-    // Initialize dopamine effects
-    addDopamineEffects();
-
-    // Re-apply effects after DOM changes
-    const mutationObserver = new MutationObserver(addDopamineEffects);
-    mutationObserver.observe(document.body, { childList: true, subtree: true });
+    // Use event delegation for better performance
+    document.addEventListener('touchstart', handleInteraction, { passive: true });
+    document.addEventListener('mousedown', handleInteraction);
+    document.addEventListener('focus', handleInteraction, true);
 
     return () => {
       observer.disconnect();
-      mutationObserver.disconnect();
+      document.removeEventListener('touchstart', handleInteraction);
+      document.removeEventListener('mousedown', handleInteraction);
+      document.removeEventListener('focus', handleInteraction);
     };
   }, []);
 

@@ -1,0 +1,55 @@
+STRICT GUARDRAILS. DO NOT change visual styles, classNames, layout, copy, assets, or routes. 
+DO NOT add new pages/components. DO NOT upgrade packages unless explicitly listed below.
+
+Objective: Freeze current UI and protect it from regressions while enabling backend/tracking work.
+
+A. SNAPSHOT + SAFETY
+1) Create git tag `v1-ui-freeze` on current commit and a branch `frozen-ui`.
+2) Export a zip archive of the repo named `au-v1-ui-freeze.zip` in project root.
+3) Add a CODEOWNERS file that requires PR review for any changes under:
+   - /client/src/pages/**
+   - /client/src/components/**
+   - /client/src/index.css
+   - /public/**
+(If Replit doesn’t enforce CODEOWNERS, still create it for clarity.)
+
+B. READ-ONLY GUARDRAILS
+4) Create `.guardrails.json` with this policy:
+   - forbiddenGlobs: ["client/src/pages/**","client/src/components/**","client/src/index.css","public/**"]
+   - allowedEditors: ["*.md","server/**","lib/**","client/src/lib/**","client/src/analytics/**"]
+5) Add a `scripts/precommit-guard.mjs` that blocks commits touching forbiddenGlobs unless `ALLOW_UI_CHANGES=true` is set.
+6) Install and configure `husky` + `lint-staged` to run `node scripts/precommit-guard.mjs` on each commit.
+
+C. SMOKE TESTS (no styling changes)
+7) Add a minimal Vitest/React Testing Library setup:
+   - tests that render the following routes without errors: "/", "/early-access", "/host-application", "/thank-you"
+   - test clicks on primary CTAs don’t throw and trigger `data-testid` events.
+   Name file `client/src/__tests__/smoke.test.tsx`.
+8) Add `npm run test:smoke` to run only these tests.
+
+D. BUILD + HEALTH CHECKS
+9) Add `npm run check:build` that:
+   - builds the app
+   - prints bundle sizes (top 10 modules)
+   - fails if build size grows >10% vs a saved baseline `build-baseline.json`.
+   On first run, save current sizes as the baseline.
+10) Add `npm run check:ui` that runs both `test:smoke` and `check:build`.
+
+E. ENV + MODES
+11) Ensure `.env`, `.env.staging`, `.env.production` exist (keep values blank). NEVER hardcode secrets.
+12) Add `README-LOCK.md` that explains how to temporarily allow UI edits:
+    - set `ALLOW_UI_CHANGES=true` in env, run `npm run unlock-ui` (a script that just echoes a warning).
+    - after edits, update `build-baseline.json` with `npm run baseline` (separate script).
+    - commit with message starting `UI-EDIT:` (precommit checks require this prefix when ALLOW_UI_CHANGES=true).
+
+F. OUTPUT
+13) Print a single consolidated diff of files created/changed.
+14) Print commands to:
+    - run smoke checks: `npm run check:ui`
+    - create a new branch for backend work: `git checkout -b backend-phase-1`
+15) Confirm the location of `au-v1-ui-freeze.zip`.
+
+ALLOWED NEW DEV DEPENDENCIES ONLY:
+- vitest, @testing-library/react, @testing-library/jest-dom, husky, lint-staged, picocolors
+
+Do not modify component code, CSS, or assets. If any step requires touching frozen files, STOP and ask.

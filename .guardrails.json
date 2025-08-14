@@ -1,0 +1,26 @@
+{
+  "version": "1.0.0",
+  "policy": {
+    "forbiddenGlobs": [
+      "client/src/pages/**",
+      "client/src/components/**", 
+      "client/src/index.css",
+      "public/**"
+    ],
+    "allowedEditors": [
+      "*.md",
+      "server/**",
+      "lib/**",
+      "client/src/lib/**",
+      "client/src/analytics/**",
+      "scripts/**",
+      "tests/**",
+      "*.json",
+      "*.js",
+      "*.mjs"
+    ],
+    "description": "UI freeze protection - prevents accidental changes to visual design and user experience",
+    "created": "2025-01-14",
+    "purpose": "Protect approved UI while enabling backend and analytics development"
+  }
+}

@@ -1,0 +1,16 @@
+# CODEOWNERS - Require review for UI changes
+# These files control the visual design and user experience
+# All changes require review to prevent regressions
+
+# Frontend UI Components and Styles
+/client/src/pages/**         @ui-team
+/client/src/components/**     @ui-team  
+/client/src/index.css         @ui-team
+
+# Public Assets
+/public/**                    @ui-team
+
+# Critical Configuration
+/package.json                 @platform-team
+/vite.config.ts              @platform-team
+/tailwind.config.ts          @platform-team

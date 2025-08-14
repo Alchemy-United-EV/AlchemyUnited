@@ -11,6 +11,8 @@ import { Link } from "wouter";
 import { ArrowLeft, CheckCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { StructuredData, earlyAccessPageSchema } from "@/components/StructuredData";
+import { getAttributionData } from "@/components/UTMCapture";
+import { useLocation } from "wouter";
 
 const earlyAccessSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -27,6 +29,8 @@ const earlyAccessSchema = z.object({
 type EarlyAccessForm = z.infer<typeof earlyAccessSchema>;
 
 export default function EarlyAccess() {
+  const [, navigate] = useLocation();
+
   // Set SEO meta tags and structured data for Early Access page
   React.useEffect(() => {
     document.title = "Request Early Access | Alchemy Premium EV Charging Network";
@@ -76,23 +80,29 @@ export default function EarlyAccess() {
 
   const onSubmit = async (data: EarlyAccessForm) => {
     try {
+      // Add UTM and attribution data
+      const attributionData = getAttributionData();
+      const submissionData = {
+        ...data,
+        ...attributionData,
+        submitted_at: new Date().toISOString(),
+        page_source: window.location.pathname + window.location.search,
+      };
+
       const response = await fetch('/api/early-access-applications', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(submissionData),
       });
       
       if (!response.ok) {
         throw new Error('Failed to submit application');
       }
       
-      setSubmitted(true);
-      toast({
-        title: "Application Submitted!",
-        description: "We'll be in touch with your early access invitation soon.",
-      });
+      // Navigate to thank you page with type parameter
+      navigate('/thank-you?type=early-access');
     } catch (error) {
       console.error('Error submitting application:', error);
       toast({

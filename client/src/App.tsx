@@ -6,16 +6,23 @@ import Home from "@/pages/home/Home";
 import EarlyAccess from "@/pages/early-access";
 import HostApplication from "@/pages/host-application";
 import SimpleDashboard from "@/pages/simple-dashboard";
+import ThankYou from "@/pages/thank-you";
+import { UTMCapture } from "@/components/UTMCapture";
 
 function Router() {
   return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/early-access" component={EarlyAccess} />
-      <Route path="/host" component={HostApplication} />
-      <Route path="/dashboard" component={SimpleDashboard} />
-      <Route component={NotFound} />
-    </Switch>
+    <>
+      <UTMCapture />
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route path="/early-access" component={EarlyAccess} />
+        <Route path="/host" component={HostApplication} />
+        <Route path="/host-application" component={HostApplication} />
+        <Route path="/thank-you" component={ThankYou} />
+        <Route path="/dashboard" component={SimpleDashboard} />
+        <Route component={NotFound} />
+      </Switch>
+    </>
   );
 }
 

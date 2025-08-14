@@ -2,10 +2,23 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertEarlyAccessApplicationSchema, insertHostApplicationSchema } from "@shared/schema";
+import { honeypotMiddleware, rateLimitMiddleware } from "./middleware/honeypot";
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Early Access Applications API
-  app.post('/api/early-access-applications', async (req, res) => {
+  // Analytics logging endpoint
+  app.post('/api/analytics/log', async (req, res) => {
+    try {
+      console.log('Analytics Event:', req.body);
+      // In production, send to analytics service (GA4, Mixpanel, etc.)
+      res.status(200).json({ success: true });
+    } catch (error) {
+      console.error('Analytics logging error:', error);
+      res.status(500).json({ error: 'Failed to log event' });
+    }
+  });
+
+  // Early Access Applications API with spam protection
+  app.post('/api/early-access-applications', honeypotMiddleware, rateLimitMiddleware, async (req, res) => {
     try {
       const validatedData = insertEarlyAccessApplicationSchema.parse(req.body);
       const application = await storage.createEarlyAccessApplication(validatedData);
@@ -53,8 +66,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Host Applications API
-  app.post('/api/host-applications', async (req, res) => {
+  // Host Applications API with spam protection
+  app.post('/api/host-applications', honeypotMiddleware, rateLimitMiddleware, async (req, res) => {
     try {
       const validatedData = insertHostApplicationSchema.parse(req.body);
       const application = await storage.createHostApplication(validatedData);

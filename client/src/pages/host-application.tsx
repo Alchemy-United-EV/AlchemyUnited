@@ -12,6 +12,8 @@ import { Link } from "wouter";
 import { ArrowLeft, CheckCircle, Building, DollarSign, Shield, Zap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { StructuredData, hostPageSchema } from "@/components/StructuredData";
+import { getAttributionData } from "@/components/UTMCapture";
+import { useLocation } from "wouter";
 
 const hostApplicationSchema = z.object({
   businessName: z.string().min(2, "Business name is required"),
@@ -35,6 +37,8 @@ const hostApplicationSchema = z.object({
 type HostApplicationForm = z.infer<typeof hostApplicationSchema>;
 
 export default function HostApplication() {
+  const [, navigate] = useLocation();
+
   // Set SEO meta tags for Host Application page
   React.useEffect(() => {
     document.title = "Become a Host Partner | Alchemy EV Charging Stations";
@@ -85,23 +89,29 @@ export default function HostApplication() {
 
   const onSubmit = async (data: HostApplicationForm) => {
     try {
+      // Add UTM and attribution data
+      const attributionData = getAttributionData();
+      const submissionData = {
+        ...data,
+        ...attributionData,
+        submitted_at: new Date().toISOString(),
+        page_source: window.location.pathname + window.location.search,
+      };
+
       const response = await fetch('/api/host-applications', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(submissionData),
       });
       
       if (!response.ok) {
         throw new Error('Failed to submit application');
       }
       
-      setSubmitted(true);
-      toast({
-        title: "Application Submitted!",
-        description: "We'll review your application and contact you within 48 hours.",
-      });
+      // Navigate to thank you page with type parameter
+      navigate('/thank-you?type=host-application');
     } catch (error) {
       console.error('Error submitting application:', error);
       toast({

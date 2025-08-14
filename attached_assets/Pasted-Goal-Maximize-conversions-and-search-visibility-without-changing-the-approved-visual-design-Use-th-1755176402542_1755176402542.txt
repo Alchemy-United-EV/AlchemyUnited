@@ -1,0 +1,43 @@
+Goal: Maximize conversions and search visibility without changing the approved visual design. Use the audit files in /audit as inputs and ship production-safe improvements with measurable proof.
+
+Implement the following end-to-end:
+	1.	SEO & discoverability
+
+	•	Ensure unique <title> + meta description + one <h1> per page.
+	•	Keep canonical links; add robots.txt and /sitemap.xml if missing.
+	•	Add/validate schema.org JSON-LD (Org, WebSite+SearchAction, Product/Service, FAQ if present).
+	•	Generate Open Graph / Twitter tags for share previews.
+
+	2.	Performance & CWV
+
+	•	Target Lighthouse (mobile): Performance ≥ 90, SEO ≥ 90, Best Practices ≥ 90, Accessibility ≥ 95.
+	•	Defer non-critical JS, preload critical fonts, compress/resize hero images, lazy-load below-the-fold media, set a performance budget ≤ 200 KB critical path / ≤ 3 reqs render-blocking.
+
+	3.	Conversion hardening
+
+	•	Ensure all CTAs include data-cta attributes and send events to a lightweight /api/analytics/log.
+	•	Capture UTM params + referrer into both forms and store with submissions.
+	•	Add thank-you/confirmation pages with noindex and event beacons.
+	•	Add server-side validation, spam protection (honeypot + rate-limit), and transactional email/webhook stubs for CRM.
+
+	4.	Accessibility
+
+	•	Keep the completed fixes; re-run axe/pa11y. Goal: 0 critical violations; document remaining minors with code snippets.
+
+	5.	Testing & proofs
+
+	•	Programmatically test: all routes 200, both form endpoints 201 Created and persistence OK.
+	•	Add Playwright happy-path tests: hero CTAs navigate, forms submit, thank-you renders, events logged.
+	•	Re-run Lighthouse (mobile) and include JSON reports.
+
+Deliverables (write all to /audit/final/):
+	•	lighthouse-mobile.json and summary markdown with scores and before/after deltas.
+	•	seo-check.md (titles, descriptions, canonicals, schema validation).
+	•	a11y-report.md (axe results, 0 critical).
+	•	cwv-summary.md (bundle sizes, LCP/CLS/INP targets).
+	•	cta-tracking-log.csv (sample events incl. UTM).
+	•	routes-health.md (HTTP status matrix).
+	•	playwright-report/ (HTML).
+	•	handoff-checklist.md (how to demo to client + where to find proofs).
+
+Do NOT change the approved visual style; limit changes to semantics, attributes, loading behavior, and infra. When complete, post a short executive summary at /audit/final/summary.md with exact scores and a one-line ROI note.

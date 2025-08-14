@@ -38,7 +38,7 @@ export default function Home() {
           <source srcSet="/assets/webp/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.webp" type="image/webp" />
           <img 
             src="/assets/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.png" 
-            alt="Alchemy United Logo"
+            alt="Alchemy Network - Premium EV Charging Network Logo"
             className="h-10 w-auto filter brightness-125"
             width="160"
             height="40"

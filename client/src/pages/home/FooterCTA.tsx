@@ -6,7 +6,7 @@ export default function FooterCTA() {
           <source srcSet="/assets/webp/AE141A66-A440-499B-8889-41BABE3F729E_1754506144500.webp" type="image/webp" />
           <img 
             src="/assets/AE141A66-A440-499B-8889-41BABE3F729E_1754506144500.png" 
-            alt="Alchemy United Logo"
+            alt="Alchemy Network - Premium EV Charging Network Logo"
             className="h-10 w-auto mx-auto mb-6 filter brightness-125"
             width="40"
             height="40"
@@ -15,7 +15,7 @@ export default function FooterCTA() {
         </picture>
         
         <h2 className="text-3xl font-bold text-white mb-8">
-          Ready to Experience the Future?
+          Ready for Fast, Reliable EV Charging?
         </h2>
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
@@ -35,7 +35,7 @@ export default function FooterCTA() {
         
         <div className="border-t border-gray-800 pt-8">
           <p className="text-white/60 text-sm">
-            © 2024 Alchemy United. All rights reserved. | Premium EV charging network for the discerning driver.
+            © 2024 Alchemy Network. All rights reserved. | Premium EV charging network delivering reliable EV charging and profitable hosting solutions.
           </p>
         </div>
       </div>

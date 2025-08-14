@@ -6,12 +6,12 @@ export default function Hero() {
       <div className="relative z-20 text-center text-white px-6 max-w-5xl">
         <header>
           <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black mb-6 leading-tight">
-            <span className="block text-white mb-2">The Future of</span>
-            <span className="text-yellow-400 block">Premium Charging</span>
+            <span className="block text-white mb-2">Premium EV</span>
+            <span className="text-yellow-400 block">Charging Network</span>
           </h1>
           
           <p className="text-xl sm:text-2xl font-light mb-12 max-w-4xl mx-auto leading-relaxed text-white/90">
-            Join Alchemy United — an exclusive network of luxury EV charging stations built for elegance, speed, and next-gen infrastructure.
+            Join Alchemy Network — an exclusive EV charging network delivering fast, reliable EV charging with guaranteed availability for drivers and profitable hosting for partners.
           </p>
         </header>
         

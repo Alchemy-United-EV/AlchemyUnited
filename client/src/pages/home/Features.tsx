@@ -46,7 +46,7 @@ export default function Features() {
 
   return (
     <section aria-labelledby="features-heading" className="mx-auto max-w-6xl px-4 py-12">
-      <h2 id="features-heading" className="text-2xl font-bold mb-6">EV Pain Points → Solutions</h2>
+      <h2 id="features-heading" className="text-3xl font-bold mb-8 text-center">EV Pain Points → Solutions</h2>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {pairs.map(pair => {
           const isFlipped = !!flipped[pair.id];
@@ -62,18 +62,18 @@ export default function Features() {
               >
                 <div className={`preserve-3d duration-500 ease-out relative w-full h-full ${isFlipped ? "rotate-y-180" : ""}`}>
                   {/* Problem side (front) */}
-                  <div className="absolute inset-0 backface-hidden rounded-lg p-4 border shadow-sm bg-red-50">
+                  <div className="absolute inset-0 backface-hidden rounded-lg p-4 border shadow-sm bg-red-50 hover:shadow-md transition-shadow duration-300">
                     <p className="text-sm font-semibold text-red-700 uppercase tracking-wide">Problem</p>
-                    <h3 className="mt-1 font-semibold">{pair.problemTitle}</h3>
-                    <p className="mt-2 text-sm text-red-900/80">{pair.problemText}</p>
-                    <p className="absolute bottom-3 right-4 text-xs text-red-700">Tap ↻ for solution</p>
+                    <h3 className="mt-1 text-lg font-bold text-red-800">{pair.problemTitle}</h3>
+                    <p className="mt-2 text-sm text-red-900/80 leading-relaxed">{pair.problemText}</p>
+                    <p className="absolute bottom-3 right-4 text-xs text-red-700 font-medium">Tap ↻ for solution</p>
                   </div>
                   {/* Solution side (back) */}
-                  <div className="absolute inset-0 backface-hidden rotate-y-180 rounded-lg p-4 border shadow-sm bg-green-50">
+                  <div className="absolute inset-0 backface-hidden rotate-y-180 rounded-lg p-4 border shadow-sm bg-green-50 hover:shadow-md transition-shadow duration-300">
                     <p className="text-sm font-semibold text-green-700 uppercase tracking-wide">Solution</p>
-                    <h3 className="mt-1 font-semibold">{pair.solutionTitle}</h3>
-                    <p className="mt-2 text-sm text-green-900/80">{pair.solutionText}</p>
-                    <p className="absolute bottom-3 right-4 text-xs text-green-700">Tap ↻ for problem</p>
+                    <h3 className="mt-1 text-lg font-bold text-green-800">{pair.solutionTitle}</h3>
+                    <p className="mt-2 text-sm text-green-900/80 leading-relaxed">{pair.solutionText}</p>
+                    <p className="absolute bottom-3 right-4 text-xs text-green-700 font-medium">Tap ↻ for problem</p>
                   </div>
                 </div>
               </button>

@@ -47,13 +47,13 @@ export default function Features() {
   return (
     <section aria-labelledby="features-heading" className="mx-auto max-w-6xl px-4 py-16">
       <div className="text-center mb-12">
-        <div className="inline-flex items-center gap-2 bg-gradient-to-r from-red-100 to-green-100 text-gray-800 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+        <div className="kicker">
           <span>Problems</span>
-          <div className="w-6 h-6 text-yellow-500">🔄</div>
+          <div className="w-6 h-6 text-gold">🔄</div>
           <span>Solutions</span>
         </div>
-        <h2 id="features-heading" className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
-          We Solve Real <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-green-600">EV Problems</span>
+        <h2 id="features-heading" className="h1-premium text-3xl md:text-4xl">
+          We Solve Real <span className="text-gold">EV Problems</span>
         </h2>
         <p className="text-gray-600 max-w-2xl mx-auto">Tap any card to see how we transform industry pain points into seamless experiences</p>
       </div>
@@ -61,18 +61,18 @@ export default function Features() {
         {pairs.map(pair => {
           const isFlipped = !!flipped[pair.id];
           return (
-            <div key={pair.id} className="group perspective">
+            <div key={pair.id} className="group perspective reveal">
               <button
                 type="button"
                 onClick={() => toggle(pair.id)}
                 onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(pair.id); }}}
                 aria-pressed={isFlipped}
                 aria-label={isFlipped ? "Show problem" : "Show solution"}
-                className="relative w-full h-72 focus:outline-none transform hover:scale-105 transition-transform duration-200"
+                className="relative w-full h-72 focus:outline-none transform hover:scale-105 transition-transform duration-200 touch-tap"
               >
-                <div className={`preserve-3d duration-700 ease-out relative w-full h-full ${isFlipped ? "rotate-y-180" : ""} hover:shadow-2xl`}>
+                <div className={`preserve-3d duration-700 ease-out relative w-full h-full ${isFlipped ? "rotate-y-180" : ""} hover:shadow-elev-2`}>
                   {/* Problem side (front) */}
-                  <div className="absolute inset-0 backface-hidden rounded-2xl p-6 shadow-lg bg-gradient-to-br from-red-50 to-red-100 hover:shadow-xl transition-all duration-300 border border-red-200">
+                  <div className="absolute inset-0 backface-hidden card p-6 bg-gradient-to-br from-red-50 to-red-100 border border-red-200">
                     <div className="flex items-center gap-2 mb-3">
                       <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
                         <span className="text-white text-sm">⚠️</span>

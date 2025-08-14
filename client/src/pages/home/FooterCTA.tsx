@@ -3,7 +3,7 @@ import { CTATracker } from '@/components/CTA-Tracker';
 export default function FooterCTA() {
   return (
     <section className="bg-black py-16 px-6">
-      <div className="max-w-4xl mx-auto text-center">
+      <div className="max-w-4xl mx-auto text-center reveal">
         <picture>
           <source srcSet="/assets/webp/AE141A66-A440-499B-8889-41BABE3F729E_1754506144500.webp" type="image/webp" />
           <img 
@@ -26,7 +26,7 @@ export default function FooterCTA() {
             section="footer"
             variant="primary"
             href="/early-access"
-            className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 text-center hover:shadow-lg hover:shadow-yellow-400/25"
+            className="btn-primary touch-tap"
           >
             Get Early Access
           </CTATracker>
@@ -35,7 +35,7 @@ export default function FooterCTA() {
             section="footer"
             variant="secondary"
             href="/host-application"
-            className="border border-yellow-400 hover:bg-yellow-400 text-yellow-400 hover:text-black font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 text-center"
+            className="btn-secondary text-gold border-gold hover:bg-gold/10 touch-tap"
           >
             Become a Host
           </CTATracker>

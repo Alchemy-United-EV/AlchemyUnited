@@ -2,12 +2,8 @@ import { CTATracker } from '@/components/CTA-Tracker';
 
 export default function CTA() {
   return (
-    <section className="bg-gradient-to-br from-black via-gray-900 to-black py-20 px-6 relative overflow-hidden">
-      <div className="absolute inset-0">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-yellow-400/10 to-transparent rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-l from-yellow-400/5 to-transparent rounded-full blur-3xl"></div>
-      </div>
-      <div className="max-w-4xl mx-auto text-center text-white relative z-10">
+    <section className="relative bg-gold-gradient text-black">
+      <div className="mx-auto max-w-5xl px-6 py-16 text-center reveal">
         <picture>
           <source srcSet="/assets/webp/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.webp" type="image/webp" />
           <img 
@@ -35,7 +31,7 @@ export default function CTA() {
             section="mid-page-cta"
             variant="primary"
             href="/early-access"
-            className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-300 hover:to-yellow-400 text-black font-bold py-4 px-8 rounded-full text-xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-yellow-400/30 text-center"
+            className="btn-primary bg-black text-white hover:shadow-elev-2 touch-tap"
           >
             Request Early Access
           </CTATracker>
@@ -44,7 +40,7 @@ export default function CTA() {
             section="mid-page-cta"
             variant="secondary"
             href="/host-application"
-            className="border-2 border-yellow-400 hover:bg-yellow-400 text-yellow-400 hover:text-black font-bold py-4 px-8 rounded-full text-xl transition-all duration-300 transform hover:scale-105 text-center"
+            className="btn-secondary border-black/30 text-black hover:bg-black/5 touch-tap"
           >
             Partner With Us
           </CTATracker>

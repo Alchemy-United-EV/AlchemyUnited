@@ -59,7 +59,7 @@ export default function Hero() {
   return (
     <section 
       ref={heroRef}
-      className="relative overflow-hidden bg-black text-white"
+      className="relative overflow-hidden bg-white text-ink"
       id="hero-section"
     >
       {/* Animated background elements */}
@@ -83,24 +83,24 @@ export default function Hero() {
         aria-hidden="true"
       />
 
-      <div className="relative z-10 mx-auto max-w-6xl px-6 py-16 md:py-24">
+      <div className="relative z-10 mx-auto max-w-6xl px-6 py-16 md:py-24 reveal">
         <header>
           <div className="mb-8">
             <div ref={badgeRef}>
               <div className="inline-block p-1 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-2xl mb-6 animate-shimmer">
                 <div className="bg-black px-6 py-2 rounded-2xl">
-                  <span className="text-[#D4AF37] tracking-widest font-semibold">⚡ PREMIUM NETWORK</span>
+                  <span className="kicker">⚡ PREMIUM NETWORK</span>
                 </div>
               </div>
             </div>
           </div>
           
-          <h1 className="mt-3 text-5xl md:text-6xl font-extrabold leading-tight">
-            <span className="block text-white mb-2">Premium EV</span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 block">Charging Network</span>
+          <h1 className="h1-premium">
+            <span className="block text-ink mb-2">Premium EV</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-light via-gold to-gold-dark block">Charging Network</span>
           </h1>
           
-          <p className="mt-4 text-lg md:text-xl text-gray-300 max-w-2xl">
+          <p className="subcopy mt-4 max-w-2xl">
             Experience fast, reliable EV charging with guaranteed availability. Join our premium network for drivers and profitable hosting partners.
           </p>
         </header>
@@ -111,7 +111,7 @@ export default function Hero() {
             section="hero" 
             variant="primary"
             href="/early-access"
-            className="inline-flex items-center justify-center rounded-xl bg-[#D4AF37] px-6 py-3 font-semibold text-black shadow-md hover:shadow-lg transition-transform duration-200 hover:-translate-y-0.5"
+            className="btn-primary touch-tap"
           >
             <span className="relative z-10">Get Early Access</span>
             <div className="absolute inset-0 bg-gradient-to-r from-yellow-300 to-yellow-600 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-lg"></div>
@@ -121,7 +121,7 @@ export default function Hero() {
             section="hero"
             variant="secondary"
             href="/host-application"
-            className="inline-flex items-center justify-center rounded-xl border border-[#D4AF37]/60 px-6 py-3 font-semibold text-[#D4AF37] hover:bg-[#D4AF37]/10 transition-colors duration-200"
+            className="btn-secondary touch-tap"
           >
             Become a Host
           </CTATracker>

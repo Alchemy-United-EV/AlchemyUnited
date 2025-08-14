@@ -69,33 +69,35 @@ function EarlyAccessForm() {
   }
 
   return (
-    <div className="min-h-screen bg-black">
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-4 sm:p-8">
-        <a href="/" className="text-white hover:text-gold transition-colors">
-          ← Back to Home
-        </a>
-        <img 
-          src="/assets/au-logo.png" 
-          alt="Alchemy United Logo"
-          className="h-8 w-auto filter brightness-125"
-        />
-        <div></div>
+    <div className="min-h-screen bg-white">
+      <nav className="backdrop-blur-md bg-white/70 supports-[backdrop-filter]:bg-white/50 border-b border-black/5">
+        <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16">
+          <a href="/" className="hover:text-gold transition-colors">
+            ← Back to Home
+          </a>
+          <img 
+            src="/assets/au-logo.png" 
+            alt="Alchemy United Logo"
+            className="h-8 w-auto"
+          />
+          <div></div>
+        </div>
       </nav>
 
       <main className="pt-24 pb-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl sm:text-5xl font-black text-white mb-4">
+          <div className="mx-auto max-w-4xl px-6 pt-12 pb-4 reveal">
+            <h1 className="h1-premium text-center">
               Request <span className="text-gold">Early Access</span>
             </h1>
-            <p className="text-xl text-white/80">
+            <p className="subcopy text-center">
               Join the exclusive waitlist for premium EV charging
             </p>
           </div>
 
           <form 
             onSubmit={handleSubmit}
-            className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 space-y-6"
+            className="card p-6 md:p-8 mt-6 reveal space-y-4"
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
@@ -153,10 +155,11 @@ function EarlyAccessForm() {
 
             <button
               type="submit"
-              className="w-full bg-gold hover:bg-gold/90 text-black font-bold py-4 rounded-full text-lg transition-all duration-300 transform hover:scale-105"
+              className="btn-primary w-full md:w-auto touch-tap"
             >
               Request Early Access
             </button>
+            <p className="subcopy mt-3 text-center">No spam. Cancel anytime. Your data is secure.</p>
           </form>
         </div>
       </main>
@@ -386,14 +389,14 @@ function HostApplicationForm() {
       {/* Form Content */}
       <main className="pt-24 pb-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">Become a Host Partner</h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <div className="mx-auto max-w-4xl px-6 pt-12 pb-4 reveal">
+            <h1 className="h1-premium text-center">Become a Host Partner</h1>
+            <p className="subcopy text-center max-w-3xl mx-auto">
               Join our premium EV charging network and generate revenue while providing exceptional service to EV drivers.
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="bg-white shadow-lg rounded-lg p-8">
+          <form onSubmit={handleSubmit} className="card p-6 md:p-8 mt-6 reveal">
             {/* Business Information */}
             <div className="mb-8">
               <h2 className="text-2xl font-semibold text-gray-900 mb-6">Business Information</h2>
@@ -669,10 +672,11 @@ function HostApplicationForm() {
             <div className="text-center">
               <button
                 type="submit"
-                className="bg-gold text-black px-12 py-4 rounded-lg text-lg font-semibold hover:bg-gold/90 transition-colors"
+                className="btn-primary w-full md:w-auto touch-tap"
               >
                 Submit Host Application
               </button>
+              <p className="subcopy mt-3 text-center">Your information is secure. We'll contact you within 2-3 business days.</p>
             </div>
           </form>
         </div>
@@ -700,11 +704,11 @@ function App() {
   }
   
   if (path === '/thank-you') {
-    return <div className="min-h-screen bg-black text-white flex items-center justify-center">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4 text-gold">Thank You!</h1>
-        <p className="text-xl mb-8">Your application has been received.</p>
-        <a href="/" className="bg-gold text-black px-6 py-3 rounded-full font-bold">Return Home</a>
+    return <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="mx-auto max-w-3xl px-6 py-24 text-center reveal">
+        <h1 className="h1-premium">Thank You!</h1>
+        <p className="subcopy mt-4">Your application has been received.</p>
+        <a href="/" className="btn-secondary touch-tap mt-6 inline-block">Return Home</a>
       </div>
     </div>;
   }
@@ -720,3 +724,15 @@ createRoot(el).render(
     <App />
   </React.StrictMode>
 );
+
+if (typeof window !== 'undefined') {
+  const show = () => {
+    document.querySelectorAll<HTMLElement>('.reveal').forEach(el => {
+      const r = el.getBoundingClientRect();
+      const enter = r.top < window.innerHeight * 0.9;
+      if (enter) el.classList.add('in');
+    });
+  };
+  ['scroll','resize','load'].forEach(ev=>window.addEventListener(ev, show, {passive:true}));
+  show();
+}

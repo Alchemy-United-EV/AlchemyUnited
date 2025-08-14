@@ -49,6 +49,8 @@ export default {
         input: "var(--input)",
         ring: "var(--ring)",
         gold: "#D4AF37",
+        'gold-light': '#FFD700',
+        'gold-dark': '#B8860B',
         chart: {
           "1": "var(--chart-1)",
           "2": "var(--chart-2)",
@@ -69,6 +71,10 @@ export default {
       },
       backgroundImage: {
         'gold-gradient': 'linear-gradient(90deg, #FFD700, #D4AF37, #B8860B)',
+      },
+      boxShadow: {
+        'elev-1': '0 6px 18px rgba(212,175,55,.20)',
+        'elev-2': '0 10px 30px rgba(212,175,55,.25)',
       },
       keyframes: {
         "accordion-down": {

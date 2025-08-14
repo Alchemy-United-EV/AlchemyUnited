@@ -13,7 +13,7 @@ export default function Hero() {
       const heroRect = heroRef.current.getBoundingClientRect();
       const badgeRect = badgeRef.current.getBoundingClientRect();
       
-      const top = badgeRect.bottom - heroRect.top + 12;
+      const top = badgeRect.bottom - heroRect.top + 24;
       wingRef.current.style.top = `${top}px`;
     };
 

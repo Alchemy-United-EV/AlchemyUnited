@@ -311,6 +311,8 @@ export class MemStorage implements IStorage {
       ...application,
       id,
       status: "pending",
+      referralCode: application.referralCode ?? null,
+      interests: application.interests ?? null,
       createdAt: new Date(),
       updatedAt: new Date()
     };
@@ -345,6 +347,8 @@ export class MemStorage implements IStorage {
       ...application,
       id,
       status: "pending",
+      currentAmenities: application.currentAmenities ?? null,
+      additionalInfo: application.additionalInfo ?? null,
       createdAt: new Date(),
       updatedAt: new Date()
     };

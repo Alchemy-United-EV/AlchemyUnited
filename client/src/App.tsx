@@ -2,7 +2,7 @@ import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import NotFound from "@/pages/not-found";
-import Home from "@/pages/stable-home";
+import Home from "@/pages/home/Home";
 import EarlyAccess from "@/pages/early-access";
 import HostApplication from "@/pages/host-application";
 import SimpleDashboard from "@/pages/simple-dashboard";

@@ -1,0 +1,43 @@
+Goal: Implement the previously recommended short-term items to improve page speed, maintainability, and trust. Use a new branch cleanup/short-term-ev-site. Produce before/after metrics.
+
+Tasks
+	1.	Convert heavy images to WebP + optimize
+	•	Locate all JPG/PNG >120KB in /public/assets/.
+	•	Create /public/assets/webp/ and generate WebP versions at 75–80 quality; keep originals.
+	•	Update imports/src to prefer WebP with JPG/PNG fallback (<picture> or simple webp then img fallback).
+	•	Output a table of each optimized asset: old size → new size.
+	2.	Progressive image loading
+	•	Add loading="lazy" to non-hero images.
+	•	For the hero, add a tiny blurred placeholder (data URI or 20px WebP) swapped once loaded.
+	•	Verify no layout shift (CLS) by setting explicit width/height or aspect ratio.
+	3.	Prune unused UI components
+	•	Scan client/src/components/ui/ and list components with 0 imports.
+	•	Move them to client/_archive/components/ (no deletions).
+	•	Rebuild and report bundle delta.
+	4.	Split stable-home.tsx into modules
+	•	Create client/src/pages/home/ and extract:
+	•	Hero.tsx, Features.tsx, CTA.tsx, FooterCTA.tsx
+	•	Replace the large file with a composed Home.tsx that imports these.
+	•	No visual/messaging changes. Just structure.
+	•	Verify routes unchanged.
+	5.	Add LocalBusiness schema.org
+	•	Inject JSON-LD in <head> via a small component SeoLocalBusiness.tsx.
+	•	Include: name, logo, url, sameAs (empty array ok), address (placeholder ok), openingHours (basic).
+	•	Wire it only on / for now.
+
+Verification
+	•	npm run build passes.
+	•	Report Core Web Vitals proxies: build size, largest image size, number of JS chunks, and approximate LCP image bytes before/after.
+	•	Visual spot check: hero, features, and CTAs render identically.
+	•	No 404s from asset path changes.
+
+Deliverables
+	•	📊 Table: image optimizations (file, old → new KB, % saved).
+	•	🧹 List of archived components.
+	•	📦 Bundle before/after (KB) and page count unchanged.
+	•	📝 Commit message:
+chore(speed): webp + lazy images, prune unused ui, modularize Home, add LocalBusiness schema
+
+Constraints
+	•	Keep all originals archived or kept alongside WebP.
+	•	If any step risks breaking visuals, stop and report exact file/line.

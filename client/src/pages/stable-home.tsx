@@ -68,11 +68,17 @@ function FlipCard({ problem, solution, index }: { problem: any, solution: any, i
             </div>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <img 
-                  src="/assets/AE141A66-A440-499B-8889-41BABE3F729E_1754506144500.png" 
-                  alt="AU"
-                  className="h-6 w-auto"
-                />
+                <picture>
+                  <source srcSet="/assets/webp/AE141A66-A440-499B-8889-41BABE3F729E_1754506144500.webp" type="image/webp" />
+                  <img 
+                    src="/assets/AE141A66-A440-499B-8889-41BABE3F729E_1754506144500.png" 
+                    alt="AU"
+                    className="h-6 w-auto"
+                    width="24"
+                    height="24"
+                    loading="lazy"
+                  />
+                </picture>
                 <span className="text-sm text-yellow-600 font-medium">The Alchemy Way</span>
               </div>
               <span className="text-xs text-gray-500">Tap ↻ for problem</span>
@@ -147,11 +153,16 @@ export default function StableHome() {
         className="fixed top-0 left-0 right-0 z-50 flex justify-center p-6 transition-opacity duration-300"
         style={{ opacity: logoOpacity }}
       >
-        <img 
-          src="/assets/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.png" 
-          alt="Alchemy United Logo"
-          className="h-10 w-auto filter brightness-125"
-        />
+        <picture>
+          <source srcSet="/assets/webp/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.webp" type="image/webp" />
+          <img 
+            src="/assets/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.png" 
+            alt="Alchemy United Logo"
+            className="h-10 w-auto filter brightness-125"
+            width="160"
+            height="40"
+          />
+        </picture>
       </nav>
 
       {/* Hero Section */}
@@ -215,11 +226,17 @@ export default function StableHome() {
       {/* Early Access Section */}
       <section className="bg-black py-20 px-6">
         <div className="max-w-4xl mx-auto text-center text-white">
-          <img 
-            src="/assets/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.png" 
-            alt="Alchemy United Logo"
-            className="h-16 w-auto mx-auto mb-8 filter brightness-125"
-          />
+          <picture>
+            <source srcSet="/assets/webp/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.webp" type="image/webp" />
+            <img 
+              src="/assets/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.png" 
+              alt="Alchemy United Logo"
+              className="h-16 w-auto mx-auto mb-8 filter brightness-125"
+              width="160"
+              height="64"
+              loading="lazy"
+            />
+          </picture>
           
           <h2 className="text-4xl sm:text-6xl font-black mb-8 leading-tight">
             Gain Early Access to the{' '}
@@ -285,11 +302,17 @@ export default function StableHome() {
       {/* Footer */}
       <section className="bg-black py-16 px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <img 
-            src="/assets/AE141A66-A440-499B-8889-41BABE3F729E_1754506144500.png" 
-            alt="Alchemy United Logo"
-            className="h-10 w-auto mx-auto mb-6 filter brightness-125"
-          />
+          <picture>
+            <source srcSet="/assets/webp/AE141A66-A440-499B-8889-41BABE3F729E_1754506144500.webp" type="image/webp" />
+            <img 
+              src="/assets/AE141A66-A440-499B-8889-41BABE3F729E_1754506144500.png" 
+              alt="Alchemy United Logo"
+              className="h-10 w-auto mx-auto mb-6 filter brightness-125"
+              width="40"
+              height="40"
+              loading="lazy"
+            />
+          </picture>
           
           <h2 className="text-3xl font-bold text-white mb-8">
             Ready to Experience the Future?

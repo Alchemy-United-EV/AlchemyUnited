@@ -340,7 +340,7 @@ function HomeComponent() {
           <img 
             src="/assets/header-logo.jpeg" 
             alt="Alchemy United Premium EV Charging Network"
-            className="h-full w-auto py-2"
+            className="h-full w-auto py-2 object-contain mix-blend-multiply"
           />
           <div className="flex gap-4">
             <button

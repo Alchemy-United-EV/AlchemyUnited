@@ -1,0 +1,54 @@
+You are auditing this repo as a CRO + SEO + QA engineer.
+Goal: Identify the fastest path to profit: what blocks conversions, what’s missing for SEO/tracking, and any backend faults that could drop leads.
+Absolutely do NOT: redesign the site, change copy/branding, delete files, or ship experimental code. Read-only wherever possible. If a toggle is required for testing, revert it before you finish.
+
+Scope
+	1.	Build & Speed
+	•	Run a production build. Record: build time, JS/CSS gzipped sizes, # of modules, largest assets, image payload.
+	•	Lighthouse (mobile + desktop) in headless mode. Export JSON + HTML.
+	•	Note CLS/LCP/TTFB, flag any layout shifts above the fold.
+	2.	SEO Technical
+	•	Verify <title>, meta description, canonical, robots, sitemap (if any).
+	•	Validate structured data (Schema.org). Ensure LocalBusiness (or most fitting type) is present and passes validation; list missing required/recommended fields.
+	•	Check headings (one H1), alt text on images, link text clarity, and 404/redirect behavior.
+	3.	Conversion (CRO)
+	•	Audit above-the-fold: clarity of value prop, single primary CTA, button affordance, contrast, and mobile tap targets.
+	•	Verify the Social Proof section renders correctly (temporarily set showSocialProof = true to capture screenshots, then revert).
+	•	Evaluate the “Problems → Solutions” toggle: does the flip interaction meet accessibility (keyboard, aria) and discoverability?
+	•	Identify friction: excessive scrolling before CTA, competing CTAs, unclear copy, missing benefit bullets, weak risk reversal.
+	4.	Forms & Backend Reliability
+	•	Locate any forms (early access / host signup). Confirm front-end validation, error states, success states.
+	•	If a backend handler exists, run it locally and simulate submissions with safe dummy data. Log status codes, latency, and error handling.
+	•	If no handler, note the gap and propose a minimal, secure endpoint (schema only, no implementation).
+	5.	Tracking & Attribution
+	•	Detect GA4/Pixel/Tag Manager. If missing, generate an events plan (page_view, CTA click IDs, form_submit, problem→solution toggle). Do not install tracking—just produce the plan and dataLayer/event names.
+	6.	Accessibility
+	•	Run an automated a11y check (axe or similar). List violations (wcag rule, node, fix suggestion). Check focus order and contrast on primary CTAs.
+	7.	Security/Quality
+	•	Scan console for runtime errors and mixed content.
+	•	Flag env/secret risks, vulnerable deps (npm audit --production), and caching headers suggestions.
+
+What NOT to do
+	•	Don’t change copy or visuals.
+	•	Don’t delete/rename public routes or assets.
+	•	Don’t push tracking code or new dependencies unless required for auditing tools (use dev deps only).
+
+Deliverables (create these at repo root)
+	•	audit/ folder containing:
+	•	conversion-audit.md – findings with screenshots and Impact x Effort score (H, M, L).
+	•	lighthouse-mobile.html, lighthouse-desktop.html + raw JSON.
+	•	seo-tech-checklist.md – meta, schema validation notes, missing fields, sitemap/robots status.
+	•	tracking-plan.md – GA4/Tag Manager event names, triggers, parameters, and success KPIs.
+	•	forms-backend-report.md – endpoints, validation, errors, latency, and reliability risks (or “missing backend” with recommended request schema).
+	•	a11y-report.md – violations with WCAG refs and code-level fix suggestions.
+	•	performance-summary.md – build stats, bundle breakdown, top 10 largest assets, image payload, opportunities (code-split, preconnect, critical CSS, image sizes).
+	•	profit-roadmap.md – Prioritized 2-week action plan to lift conversions fastest (bullet list with owners, ETA, and expected lift).
+	•	Leave a short summary in replit.md (“Audit complete”) with links to all reports.
+
+Acceptance criteria
+	•	No persistent code changes except creation of the audit/ reports and the replit.md summary.
+	•	Any toggles (e.g., showSocialProof) reverted to the original state.
+	•	All reports built, with at least 3 screenshots: above-the-fold, Social Proof, and Problems→Solutions component.
+	•	Clear, ranked recommendations tied to conversion impact.
+
+When finished, print a final checklist of deliverables found in audit/ and restore any temp changes.

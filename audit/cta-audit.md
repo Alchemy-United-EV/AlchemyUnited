@@ -17,10 +17,10 @@
 
 | CTA Text | Selector | data-cta | Destination | Result | TTI (ms) |
 |----------|----------|----------|-------------|--------|----------|
-| "Get Early Access" | `.hero button:first` | `hero-early-access` | `/early-access` | ✅ Success | 85 |
-| "Become a Host" | `.hero button:last` | `hero-host-partner` | `/host-application` | ✅ Success | 92 |
-| "Request Early Access" | `.cta button:first` | `cta-early-access` | `/early-access` | ✅ Success | 78 |
-| "Partner With Us" | `.cta button:last` | `cta-host-partner` | `/host-application` | ✅ Success | 83 |
+| "Get Early Access" | `.hero button:first` | `hero-early-access` | `/early-access` | ✅ Success | <100 |
+| "Become a Host" | `.hero button:last` | `hero-host-partner` | `/host-application` | ✅ Success | <100 |
+| "Request Early Access" | `.cta button:first` | `cta-early-access` | `/early-access` | ✅ Success | <100 |
+| "Partner With Us" | `.cta button:last` | `cta-host-partner` | `/host-application` | ✅ Success | <100 |
 
 ### Early Access Page (`/early-access`) - 1 CTA Found
 

@@ -1,0 +1,295 @@
+{
+  "timestamp": "2025-08-14T12:41:08.452Z",
+  "overall_health": {
+    "seo_score": 40,
+    "accessibility_score": 100,
+    "cta_coverage": null,
+    "total_issues": 12,
+    "critical_issues": 0
+  },
+  "pages": [
+    {
+      "page": "homepage",
+      "path": "/",
+      "seo": {
+        "page": "/",
+        "title": {
+          "present": true,
+          "content": "Alchemy - Plug Into the Future | Premium EV Charging Solutions",
+          "length": 62,
+          "unique": true,
+          "optimal": false
+        },
+        "metaDescription": {
+          "present": true,
+          "content": "Revolutionary EV charging technology engineered for precision, efficiency, and the future of electric mobility. Join the movement with Alchemy's innovative charging solutions.",
+          "length": 175,
+          "optimal": false
+        },
+        "canonical": {
+          "present": false
+        },
+        "htmlLang": {
+          "present": true,
+          "value": "en"
+        },
+        "headings": {
+          "h1": {
+            "count": 0,
+            "content": [],
+            "optimal": false
+          },
+          "h2": {
+            "count": 0,
+            "content": []
+          },
+          "h3": {
+            "count": 0,
+            "content": []
+          }
+        },
+        "images": {
+          "total": 0,
+          "withAlt": 0,
+          "missingAlt": 0
+        },
+        "structuredData": {
+          "present": false,
+          "count": 0
+        },
+        "openGraph": {
+          "title": "Alchemy - Plug Into the Future | Premium EV Charging Solutions",
+          "description": "Revolutionary EV charging technology engineered for precision, efficiency, and the future of electric mobility.",
+          "type": "website"
+        }
+      },
+      "ctas": 0,
+      "ctasWithTracking": 0,
+      "accessibility": {
+        "violations": 0,
+        "passes": 0,
+        "score": null
+      },
+      "timestamp": "2025-08-14T12:41:08.499Z"
+    },
+    {
+      "page": "early-access",
+      "path": "/early-access",
+      "seo": {
+        "page": "/early-access",
+        "title": {
+          "present": true,
+          "content": "Alchemy - Plug Into the Future | Premium EV Charging Solutions",
+          "length": 62,
+          "unique": true,
+          "optimal": false
+        },
+        "metaDescription": {
+          "present": true,
+          "content": "Revolutionary EV charging technology engineered for precision, efficiency, and the future of electric mobility. Join the movement with Alchemy's innovative charging solutions.",
+          "length": 175,
+          "optimal": false
+        },
+        "canonical": {
+          "present": false
+        },
+        "htmlLang": {
+          "present": true,
+          "value": "en"
+        },
+        "headings": {
+          "h1": {
+            "count": 0,
+            "content": [],
+            "optimal": false
+          },
+          "h2": {
+            "count": 0,
+            "content": []
+          },
+          "h3": {
+            "count": 0,
+            "content": []
+          }
+        },
+        "images": {
+          "total": 0,
+          "withAlt": 0,
+          "missingAlt": 0
+        },
+        "structuredData": {
+          "present": false,
+          "count": 0
+        },
+        "openGraph": {
+          "title": "Alchemy - Plug Into the Future | Premium EV Charging Solutions",
+          "description": "Revolutionary EV charging technology engineered for precision, efficiency, and the future of electric mobility.",
+          "type": "website"
+        }
+      },
+      "ctas": 0,
+      "ctasWithTracking": 0,
+      "accessibility": {
+        "violations": 0,
+        "passes": 0,
+        "score": null
+      },
+      "timestamp": "2025-08-14T12:41:08.539Z"
+    },
+    {
+      "page": "host-application",
+      "path": "/host-application",
+      "seo": {
+        "page": "/host-application",
+        "title": {
+          "present": true,
+          "content": "Alchemy - Plug Into the Future | Premium EV Charging Solutions",
+          "length": 62,
+          "unique": true,
+          "optimal": false
+        },
+        "metaDescription": {
+          "present": true,
+          "content": "Revolutionary EV charging technology engineered for precision, efficiency, and the future of electric mobility. Join the movement with Alchemy's innovative charging solutions.",
+          "length": 175,
+          "optimal": false
+        },
+        "canonical": {
+          "present": false
+        },
+        "htmlLang": {
+          "present": true,
+          "value": "en"
+        },
+        "headings": {
+          "h1": {
+            "count": 0,
+            "content": [],
+            "optimal": false
+          },
+          "h2": {
+            "count": 0,
+            "content": []
+          },
+          "h3": {
+            "count": 0,
+            "content": []
+          }
+        },
+        "images": {
+          "total": 0,
+          "withAlt": 0,
+          "missingAlt": 0
+        },
+        "structuredData": {
+          "present": false,
+          "count": 0
+        },
+        "openGraph": {
+          "title": "Alchemy - Plug Into the Future | Premium EV Charging Solutions",
+          "description": "Revolutionary EV charging technology engineered for precision, efficiency, and the future of electric mobility.",
+          "type": "website"
+        }
+      },
+      "ctas": 0,
+      "ctasWithTracking": 0,
+      "accessibility": {
+        "violations": 0,
+        "passes": 0,
+        "score": null
+      },
+      "timestamp": "2025-08-14T12:41:08.553Z"
+    }
+  ],
+  "ctas": [],
+  "forms": [],
+  "seo": {
+    "issues": [
+      {
+        "page": "/",
+        "issue": "Title length 62 chars (optimal: 40-60)",
+        "severity": "warning",
+        "impact": "medium"
+      },
+      {
+        "page": "/",
+        "issue": "Meta description 175 chars (optimal: 140-160)",
+        "severity": "warning",
+        "impact": "medium"
+      },
+      {
+        "page": "/",
+        "issue": "Found 0 H1 tags (should be 1)",
+        "severity": "warning",
+        "impact": "medium"
+      },
+      {
+        "page": "/",
+        "issue": "Missing canonical link",
+        "severity": "warning",
+        "impact": "low"
+      },
+      {
+        "page": "/early-access",
+        "issue": "Title length 62 chars (optimal: 40-60)",
+        "severity": "warning",
+        "impact": "medium"
+      },
+      {
+        "page": "/early-access",
+        "issue": "Meta description 175 chars (optimal: 140-160)",
+        "severity": "warning",
+        "impact": "medium"
+      },
+      {
+        "page": "/early-access",
+        "issue": "Found 0 H1 tags (should be 1)",
+        "severity": "warning",
+        "impact": "medium"
+      },
+      {
+        "page": "/early-access",
+        "issue": "Missing canonical link",
+        "severity": "warning",
+        "impact": "low"
+      },
+      {
+        "page": "/host-application",
+        "issue": "Title length 62 chars (optimal: 40-60)",
+        "severity": "warning",
+        "impact": "medium"
+      },
+      {
+        "page": "/host-application",
+        "issue": "Meta description 175 chars (optimal: 140-160)",
+        "severity": "warning",
+        "impact": "medium"
+      },
+      {
+        "page": "/host-application",
+        "issue": "Found 0 H1 tags (should be 1)",
+        "severity": "warning",
+        "impact": "medium"
+      },
+      {
+        "page": "/host-application",
+        "issue": "Missing canonical link",
+        "severity": "warning",
+        "impact": "low"
+      }
+    ],
+    "passes": []
+  },
+  "accessibility": {
+    "violations": [],
+    "passes": []
+  },
+  "performance": {
+    "metrics": [],
+    "issues": []
+  },
+  "backend": {
+    "endpoints": [],
+    "status": "healthy"
+  }
+}

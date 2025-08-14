@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import Hero from './Hero';
 import Features from './Features';
 import SocialProof from '@/components/SocialProof';
@@ -6,50 +6,57 @@ import CTA from './CTA';
 import FooterCTA from './FooterCTA';
 
 export default function Home() {
-  const [logoOpacity, setLogoOpacity] = useState(1);
   const showSocialProof = true; // ENABLED
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const heroHeight = window.innerHeight;
-      // Adjust fade start to begin after hero section ends
-      const fadeStart = heroHeight;
-      const fadeEnd = heroHeight + 200; // Fade over 200px of scroll
+      const heroSection = document.getElementById('hero-section');
+      const wingLogo = document.getElementById('wing-logo');
       
-      if (scrollY > fadeStart) {
-        const fadeProgress = (scrollY - fadeStart) / (fadeEnd - fadeStart);
-        setLogoOpacity(Math.max(0, 1 - fadeProgress));
+      if (!heroSection || !wingLogo) return;
+
+      const heroRect = heroSection.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      
+      // Calculate hero visibility progress (0 = fully out of view, 1 = fully in view)
+      const heroTop = heroRect.top;
+      const heroBottom = heroRect.bottom;
+      const heroHeight = heroRect.height;
+      
+      // Fade in as hero comes into view, fade out as it leaves
+      let fadeProgress = 0;
+      if (heroBottom > 0 && heroTop < viewportHeight) {
+        // Hero is at least partially in view
+        const visibleHeight = Math.min(heroBottom, viewportHeight) - Math.max(heroTop, 0);
+        fadeProgress = Math.min(visibleHeight / heroHeight, 1);
+      }
+      
+      // Parallax movement: move up slightly as user scrolls
+      const scrollProgress = Math.max(0, Math.min(1, -heroTop / heroHeight));
+      const yOffset = scrollProgress * -24; // Move up 24px max
+      
+      // Check for reduced motion preference
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      
+      if (prefersReducedMotion) {
+        wingLogo.style.setProperty('--y', '0px');
+        wingLogo.style.setProperty('--fade', '1');
       } else {
-        setLogoOpacity(1);
+        wingLogo.style.setProperty('--y', `${yOffset}px`);
+        wingLogo.style.setProperty('--fade', fadeProgress.toString());
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    // Initial call
+    handleScroll();
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
     <div className="min-h-screen bg-white">
       <Hero />
-      
-      {/* Navigation Logo - positioned after hero to avoid overlap */}
-      <nav 
-        className="relative flex justify-center p-6 transition-opacity duration-300 -mt-20 z-10"
-        style={{ opacity: logoOpacity }}
-      >
-        <picture>
-          <source srcSet="/assets/webp/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.webp" type="image/webp" />
-          <img 
-            src="/assets/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.png" 
-            alt="Alchemy Network - Premium EV Charging Network Logo"
-            className="h-10 w-auto filter brightness-125"
-            width="160"
-            height="40"
-          />
-        </picture>
-      </nav>
-      
       <Features />
       {showSocialProof && <SocialProof showLogos={true} />}
       <CTA />

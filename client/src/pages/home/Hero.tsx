@@ -1,6 +1,8 @@
 export default function Hero() {
   return (
-    <section className="relative h-screen bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center overflow-hidden">
+    <section className="relative h-screen bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center overflow-hidden"
+      id="hero-section"
+    >
       {/* Animated background elements */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-yellow-400/20 to-transparent rounded-full blur-3xl animate-pulse"></div>
@@ -61,6 +63,29 @@ export default function Hero() {
             <span>Premium Locations</span>
           </div>
         </div>
+      </div>
+
+      {/* Wing Logo - positioned at bottom of hero */}
+      <div 
+        id="wing-logo"
+        className="absolute left-1/2 z-0 pointer-events-none will-change-transform will-change-opacity"
+        style={{
+          bottom: 'clamp(56px, 6vh, 96px)',
+          transform: 'translate(-50%, var(--y, 0))',
+          opacity: 'var(--fade, 0)'
+        }}
+        aria-hidden="true"
+      >
+        <picture>
+          <source srcSet="/assets/webp/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.webp" type="image/webp" />
+          <img 
+            src="/assets/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.png" 
+            alt=""
+            className="h-10 w-auto filter brightness-125"
+            width="160"
+            height="40"
+          />
+        </picture>
       </div>
     </section>
   );

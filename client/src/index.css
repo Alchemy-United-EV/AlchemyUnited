@@ -292,16 +292,33 @@ html,body{ background:#ffffff; color:var(--ink); }
 .bg-gold-gradient{ background:linear-gradient(90deg,var(--gold-light),var(--gold),var(--gold-dark)); }
 .text-gold{ color:var(--gold); }
 .border-gold{ border-color:var(--gold); }
-.btn-primary{ @apply inline-flex items-center justify-center rounded-xl px-6 py-3 font-semibold text-black bg-gold shadow-elev-1 hover:shadow-elev-2 transition duration-200 hover:-translate-y-0.5 active:translate-y-0; }
-.btn-secondary{ @apply inline-flex items-center justify-center rounded-xl px-6 py-3 font-semibold border border-gold text-gold hover:bg-gold/10 transition-colors duration-200; }
-.card{ @apply rounded-2xl bg-white/90 backdrop-blur-sm shadow-elev-1 ring-1 ring-black/5; }
+.btn-primary{ @apply inline-flex items-center justify-center rounded-xl px-6 py-3 font-semibold text-black bg-gold shadow-elev-1 hover:shadow-elev-2 transition duration-200 hover:-translate-y-0.5 active:translate-y-0 hover:bg-gold-light; }
+.btn-secondary{ @apply inline-flex items-center justify-center rounded-xl px-6 py-3 font-semibold border border-gold text-gold hover:bg-gold/10 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-elev-1; }
+.card{ @apply rounded-2xl bg-white/90 backdrop-blur-sm shadow-elev-1 ring-1 ring-black/5 hover:shadow-elev-2 transition-all duration-300; }
 .kicker{ @apply text-[12px] tracking-[0.22em] font-semibold text-gold; }
 .h1-premium{ @apply text-4xl md:text-6xl font-extrabold leading-tight; }
 .subcopy{ @apply text-lg md:text-xl text-gray-600; }
 .reveal{ opacity:0; transform:translateY(14px); transition:opacity .5s ease, transform .5s ease; }
 .reveal.in{ opacity:1; transform:none; }
-.touch-tap{ transition:transform .08s ease; }
-.touch-tap:active{ transform:scale(.98); }
+.touch-tap{ position:relative; overflow:hidden; transition:all .08s cubic-bezier(.4,0,.2,1); }
+.touch-tap:active{ transform:scale(.96); }
+.touch-tap::before{ content:''; position:absolute; top:50%; left:50%; width:0; height:0; border-radius:50%; background:rgba(255,255,255,.3); transform:translate(-50%,-50%); transition:width .3s,height .3s; pointer-events:none; }
+.touch-tap:active::before{ width:300px; height:300px; }
+.haptic-light{ animation:haptic-pulse .1s ease-out; }
+.haptic-medium{ animation:haptic-bounce .2s ease-out; }
+.haptic-heavy{ animation:haptic-shake .3s ease-out; }
+.success-pop{ animation:success-pop .5s cubic-bezier(.68,-.55,.265,1.55); }
+@keyframes haptic-pulse{ 0%{transform:scale(1);} 50%{transform:scale(1.02);} 100%{transform:scale(1);} }
+@keyframes haptic-bounce{ 0%{transform:scale(1);} 25%{transform:scale(.98);} 50%{transform:scale(1.03);} 75%{transform:scale(.99);} 100%{transform:scale(1);} }
+@keyframes haptic-shake{ 0%,100%{transform:translateX(0);} 10%,30%,50%,70%,90%{transform:translateX(-2px);} 20%,40%,60%,80%{transform:translateX(2px);} }
+@keyframes success-pop{ 0%{transform:scale(1);} 50%{transform:scale(1.1);} 100%{transform:scale(1);} }
+.scale-98{ transform:scale(0.98); }
+.bg-gold-light{ background-color:var(--gold-light); }
+a:hover{ transition:all .2s ease; }
+a:hover{ color:var(--gold); }
+input:focus,select:focus{ ring:2px; ring-color:var(--gold); border-color:var(--gold); }
+.celebration{ animation:celebration 2s ease-out; }
+@keyframes celebration{ 0%{transform:scale(1) rotate(0deg);} 25%{transform:scale(1.1) rotate(5deg);} 50%{transform:scale(1.05) rotate(-5deg);} 75%{transform:scale(1.08) rotate(2deg);} 100%{transform:scale(1) rotate(0deg);} }
 ::-webkit-scrollbar{ width:10px; height:10px; }
 ::-webkit-scrollbar-thumb{ background:linear-gradient(180deg,var(--gold),var(--gold-dark)); border-radius:8px; }
 @media (prefers-reduced-motion: reduce){

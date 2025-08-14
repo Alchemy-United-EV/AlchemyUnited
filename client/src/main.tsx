@@ -21,6 +21,15 @@ function EarlyAccessForm() {
     e.preventDefault();
     console.log('Form submitted:', formData);
     
+    // Add immediate dopamine feedback
+    const submitBtn = e.currentTarget.querySelector('button[type="submit"]') as HTMLElement;
+    const form = e.currentTarget as HTMLElement;
+    
+    if (submitBtn) {
+      submitBtn.classList.add('haptic-heavy');
+      setTimeout(() => submitBtn.classList.remove('haptic-heavy'), 300);
+    }
+    
     try {
       // Map to match server schema - need ALL required fields
       const submissionData = {
@@ -40,27 +49,55 @@ function EarlyAccessForm() {
       });
       
       if (response.ok) {
-        setSubmitted(true);
+        // Success dopamine burst
+        if (submitBtn) {
+          submitBtn.classList.add('success-pop');
+          submitBtn.innerHTML = '✓ Success!';
+          submitBtn.style.background = 'var(--gold)';
+        }
+        if (form) {
+          form.classList.add('haptic-bounce');
+        }
+        
+        setTimeout(() => {
+          setSubmitted(true);
+        }, 600);
       } else {
         const error = await response.json();
         console.error('Submission error:', error);
+        if (submitBtn) {
+          submitBtn.classList.add('haptic-shake');
+          setTimeout(() => submitBtn.classList.remove('haptic-shake'), 300);
+        }
       }
     } catch (error) {
       console.error('Submission failed:', error);
+      if (submitBtn) {
+        submitBtn.classList.add('haptic-shake');
+        setTimeout(() => submitBtn.classList.remove('haptic-shake'), 300);
+      }
     }
   };
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    
+    // Add haptic feedback for typing
+    const input = document.activeElement as HTMLElement;
+    if (input && input.tagName === 'INPUT') {
+      input.classList.add('haptic-light');
+      setTimeout(() => input.classList.remove('haptic-light'), 100);
+    }
   };
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center px-4">
-        <div className="max-w-2xl mx-auto text-center text-white">
-          <h1 className="text-4xl font-bold mb-6 text-gold">Thank You!</h1>
-          <p className="text-xl mb-8">Your application has been submitted successfully.</p>
-          <a href="/" className="inline-block bg-gold text-black px-8 py-3 rounded-full font-bold hover:bg-gold/90 transition-colors">
+      <div className="min-h-screen bg-white flex items-center justify-center px-4">
+        <div className="max-w-2xl mx-auto text-center success-pop">
+          <div className="animate-bounce text-6xl mb-4">🎉</div>
+          <h1 className="h1-premium text-gold mb-6 animate-pulse-gold">Thank You!</h1>
+          <p className="subcopy mb-8">Your application has been submitted successfully. We'll contact you within 24-48 hours.</p>
+          <a href="/" className="btn-primary touch-tap">
             Return Home
           </a>
         </div>
@@ -107,7 +144,7 @@ function EarlyAccessForm() {
                   type="text"
                   value={formData.firstName}
                   onChange={(e) => handleInputChange('firstName', e.target.value)}
-                  className="w-full bg-white/10 border border-white/30 text-white placeholder:text-white/60 rounded-lg px-3 py-2"
+                  className="w-full bg-white/10 border border-white/30 text-white placeholder:text-white/60 rounded-lg px-3 py-2 focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all touch-tap"
                   placeholder="Enter your first name"
                   required
                 />
@@ -120,7 +157,7 @@ function EarlyAccessForm() {
                   type="text"
                   value={formData.lastName}
                   onChange={(e) => handleInputChange('lastName', e.target.value)}
-                  className="w-full bg-white/10 border border-white/30 text-white placeholder:text-white/60 rounded-lg px-3 py-2"
+                  className="w-full bg-white/10 border border-white/30 text-white placeholder:text-white/60 rounded-lg px-3 py-2 focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all touch-tap"
                   placeholder="Enter your last name"
                   required
                 />
@@ -134,7 +171,7 @@ function EarlyAccessForm() {
                 type="email"
                 value={formData.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
-                className="w-full bg-white/10 border border-white/30 text-white placeholder:text-white/60 rounded-lg px-3 py-2"
+                className="w-full bg-white/10 border border-white/30 text-white placeholder:text-white/60 rounded-lg px-3 py-2 focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all touch-tap"
                 placeholder="your.email@example.com"
                 required
               />
@@ -147,7 +184,7 @@ function EarlyAccessForm() {
                 type="tel"
                 value={formData.phone}
                 onChange={(e) => handleInputChange('phone', e.target.value)}
-                className="w-full bg-white/10 border border-white/30 text-white placeholder:text-white/60 rounded-lg px-3 py-2"
+                className="w-full bg-white/10 border border-white/30 text-white placeholder:text-white/60 rounded-lg px-3 py-2 focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all touch-tap"
                 placeholder="(555) 123-4567"
                 required
               />
@@ -186,7 +223,51 @@ function HomeComponent() {
       observer.observe(el);
     });
 
-    return () => observer.disconnect();
+    // Dopamine micro-interactions
+    const addDopamineEffects = () => {
+      // Add haptic feedback to all interactive elements
+      document.querySelectorAll('button, a, input, select, [role="button"]').forEach((el) => {
+        // Remove existing listeners
+        el.removeEventListener('touchstart', handleTouchStart);
+        el.removeEventListener('mousedown', handleMouseDown);
+        el.removeEventListener('focus', handleFocus);
+        
+        // Add dopamine touch effects
+        el.addEventListener('touchstart', handleTouchStart, { passive: true });
+        el.addEventListener('mousedown', handleMouseDown);
+        el.addEventListener('focus', handleFocus);
+      });
+    };
+
+    const handleTouchStart = (e: TouchEvent) => {
+      const el = e.currentTarget as HTMLElement;
+      el.classList.add('haptic-medium');
+      setTimeout(() => el.classList.remove('haptic-medium'), 200);
+    };
+
+    const handleMouseDown = (e: MouseEvent) => {
+      const el = e.currentTarget as HTMLElement;
+      el.classList.add('haptic-light');
+      setTimeout(() => el.classList.remove('haptic-light'), 100);
+    };
+
+    const handleFocus = (e: FocusEvent) => {
+      const el = e.currentTarget as HTMLElement;
+      el.style.outline = '2px solid var(--gold)';
+      el.style.outlineOffset = '2px';
+    };
+
+    // Initialize dopamine effects
+    addDopamineEffects();
+
+    // Re-apply effects after DOM changes
+    const mutationObserver = new MutationObserver(addDopamineEffects);
+    mutationObserver.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      observer.disconnect();
+      mutationObserver.disconnect();
+    };
   }, []);
 
   return (

@@ -334,30 +334,6 @@ function HomeComponent() {
 
   return (
     <div className="min-h-screen bg-[var(--bg-page)]">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur border-b border-[var(--border)]">
-        <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16">
-          <img 
-            src="/assets/header-logo.jpeg" 
-            alt="Alchemy United Premium EV Charging Network"
-            className="h-full w-auto py-2 object-contain mix-blend-multiply"
-          />
-          <div className="flex gap-4">
-            <button
-              onClick={() => window.location.href = '/early-access'}
-              className="hover:text-[var(--gold)] transition-colors px-4 py-2 underline decoration-[var(--gold)] underline-offset-4"
-            >
-              Get Early Access
-            </button>
-            <button
-              onClick={() => window.location.href = '/host-application'}
-              className="btn-gold-ghost"
-            >
-              Become a Host
-            </button>
-          </div>
-        </div>
-      </nav>
 
       {/* Hero Section */}
       <main>

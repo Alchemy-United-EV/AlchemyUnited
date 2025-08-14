@@ -13,17 +13,10 @@ export default function Hero() {
       <div className="relative z-20 text-center text-white px-4 sm:px-6 max-w-5xl animate-fade-in">
         <header>
           <div className="mb-8">
-            <div className="inline-block p-1 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-2xl mb-4 animate-shimmer">
+            <div className="inline-block p-1 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-2xl mb-6 animate-shimmer">
               <div className="bg-black px-6 py-2 rounded-2xl">
                 <span className="text-yellow-400 font-semibold text-sm tracking-wide">⚡ PREMIUM NETWORK</span>
               </div>
-            </div>
-            <div className="flex justify-center mb-6">
-              <img 
-                src="/assets/au-logo.png" 
-                alt="Alchemy United winged AU logo" 
-                className="h-16 w-auto opacity-90 hover:opacity-100 transition-opacity duration-300"
-              />
             </div>
           </div>
           

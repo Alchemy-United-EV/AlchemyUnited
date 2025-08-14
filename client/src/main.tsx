@@ -362,8 +362,8 @@ function HomeComponent() {
       {/* Hero Section */}
       <main>
         <div className="relative overflow-hidden bg-[url('/assets/hero-image.jpeg')] bg-cover bg-center py-20 md:py-28">
-          {/* Overlay for contrast */}
-          <div className="pointer-events-none absolute inset-0 bg-white/85"></div>
+          {/* Overlay for contrast - reduced opacity for more visible background */}
+          <div className="pointer-events-none absolute inset-0 bg-white/75"></div>
           
           <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
             <div className="fade-in">
@@ -375,7 +375,7 @@ function HomeComponent() {
                 <span className="block text-[#D4AF37]">EV Charging</span>
                 <span className="block">Network</span>
               </h1>
-              <p className="text-lg md:text-xl text-gray-600 max-w-2xl md:max-w-3xl mx-auto mt-3 leading-relaxed">
+              <p className="text-lg md:text-xl text-gray-900 font-medium max-w-2xl md:max-w-3xl mx-auto mt-3 leading-relaxed bg-white/60 backdrop-blur-sm px-6 py-3 rounded-2xl">
                 Experience the future of electric vehicle charging with our luxury network. 
                 Reliable, fast, and premium locations for discerning EV drivers.
               </p>
@@ -393,6 +393,18 @@ function HomeComponent() {
                   Become a Host
                 </button>
               </div>
+            </div>
+          </div>
+          
+          {/* Full Hero Image at Bottom */}
+          <div className="relative z-10 max-w-6xl mx-auto px-6 mt-12 fade-in">
+            <div className="relative rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.15)] hover-lift">
+              <img 
+                src="/assets/hero-image.jpeg" 
+                alt="Premium EV Charging Technology"
+                className="w-full h-64 md:h-96 object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
             </div>
           </div>
         </div>

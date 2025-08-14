@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import Hero from './Hero';
 import Features from './Features';
+import SocialProof from '@/components/SocialProof';
 import CTA from './CTA';
 import FooterCTA from './FooterCTA';
 
 export default function Home() {
   const [logoOpacity, setLogoOpacity] = useState(1);
+  const showSocialProof = false; // Toggle to true to enable social proof section
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,6 +48,7 @@ export default function Home() {
 
       <Hero />
       <Features />
+      {showSocialProof && <SocialProof />}
       <CTA />
       <FooterCTA />
     </div>

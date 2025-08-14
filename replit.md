@@ -3,7 +3,13 @@
 This is a premium web platform for Alchemy United, a luxury EV charging network. The project features a sophisticated one-page marketing website with comprehensive application forms for early access and host partnerships. Built with React and Express.js, it showcases high-end EV charging technology with luxury automotive brand positioning and premium user experience. The platform includes functional routing, form validation, and professional success flows for lead generation.
 
 ## Recent Changes
-- **Performance Optimization (Latest)**: Implemented comprehensive performance improvements
+- **Social Proof Component (Latest)**: Added ready-to-use testimonials and partner logos section
+  - Created `SocialProof.tsx` with 4 placeholder testimonial cards and 6 partner logo slots
+  - Fully responsive design with accessible semantic markup and hover effects
+  - Toggle-controlled visibility in Home.tsx (currently disabled by default)
+  - Ready for production - can be quickly populated with real testimonials and logos
+  - No layout shift when enabled/disabled, maintains brand consistency
+- **Performance Optimization**: Implemented comprehensive performance improvements
   - Converted 39 heavy images to WebP format (95% average savings, ~55MB total reduction)
   - Added progressive image loading with lazy loading and WebP fallbacks
   - Archived 36 unused UI components, reducing bundle size

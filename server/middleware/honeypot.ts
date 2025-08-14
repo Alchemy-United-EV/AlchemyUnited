@@ -27,6 +27,9 @@ export const rateLimitMiddleware = (req: Request, res: Response, next: NextFunct
   const windowMs = 15 * 60 * 1000; // 15 minutes
   const maxRequests = 5; // Max 5 form submissions per 15 minutes per IP
 
+  // Lazy cleanup of expired entries
+  checkAndCleanup();
+
   const key = `${ip}:form-submit`;
   const record = rateLimitStore.get(key);
 
@@ -45,8 +48,8 @@ export const rateLimitMiddleware = (req: Request, res: Response, next: NextFunct
   }
 };
 
-// Clean up old rate limit entries periodically
-setInterval(() => {
+// Clean up old rate limit entries on-demand (no background interval for autoscale compatibility)
+const cleanupExpiredEntries = () => {
   const now = Date.now();
   const keysToDelete: string[] = [];
   rateLimitStore.forEach((record, key) => {
@@ -55,4 +58,16 @@ setInterval(() => {
     }
   });
   keysToDelete.forEach(key => rateLimitStore.delete(key));
-}, 5 * 60 * 1000); // Clean every 5 minutes
+};
+
+// Cleanup periodically only when rate limiting is checked (lazy cleanup)
+let lastCleanup = 0;
+const CLEANUP_INTERVAL = 5 * 60 * 1000; // 5 minutes
+
+const checkAndCleanup = () => {
+  const now = Date.now();
+  if (now - lastCleanup > CLEANUP_INTERVAL) {
+    cleanupExpiredEntries();
+    lastCleanup = now;
+  }
+};

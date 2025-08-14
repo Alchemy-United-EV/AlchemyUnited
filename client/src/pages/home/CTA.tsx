@@ -1,3 +1,5 @@
+import { CTATracker } from '@/components/CTA-Tracker';
+
 export default function CTA() {
   return (
     <section className="bg-gradient-to-br from-black via-gray-900 to-black py-20 px-6 relative overflow-hidden">
@@ -28,28 +30,24 @@ export default function CTA() {
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button
-            data-cta="cta-early-access"
-            data-cta-section="cta"
-            data-cta-variant="primary"
-            onClick={() => window.location.href = '/early-access'}
-            className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-4 px-8 rounded-full text-xl transition-all duration-300 transform hover:scale-105"
-            type="button"
-            aria-label="Request Early Access to Premium EV Charging Network"
+          <CTATracker
+            cta="cta-primary"
+            section="mid-page-cta"
+            variant="primary"
+            href="/early-access"
+            className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-300 hover:to-yellow-400 text-black font-bold py-4 px-8 rounded-full text-xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-yellow-400/30 text-center"
           >
             Request Early Access
-          </button>
-          <button
-            data-cta="cta-host-partner"
-            data-cta-section="cta"
-            data-cta-variant="secondary"
-            onClick={() => window.location.href = '/host-application'}
-            className="border-2 border-yellow-400 hover:bg-yellow-400 text-yellow-400 hover:text-black font-bold py-4 px-8 rounded-full text-xl transition-all duration-300"
-            type="button"
-            aria-label="Become a Host Partner and Generate Passive Income"
+          </CTATracker>
+          <CTATracker
+            cta="cta-secondary"
+            section="mid-page-cta"
+            variant="secondary"
+            href="/host-application"
+            className="border-2 border-yellow-400 hover:bg-yellow-400 text-yellow-400 hover:text-black font-bold py-4 px-8 rounded-full text-xl transition-all duration-300 transform hover:scale-105 text-center"
           >
             Partner With Us
-          </button>
+          </CTATracker>
         </div>
       </div>
     </section>

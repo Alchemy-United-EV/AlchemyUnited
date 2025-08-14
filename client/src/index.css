@@ -102,6 +102,11 @@
   50% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.8); }
 }
 
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+  50% { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
+}
+
 .animate-shimmer {
   background-size: 200% 100%;
   animation: shimmer 2s infinite;
@@ -122,6 +127,16 @@
 .animate-float {
   animation: float 3s ease-in-out infinite;
 }
+
+.animate-pulse-gold {
+  animation: pulse-gold 2s infinite;
+}
+
+/* Tailwind custom utilities */
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-700 { animation-delay: 700ms; }
 
 .animate-glow {
   animation: glow 2s ease-in-out infinite alternate;

@@ -1,3 +1,5 @@
+import { CTATracker } from '@/components/CTA-Tracker';
+
 export default function FooterCTA() {
   return (
     <section className="bg-black py-16 px-6">
@@ -19,18 +21,24 @@ export default function FooterCTA() {
         </h2>
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-          <button
-            onClick={() => window.location.href = '/early-access'}
-            className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-6 rounded-full transition-all duration-300"
+          <CTATracker
+            cta="footer-primary"
+            section="footer"
+            variant="primary"
+            href="/early-access"
+            className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 text-center hover:shadow-lg hover:shadow-yellow-400/25"
           >
             Get Early Access
-          </button>
-          <button
-            onClick={() => window.location.href = '/host'}
-            className="border border-yellow-400 hover:bg-yellow-400 text-yellow-400 hover:text-black font-bold py-3 px-6 rounded-full transition-all duration-300"
+          </CTATracker>
+          <CTATracker
+            cta="footer-secondary"
+            section="footer"
+            variant="secondary"
+            href="/host-application"
+            className="border border-yellow-400 hover:bg-yellow-400 text-yellow-400 hover:text-black font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 text-center"
           >
             Become a Host
-          </button>
+          </CTATracker>
         </div>
         
         <div className="border-t border-gray-800 pt-8">

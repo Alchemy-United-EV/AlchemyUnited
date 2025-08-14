@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
-import { Link } from 'wouter';
 import { CheckCircle, ArrowRight, Home } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { CTATracker } from '@/components/CTA-Tracker';
 
 export default function ThankYou() {
   // Set SEO meta tags for Thank You page (noindex)
@@ -87,36 +86,66 @@ export default function ThankYou() {
         </div>
 
         <div className="space-y-4">
-          <Button asChild className="w-full bg-gold hover:bg-gold/90 text-black font-semibold">
-            <Link href="/">
-              <Home className="w-4 h-4 mr-2" />
-              Return Home
-            </Link>
-          </Button>
+          <CTATracker
+            cta="thank-you-home"
+            section="thank-you"
+            variant="primary"
+            href="/"
+            className="w-full bg-gradient-to-r from-gold to-yellow-500 hover:from-yellow-400 hover:to-gold text-black font-bold py-4 px-6 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-gold/30 flex items-center justify-center gap-2"
+          >
+            <Home className="w-5 h-5" />
+            Return Home
+          </CTATracker>
           
           {isEarlyAccess && (
-            <Button asChild variant="outline" className="w-full border-gold text-gold hover:bg-gold/10">
-              <Link href="/host-application">
-                <ArrowRight className="w-4 h-4 mr-2" />
-                Interested in Hosting?
-              </Link>
-            </Button>
+            <CTATracker
+              cta="thank-you-cross-sell-host"
+              section="thank-you"
+              variant="secondary"
+              href="/host-application"
+              className="w-full border-2 border-gold bg-transparent text-gold hover:bg-gold hover:text-black font-bold py-4 px-6 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2"
+            >
+              <ArrowRight className="w-5 h-5" />
+              Interested in Hosting?
+            </CTATracker>
           )}
           
           {isHost && (
-            <Button asChild variant="outline" className="w-full border-gold text-gold hover:bg-gold/10">
-              <Link href="/early-access">
-                <ArrowRight className="w-4 h-4 mr-2" />
-                Request Early Access
-              </Link>
-            </Button>
+            <CTATracker
+              cta="thank-you-cross-sell-access"
+              section="thank-you"
+              variant="secondary"
+              href="/early-access"
+              className="w-full border-2 border-gold bg-transparent text-gold hover:bg-gold hover:text-black font-bold py-4 px-6 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2"
+            >
+              <ArrowRight className="w-5 h-5" />
+              Request Early Access
+            </CTATracker>
           )}
         </div>
 
         <div className="mt-8 pt-8 border-t border-gray-700">
+          <picture className="block mb-4">
+            <source srcSet="/assets/webp/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.webp" type="image/webp" />
+            <img 
+              src="/assets/AE141A66-A440-499B-8889-41BABE3F729E_1754505979237.png" 
+              alt="Alchemy Network Logo"
+              className="h-8 w-auto mx-auto filter brightness-125"
+              width="80"
+              height="32"
+              loading="lazy"
+            />
+          </picture>
           <p className="text-gray-400 text-sm">
             Questions? Contact us at{' '}
-            <a href="mailto:support@alchemynetwork.com" className="text-gold hover:underline">
+            <a 
+              href="mailto:support@alchemynetwork.com" 
+              data-cta="thank-you-support"
+              data-cta-section="thank-you"
+              data-cta-variant="support"
+              className="text-gold hover:underline hover:text-gold/80 transition-colors"
+              aria-label="Contact Support Team"
+            >
               support@alchemynetwork.com
             </a>
           </p>

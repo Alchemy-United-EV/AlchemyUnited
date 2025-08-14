@@ -338,7 +338,7 @@ function HomeComponent() {
       <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur border-b border-[var(--border)]">
         <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16">
           <img 
-            src="/assets/au-logo.png" 
+            src="/assets/header-logo.jpeg" 
             alt="Alchemy United Premium EV Charging Network"
             className="h-8 w-auto"
           />
@@ -368,7 +368,7 @@ function HomeComponent() {
           {/* Logo watermark behind content */}
           <div className="absolute inset-0 flex items-center justify-center z-0">
             <img 
-              src="/assets/header-logo.jpeg" 
+              src="/assets/au-logo.png" 
               alt=""
               className="w-96 h-auto opacity-20 pointer-events-none"
               aria-hidden="true"

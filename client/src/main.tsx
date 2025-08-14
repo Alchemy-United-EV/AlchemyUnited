@@ -376,27 +376,24 @@ function HomeComponent() {
           </div>
 
           <div className="relative z-10 max-w-5xl mx-auto text-center px-6 space-y-6">
-            {/* Premium Network Badge */}
+            {/* EV Charging Badge */}
             <div className="animate-[fadeInUp_0.6s_ease-out]">
               <div className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/90 px-4 py-1.5 text-xs font-semibold text-gray-700 uppercase tracking-wide shadow-sm">
-                ⚡ PREMIUM NETWORK
+                ⚡ EV CHARGING
               </div>
             </div>
             
             {/* Main Heading */}
             <div className="animate-[fadeInUp_0.6s_ease-out_0.1s_both]">
-              <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-tight">
-                <span className="block">Premium</span>
-                <span className="block text-[#D4AF37]">EV Charging</span>
-                <span className="block">Network</span>
+              <h1 className="text-6xl md:text-8xl font-extrabold tracking-tight bg-gradient-to-r from-[#D4AF37] via-[#FFD700] to-[#D4AF37] text-transparent bg-clip-text drop-shadow-[0_2px_2px_rgba(0,0,0,0.25)]">
+                Alchemy United
               </h1>
             </div>
             
             {/* Subheadline */}
             <div className="animate-[fadeInUp_0.6s_ease-out_0.2s_both]">
-              <p className="mt-5 text-lg md:text-2xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
-                Experience the future of electric vehicle charging with our luxury network. 
-                Reliable, fast, and premium locations for discerning EV drivers.
+              <p className="max-w-2xl mx-auto mt-5 text-lg md:text-xl text-gray-700 leading-relaxed">
+                Discover the pinnacle of EV charging. Alchemy United connects you to an elite network of gold-standard stations — fast, reliable, and reserved for discerning drivers.
               </p>
             </div>
             

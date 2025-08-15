@@ -72,12 +72,32 @@ app.use(express.static("public"));
     serveStatic(app);
   }
 
-  // C) Production deployment configuration
+  // C) Production deployment configuration with port management
   const PORT = Number(process.env.PORT) || 5000;
   
   // Production hardening for autoscale
   process.on('unhandledRejection', r => console.error('[DEPLOYMENT][unhandledRejection]', r));
-  process.on('uncaughtException', e => console.error('[DEPLOYMENT][uncaughtException]', e));
+  process.on('uncaughtException', e => {
+    console.error('[DEPLOYMENT][uncaughtException]', e);
+    if (e.code === 'EADDRINUSE') {
+      console.log('[DEPLOYMENT] Port conflict detected - attempting restart...');
+      process.exit(1);
+    }
+  });
+
+  // Graceful port handling
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.log(`[DEPLOYMENT] Port ${PORT} busy - attempting alternate port...`);
+      const altPort = PORT + Math.floor(Math.random() * 100);
+      server.listen(altPort, '0.0.0.0', () => {
+        console.log(`[DEPLOYMENT] Server listening on ${altPort} (alternate)`);
+        console.log(`[DEPLOYMENT] Environment: ${process.env.NODE_ENV || 'development'}`);
+      });
+    } else {
+      throw err;
+    }
+  });
 
   server.listen(PORT, '0.0.0.0', () => {
     console.log(`[DEPLOYMENT] Server listening on ${PORT}`);

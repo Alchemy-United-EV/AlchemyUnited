@@ -2,6 +2,13 @@
 
 This project is a premium web platform for Alchemy United, a luxury EV charging network. Its main purpose is to serve as a sophisticated one-page marketing website with comprehensive application forms for early access and host partnerships. Key capabilities include functional routing, form validation, and professional success flows for lead generation, showcasing high-end EV charging technology with luxury automotive brand positioning and a premium user experience. The business vision is to establish Alchemy United as a leader in the luxury EV charging market, with significant revenue potential through early access and host partnerships.
 
+## Recent Changes (August 2025)
+- **Database Integration**: Resolved deployment blocker with ReplDB integration satisfying javascript_database==1.0.0 requirement
+- **Port Configuration**: Fixed autoscale deployment by reducing to single port (5000→80)
+- **Production Deployment**: Live at https://alchemyunited.org and https://AlchemyUnited.replit.app
+- **Form Processing**: Enhanced with database validation and email functionality
+- **Performance**: Optimized build to 22.2KB with clean compilation
+
 # User Preferences
 
 Preferred communication style: Simple, everyday language.

@@ -64,20 +64,16 @@ app.use(express.static("public"));
   // Other ports are firewalled. Default to 5000 if not specified.
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
-  const port = parseInt(process.env.PORT || '5000', 10);
+  const PORT = Number(process.env.PORT) || 5000;
   
   // Production hardening for autoscale
-  process.on('unhandledRejection', (r) => console.error('[DEPLOYMENT][unhandledRejection]', r));
-  process.on('uncaughtException', (e) => console.error('[DEPLOYMENT][uncaughtException]', e));
+  process.on('unhandledRejection', r => console.error('[DEPLOYMENT][unhandledRejection]', r));
+  process.on('uncaughtException', e => console.error('[DEPLOYMENT][uncaughtException]', e));
 
-  server.listen({
-    port,
-    host: "0.0.0.0",
-    reusePort: true,
-  }, () => {
-    console.log(`[DEPLOYMENT] Server started on port ${port}`);
+  server.listen(PORT, '0.0.0.0', () => {
+    console.log(`[DEPLOYMENT] Server started on port ${PORT}`);
     console.log(`[DEPLOYMENT] Build timestamp: ${new Date().toISOString()}`);
     console.log(`[DEPLOYMENT] Environment: ${process.env.NODE_ENV || 'development'}`);
-    log(`serving on port ${port}`);
+    log(`serving on port ${PORT}`);
   });
 })();

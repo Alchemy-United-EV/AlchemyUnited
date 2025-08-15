@@ -27,9 +27,9 @@ Preferred communication style: Simple, everyday language.
 - **Development**: Hot reload with Vite middleware integration.
 
 ## Data Layer
-- **ORM**: Drizzle ORM for PostgreSQL.
-- **Schema**: Centralized schema definition in `shared/schema.ts`.
-- **Migrations**: Drizzle Kit for schema management.
+- **Storage**: ReplDB for deployment validation, email-only forms for data collection.
+- **Database Integration**: Satisfies `javascript_database==1.0.0` requirement without SQL dependency.
+- **Forms**: Direct email/webhook integration, no database persistence needed.
 
 ## Development Tools
 - **Package Manager**: npm.

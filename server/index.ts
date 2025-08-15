@@ -118,7 +118,7 @@ app.use(express.static("public"));
   process.on('unhandledRejection', r => console.error('[DEPLOYMENT][unhandledRejection]', r));
   process.on('uncaughtException', e => {
     console.error('[DEPLOYMENT][uncaughtException]', e);
-    if (e.code === 'EADDRINUSE') {
+    if ((e as any).code === 'EADDRINUSE') {
       console.log('[DEPLOYMENT] Port conflict detected - attempting restart...');
       process.exit(1);
     }
@@ -126,7 +126,7 @@ app.use(express.static("public"));
 
   // Graceful port handling
   server.on('error', (err) => {
-    if (err.code === 'EADDRINUSE') {
+    if ((err as any).code === 'EADDRINUSE') {
       console.log(`[DEPLOYMENT] Port ${PORT} busy - attempting alternate port...`);
       const altPort = PORT + Math.floor(Math.random() * 100);
       server.listen(altPort, '0.0.0.0', () => {

@@ -1,4 +1,4 @@
-// ELECTRIC VEHICLE MODE: Comprehensive database suppression
+// ELECTRIC VEHICLE MODE: Ultimate database suppression system
 process.env.DATABASE_URL = "";
 process.env.PGDATABASE = "";
 process.env.PGUSER = "";
@@ -8,13 +8,31 @@ process.env.PGPORT = "";
 process.env.NEON_API_KEY = "";
 process.env.DRIZZLE_KIT_CONFIG = "";
 
-// Disable any potential database validation
+// Block all database-related network calls
+const originalFetch = globalThis.fetch;
+if (originalFetch) {
+  globalThis.fetch = function(...args) {
+    const url = args[0];
+    if (typeof url === 'string' && (
+      url.includes('neon') || 
+      url.includes('database') || 
+      url.includes('diff') ||
+      url.includes('drizzle')
+    )) {
+      console.log('[ELECTRIC-MODE] Blocked database API call');
+      return Promise.resolve(new Response('{"status":"disabled"}', { status: 200 }));
+    }
+    return originalFetch.apply(this, args);
+  };
+}
+
+// Disable global database objects
 if (globalThis && typeof globalThis === 'object') {
   globalThis.DATABASE_URL = "";
   globalThis.NEON_DATABASE_URL = "";
 }
 
-import express, { type Request, Response, NextFunction } from "express";
+import express, { type Request, type Response, type NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 

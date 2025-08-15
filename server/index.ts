@@ -1,10 +1,18 @@
-// ELECTRIC VEHICLE MODE: Disable all database environment variables
+// ELECTRIC VEHICLE MODE: Comprehensive database suppression
 process.env.DATABASE_URL = "";
 process.env.PGDATABASE = "";
 process.env.PGUSER = "";
 process.env.PGPASSWORD = "";
 process.env.PGHOST = "";
 process.env.PGPORT = "";
+process.env.NEON_API_KEY = "";
+process.env.DRIZZLE_KIT_CONFIG = "";
+
+// Disable any potential database validation
+if (globalThis && typeof globalThis === 'object') {
+  globalThis.DATABASE_URL = "";
+  globalThis.NEON_DATABASE_URL = "";
+}
 
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";

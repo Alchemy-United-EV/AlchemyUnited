@@ -1,6 +1,16 @@
+// ELECTRIC VEHICLE MODE: Disable all database environment variables
+process.env.DATABASE_URL = "";
+process.env.PGDATABASE = "";
+process.env.PGUSER = "";
+process.env.PGPASSWORD = "";
+process.env.PGHOST = "";
+process.env.PGPORT = "";
+
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+
+console.log('[HANDOFF] Database environment disabled - electric vehicle mode active');
 
 const app = express();
 app.set('trust proxy', 1);  // For correct req.ip in autoscale

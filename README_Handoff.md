@@ -21,7 +21,8 @@
 ```
 [DEPLOYMENT] Server listening on 8080
 [HANDOFF] Database module disabled - using email-only storage
-[DEPLOYMENT] Build timestamp: 2025-08-15T01:52:34.907Z
+Build completed: dist/index.js 22.6kb
+✓ 47 modules transformed
 ```
 
 ### **Health Check URL:**

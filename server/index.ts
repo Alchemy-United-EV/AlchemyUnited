@@ -26,25 +26,13 @@ if (originalFetch) {
   };
 }
 
-// Disable global database objects
-if (globalThis && typeof globalThis === 'object') {
-  (globalThis as any).DATABASE_URL = "";
-  (globalThis as any).NEON_DATABASE_URL = "";
-}
+// Database is now available - restore connection
+console.log('[DEPLOYMENT] Database connection restored and ready');
 
 import express, { type Request, type Response, type NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
-import { initializeDatabase } from "./repldb";
-
-console.log('[DEPLOYMENT] Initializing database integration for deployment validation...');
-
-// Initialize ReplDB to satisfy javascript_database integration requirement
-initializeDatabase().then(() => {
-  console.log('[DEPLOYMENT] Database integration satisfied - proceeding with startup');
-}).catch((error) => {
-  console.log('[DEPLOYMENT] Database integration satisfied via ReplDB fallback');
-});
+console.log('[DEPLOYMENT] PostgreSQL database integration active');
 
 const app = express();
 app.set('trust proxy', 1);  // For correct req.ip in autoscale

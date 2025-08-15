@@ -1,82 +1,94 @@
-import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, timestamp } from "drizzle-orm/pg-core";
-import { createInsertSchema } from "drizzle-zod";
-import { z } from "zod";
+// EMAIL-ONLY STORAGE TYPES - No database dependencies  
+// Clean types for direct email/CRM integration (removed gas gauge from electric vehicle)
 
-export const users = pgTable("users", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  username: text("username").notNull().unique(),
-  password: text("password").notNull(),
-});
+export interface User {
+  id: string;
+  username?: string;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  profileImageUrl?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
 
-export const insertUserSchema = createInsertSchema(users).pick({
-  username: true,
-  password: true,
-});
+export interface InsertUser {
+  username: string;
+  password: string;
+}
 
-export type InsertUser = z.infer<typeof insertUserSchema>;
-export type User = typeof users.$inferSelect;
+// Early Access Application Types
+export interface EarlyAccessApplication {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  vehicleType: string;
+  chargingFrequency: string;
+  currentChargingMethod?: string;
+  location: string;
+  referralCode?: string;
+  interests?: string;
+  status?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
 
-// Early Access Applications Table
-export const earlyAccessApplications = pgTable("early_access_applications", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  firstName: varchar("first_name").notNull(),
-  lastName: varchar("last_name").notNull(),
-  email: varchar("email").notNull(),
-  phone: varchar("phone").notNull(),
-  vehicleType: varchar("vehicle_type").notNull(),
-  chargingFrequency: varchar("charging_frequency").notNull(),
-  location: varchar("location").notNull(),
-  referralCode: varchar("referral_code"),
-  interests: text("interests"),
-  status: varchar("status").default("pending"), // pending, approved, rejected
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-});
+export interface InsertEarlyAccessApplication {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  vehicleType: string;
+  chargingFrequency: string;
+  currentChargingMethod?: string;
+  location: string;
+  referralCode?: string;
+  interests?: string;
+}
 
-export type EarlyAccessApplication = typeof earlyAccessApplications.$inferSelect;
-export type InsertEarlyAccessApplication = typeof earlyAccessApplications.$inferInsert;
+// Host Application Types
+export interface HostApplication {
+  id: string;
+  businessName: string;
+  contactFirstName: string;
+  contactLastName: string;
+  email: string;
+  phone: string;
+  propertyType: string;
+  propertyAddress: string;
+  parkingSpaces: string;
+  electricalCapacity: string;
+  expectedTraffic: string;
+  operatingHours: string;
+  currentAmenities?: string;
+  partnershipInterest: string;
+  timeline: string;
+  additionalInfo?: string;
+  status?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
 
-// Host Applications Table
-export const hostApplications = pgTable("host_applications", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  businessName: varchar("business_name").notNull(),
-  contactFirstName: varchar("contact_first_name").notNull(),
-  contactLastName: varchar("contact_last_name").notNull(),
-  email: varchar("email").notNull(),
-  phone: varchar("phone").notNull(),
-  propertyType: varchar("property_type").notNull(),
-  propertyAddress: text("property_address").notNull(),
-  parkingSpaces: varchar("parking_spaces").notNull(),
-  electricalCapacity: varchar("electrical_capacity").notNull(),
-  expectedTraffic: varchar("expected_traffic").notNull(),
-  operatingHours: varchar("operating_hours").notNull(),
-  currentAmenities: text("current_amenities"),
-  partnershipInterest: varchar("partnership_interest").notNull(),
-  timeline: varchar("timeline").notNull(),
-  additionalInfo: text("additional_info"),
-  status: varchar("status").default("pending"), // pending, approved, rejected, in-review
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-});
+export interface InsertHostApplication {
+  businessName: string;
+  contactFirstName: string;
+  contactLastName: string;
+  email: string;
+  phone: string;
+  propertyType: string;
+  propertyAddress: string;
+  parkingSpaces: string;
+  electricalCapacity: string;
+  expectedTraffic: string;
+  operatingHours: string;
+  currentAmenities?: string;
+  partnershipInterest: string;
+  timeline: string;
+  additionalInfo?: string;
+}
 
-export type HostApplication = typeof hostApplications.$inferSelect;
-export type InsertHostApplication = typeof hostApplications.$inferInsert;
-
-// Zod schemas for validation
-export const insertEarlyAccessApplicationSchema = createInsertSchema(earlyAccessApplications).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-  status: true,
-});
-
-export const insertHostApplicationSchema = createInsertSchema(hostApplications).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-  status: true,
-});
-
-export type InsertEarlyAccessApplicationForm = z.infer<typeof insertEarlyAccessApplicationSchema>;
-export type InsertHostApplicationForm = z.infer<typeof insertHostApplicationSchema>;
+// Form types for validation (simplified without zod/drizzle)
+export type InsertEarlyAccessApplicationForm = InsertEarlyAccessApplication;
+export type InsertHostApplicationForm = InsertHostApplication;

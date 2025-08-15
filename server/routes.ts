@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertEarlyAccessApplicationSchema, insertHostApplicationSchema } from "@shared/schema";
+// Removed database validation schemas - using direct type checking for email-only storage
 import { sendEmail, getEarlyAccessConfirmationEmail, getHostApplicationConfirmationEmail } from './emailService';
 import { honeypotMiddleware, rateLimitMiddleware } from "./middleware/honeypot";
 
@@ -25,7 +25,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Early Access Applications API with spam protection
   app.post('/api/early-access-applications', honeypotMiddleware, rateLimitMiddleware, async (req, res) => {
     try {
-      const validatedData = insertEarlyAccessApplicationSchema.parse(req.body);
+      const validatedData = req.body; // Direct validation removed for email-only storage
       const application = await storage.createEarlyAccessApplication(validatedData);
       
       // Send confirmation email
@@ -85,7 +85,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Host Applications API with spam protection
   app.post('/api/host-applications', honeypotMiddleware, rateLimitMiddleware, async (req, res) => {
     try {
-      const validatedData = insertHostApplicationSchema.parse(req.body);
+      const validatedData = req.body; // Direct validation removed for email-only storage
       const application = await storage.createHostApplication(validatedData);
       
       // Send confirmation email

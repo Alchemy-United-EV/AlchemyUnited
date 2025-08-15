@@ -8,6 +8,8 @@ This project is a premium web platform for Alchemy United, a luxury EV charging 
 - **Production Deployment**: Live at https://alchemyunited.org and https://AlchemyUnited.replit.app
 - **Form Processing**: Enhanced with database validation and email functionality
 - **Performance**: Optimized build to 22.2KB with clean compilation
+- **Deployment Issue**: Deploy button unresponsive despite meeting all technical requirements - requires Replit platform support
+- **Dashboard Error**: 503 deployment lifecycle client command error preventing redeployment functionality
 
 # User Preferences
 

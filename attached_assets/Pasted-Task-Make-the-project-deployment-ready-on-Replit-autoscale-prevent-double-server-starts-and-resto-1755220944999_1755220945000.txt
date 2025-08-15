@@ -1,0 +1,56 @@
+Task: Make the project deployment-ready on Replit autoscale, prevent double server starts, and restore a working Deploy button without using the shell.
+
+Do exactly the following edits:
+
+1) .replit — overwrite the [deployment] block only (keep anything else unchanged):
+[deployment]
+deploymentTarget = "autoscale"
+build = ["npm", "run", "build"]
+run = ["npm", "run", "start"]
+
+2) package.json — in "scripts" ensure EXACTLY these (leave other keys untouched):
+"scripts": {
+  "dev": "vite",
+  "build": "vite build && esbuild server/index.ts --bundle --platform=node --target=node20 --format=cjs --outfile=dist/index.cjs",
+  "start": "NODE_ENV=production node dist/index.cjs"
+}
+
+Notes:
+- If server entry is not server/index.ts, update the build command’s input path to the correct one.
+- Ensure esbuild is a dependency or devDependency. If missing, add:  "esbuild": "^0.23.0" (devDependency).
+
+3) server entry (TypeScript or JS) — apply all three changes:
+A) Put the health endpoint FIRST so Vite dev middleware can’t intercept it:
+app.get('/api/health', (req, res) => {
+  res.status(200).json({
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    env: process.env.NODE_ENV || 'development'
+  });
+});
+
+B) Disable Vite dev middleware in production:
+const isProd = process.env.NODE_ENV === 'production';
+// Any vite-related dev middleware must only run if !isProd
+
+C) Guard against double listen + use the provided PORT:
+const PORT = Number(process.env.PORT) || 3000;
+if (!globalThis.__AU_LISTENING__) {
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`[DEPLOYMENT] Server listening on ${PORT}`);
+  });
+  globalThis.__AU_LISTENING__ = true;
+}
+
+4) Save all files, then confirm:
+- .replit has the autoscale [deployment] block above.
+- package.json has the exact "build" and "start" scripts shown.
+- The server file includes the health route FIRST, the production guard for vite, and the listen guard.
+
+5) Finish with instructions for me:
+- Tell me “DONE” when edits are applied.
+- Tell me the detected server entry path you used (e.g., server/index.ts).
+- Tell me if esbuild had to be added.
+- Tell me if any vite middleware was found and gated.
+
+Do NOT change any UI or client code. Only deployment-related files and the server entry.

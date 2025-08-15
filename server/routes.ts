@@ -6,17 +6,7 @@ import { sendEmail, getEarlyAccessConfirmationEmail, getHostApplicationConfirmat
 import { honeypotMiddleware, rateLimitMiddleware } from "./middleware/honeypot";
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Health check endpoint - FIRST route to prevent Vite interception
-  app.get('/api/health', (req, res) => {
-    console.log(`[DEPLOYMENT] Health check from ${req.ip || 'unknown'}`);
-    res.status(200).json({ 
-      status: 'healthy',
-      timestamp: new Date().toISOString(),
-      uptime: process.uptime(),
-      environment: process.env.NODE_ENV || 'development',
-      port: process.env.PORT || '5000'
-    });
-  });
+  // Health endpoint is now handled in server/index.ts FIRST
 
   // Analytics logging endpoint
   app.post('/api/analytics/log', async (req, res) => {

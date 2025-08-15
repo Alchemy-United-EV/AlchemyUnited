@@ -4,6 +4,16 @@ import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
 app.set('trust proxy', 1);  // For correct req.ip in autoscale
+
+// A) Health endpoint FIRST so Vite dev middleware can't intercept it
+app.get('/api/health', (req, res) => {
+  res.status(200).json({
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    env: process.env.NODE_ENV || 'development'
+  });
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -51,29 +61,28 @@ app.use(express.static("public"));
     throw err;
   });
 
+  // B) Disable Vite dev middleware in production
+  const isProd = process.env.NODE_ENV === 'production';
   // importantly only setup vite in development and after
   // setting up all the other routes so the catch-all route
   // doesn't interfere with the other routes
-  if (app.get("env") === "development") {
+  if (!isProd) {
     await setupVite(app, server);
   } else {
     serveStatic(app);
   }
 
-  // ALWAYS serve the app on the port specified in the environment variable PORT
-  // Other ports are firewalled. Default to 5000 if not specified.
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
-  const PORT = Number(process.env.PORT) || 5000;
+  // C) Guard against double listen + use the provided PORT
+  const PORT = Number(process.env.PORT) || 3000;
   
   // Production hardening for autoscale
   process.on('unhandledRejection', r => console.error('[DEPLOYMENT][unhandledRejection]', r));
   process.on('uncaughtException', e => console.error('[DEPLOYMENT][uncaughtException]', e));
 
-  server.listen(PORT, '0.0.0.0', () => {
-    console.log(`[DEPLOYMENT] Server started on port ${PORT}`);
-    console.log(`[DEPLOYMENT] Build timestamp: ${new Date().toISOString()}`);
-    console.log(`[DEPLOYMENT] Environment: ${process.env.NODE_ENV || 'development'}`);
-    log(`serving on port ${PORT}`);
-  });
+  if (!(globalThis as any).__AU_LISTENING__) {
+    server.listen(PORT, '0.0.0.0', () => {
+      console.log(`[DEPLOYMENT] Server listening on ${PORT}`);
+    });
+    (globalThis as any).__AU_LISTENING__ = true;
+  }
 })();

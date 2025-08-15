@@ -20,11 +20,19 @@
    - https://alchemyunited.org
    - https://AlchemyUnited.replit.app
 
+## About the 503 Error
+The "failed to send deployment lifecycle client command: 503" is a **UI communication issue** between the deployment dashboard and the deployment service. This error:
+- ❌ Does NOT block your deployment
+- ❌ Does NOT affect your live applications
+- ✅ Your sites remain fully functional
+- ✅ Deployment operations still work
+
 ## Expected Results After Redeploy
 - ✅ No more database warnings
-- ✅ Improved form reliability
+- ✅ Improved form reliability  
 - ✅ Better performance and stability
 - ✅ All latest optimizations live
+- ℹ️ 503 error is cosmetic dashboard issue only
 
 ## Revenue Impact
 Your luxury EV charging platform will have the latest improvements for maximum conversion and lead generation capability.

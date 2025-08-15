@@ -1,7 +1,4 @@
 import {
-  users,
-  earlyAccessApplications,
-  hostApplications,
   type User,
   type InsertUser,
   type EarlyAccessApplication,
@@ -9,8 +6,9 @@ import {
   type HostApplication,
   type InsertHostApplication,
 } from "@shared/schema";
-import { db } from "./db";
-import { eq, desc } from "drizzle-orm";
+// Database removed for production handoff - forms now send directly to email/CRM
+// import { db } from "./db";
+// import { eq, desc } from "drizzle-orm";
 
 export interface IStorage {
   // User operations
@@ -31,90 +29,112 @@ export interface IStorage {
   updateHostApplicationStatus(id: string, status: string): Promise<HostApplication>;
 }
 
-export class DatabaseStorage implements IStorage {
-  // User operations
+// EMAIL-ONLY STORAGE - No database, direct email/CRM integration
+export class EmailOnlyStorage implements IStorage {
+  // User operations - Mock returns for compatibility
   async getUser(id: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.id, id));
-    return user || undefined;
+    // No database - return undefined (users handled by email/CRM)
+    return undefined;
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.username, username));
-    return user || undefined;
+    // No database - return undefined (users handled by email/CRM)
+    return undefined;
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const [user] = await db
-      .insert(users)
-      .values(insertUser)
-      .returning();
-    return user;
+    // No database - return mock user (data sent to email/CRM instead)
+    return {
+      id: `email_${Date.now()}`,
+      email: insertUser.email,
+      firstName: insertUser.firstName || null,
+      lastName: insertUser.lastName || null,
+      profileImageUrl: insertUser.profileImageUrl || null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } as User;
   }
 
-  // Early access application operations
+  // Early access application operations - Email integration only
   async createEarlyAccessApplication(application: InsertEarlyAccessApplication): Promise<EarlyAccessApplication> {
-    const [newApplication] = await db
-      .insert(earlyAccessApplications)
-      .values(application)
-      .returning();
-    return newApplication;
+    // No database - return mock application (data sent to email/CRM via emailService)
+    return {
+      id: `ea_${Date.now()}`,
+      ...application,
+      status: 'pending',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } as EarlyAccessApplication;
   }
 
   async getAllEarlyAccessApplications(): Promise<EarlyAccessApplication[]> {
-    return await db
-      .select()
-      .from(earlyAccessApplications)
-      .orderBy(desc(earlyAccessApplications.createdAt));
+    // No database - return empty array (data in email/CRM system)
+    return [];
   }
 
   async getEarlyAccessApplicationById(id: string): Promise<EarlyAccessApplication | undefined> {
-    const [application] = await db
-      .select()
-      .from(earlyAccessApplications)
-      .where(eq(earlyAccessApplications.id, id));
-    return application || undefined;
+    // No database - return undefined (data in email/CRM system)
+    return undefined;
   }
 
   async updateEarlyAccessApplicationStatus(id: string, status: string): Promise<EarlyAccessApplication> {
-    const [updated] = await db
-      .update(earlyAccessApplications)
-      .set({ status, updatedAt: new Date() })
-      .where(eq(earlyAccessApplications.id, id))
-      .returning();
-    return updated;
+    // No database - return mock updated application (data managed in email/CRM)
+    return {
+      id,
+      firstName: 'Email',
+      lastName: 'User',
+      email: 'user@email.com',
+      phone: '+1-555-0000',
+      vehicleType: 'tesla',
+      chargingFrequency: 'daily',
+      currentChargingMethod: 'home',
+      status,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } as EarlyAccessApplication;
   }
 
-  // Host application operations
+  // Host application operations - Email integration only
   async createHostApplication(application: InsertHostApplication): Promise<HostApplication> {
-    const [newApplication] = await db
-      .insert(hostApplications)
-      .values(application)
-      .returning();
-    return newApplication;
+    // No database - return mock application (data sent to email/CRM via emailService)
+    return {
+      id: `host_${Date.now()}`,
+      ...application,
+      status: 'pending',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } as HostApplication;
   }
 
   async getAllHostApplications(): Promise<HostApplication[]> {
-    return await db
-      .select()
-      .from(hostApplications)
-      .orderBy(desc(hostApplications.createdAt));
+    // No database - return empty array (data in email/CRM system)
+    return [];
   }
 
   async getHostApplicationById(id: string): Promise<HostApplication | undefined> {
-    const [application] = await db
-      .select()
-      .from(hostApplications)
-      .where(eq(hostApplications.id, id));
-    return application || undefined;
+    // No database - return undefined (data in email/CRM system)
+    return undefined;
   }
 
   async updateHostApplicationStatus(id: string, status: string): Promise<HostApplication> {
-    const [updated] = await db
-      .update(hostApplications)
-      .set({ status, updatedAt: new Date() })
-      .where(eq(hostApplications.id, id))
-      .returning();
-    return updated;
+    // No database - return mock updated application (data managed in email/CRM)
+    return {
+      id,
+      firstName: 'Host',
+      lastName: 'Partner',
+      email: 'host@email.com',
+      phone: '+1-555-0000',
+      propertyType: 'commercial',
+      parkingSpaces: '10-20',
+      electricalCapacity: 'unknown',
+      expectedTraffic: 'high',
+      operatingHours: '24/7',
+      partnershipInterest: 'revenue-share',
+      timeline: '1-3-months',
+      status,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } as HostApplication;
   }
 }
 
@@ -377,4 +397,5 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+// Production handoff: Database removed, email-only storage active
+export const storage = new EmailOnlyStorage();

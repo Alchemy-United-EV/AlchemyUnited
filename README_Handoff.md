@@ -12,14 +12,18 @@
 ## **🔧 HOW TO DEPLOY**
 
 ### **Deployment Process:**
-1. **Stop Development Server**: Click "Stop" in Replit console
-2. **Deploy**: Click "Deploy" button in Replit (green button in top bar)  
-3. **Monitor**: Check Deployments tab for build logs and status
-4. **Verify**: Test `/api/health` endpoint for 200 response
+1. **Deploy**: Click "Deploy" button in Replit (green button in top bar)  
+2. **Monitor**: Check Deployments tab for build logs and status
+3. **Verify**: Test `/api/health` endpoint for 200 response
+4. **Success**: App will be live at `https://your-app-name.replit.app`
+
+**Note**: Development server can run alongside deployment - no need to stop it first.
 
 ### **Expected Deployment Logs:**
 ```
 [DEPLOYMENT] Server listening on 8080
+[DEPLOYMENT] Environment: production  
+[DEPLOYMENT] Build timestamp: 2025-08-15T01:56:53.394Z
 [HANDOFF] Database module disabled - using email-only storage
 Build completed: dist/index.js 22.6kb
 ✓ 47 modules transformed

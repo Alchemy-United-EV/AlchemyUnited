@@ -72,17 +72,16 @@ app.use(express.static("public"));
     serveStatic(app);
   }
 
-  // C) Guard against double listen + use the provided PORT
-  const PORT = Number(process.env.PORT) || 3000;
+  // C) Production deployment configuration
+  const PORT = Number(process.env.PORT) || 5000;
   
   // Production hardening for autoscale
   process.on('unhandledRejection', r => console.error('[DEPLOYMENT][unhandledRejection]', r));
   process.on('uncaughtException', e => console.error('[DEPLOYMENT][uncaughtException]', e));
 
-  if (!(globalThis as any).__AU_LISTENING__) {
-    server.listen(PORT, '0.0.0.0', () => {
-      console.log(`[DEPLOYMENT] Server listening on ${PORT}`);
-    });
-    (globalThis as any).__AU_LISTENING__ = true;
-  }
+  server.listen(PORT, '0.0.0.0', () => {
+    console.log(`[DEPLOYMENT] Server listening on ${PORT}`);
+    console.log(`[DEPLOYMENT] Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`[DEPLOYMENT] Build timestamp: ${new Date().toISOString()}`);
+  });
 })();
